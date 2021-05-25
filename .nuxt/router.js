@@ -4,26 +4,26 @@ import { normalizeURL, decode } from '@nuxt/ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _41a641e9 = () => interopDefault(import('../pages/dashboard/index.vue' /* webpackChunkName: "pages/dashboard/index" */))
-const _c4a8ff40 = () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
-const _d8c2cbf8 = () => interopDefault(import('../pages/dashboard/account.vue' /* webpackChunkName: "pages/dashboard/account" */))
-const _031d62de = () => interopDefault(import('../pages/dashboard/chat.vue' /* webpackChunkName: "pages/dashboard/chat" */))
-const _7fa0155c = () => interopDefault(import('../pages/dashboard/courses/index.vue' /* webpackChunkName: "pages/dashboard/courses/index" */))
-const _41eeae54 = () => interopDefault(import('../pages/dashboard/faqs.vue' /* webpackChunkName: "pages/dashboard/faqs" */))
-const _6b5020e0 = () => interopDefault(import('../pages/dashboard/my-courses.vue' /* webpackChunkName: "pages/dashboard/my-courses" */))
-const _18b4a121 = () => interopDefault(import('../pages/dashboard/my-webinars.vue' /* webpackChunkName: "pages/dashboard/my-webinars" */))
-const _1de45889 = () => interopDefault(import('../pages/dashboard/saved-courses.vue' /* webpackChunkName: "pages/dashboard/saved-courses" */))
-const _7cbe3d48 = () => interopDefault(import('../pages/dashboard/settings.vue' /* webpackChunkName: "pages/dashboard/settings" */))
-const _7df733a5 = () => interopDefault(import('../pages/dashboard/suggested-courses.vue' /* webpackChunkName: "pages/dashboard/suggested-courses" */))
-const _4e0440a8 = () => interopDefault(import('../pages/dashboard/suggested-webinars.vue' /* webpackChunkName: "pages/dashboard/suggested-webinars" */))
-const _34c05f1e = () => interopDefault(import('../pages/dashboard/upcoming-webinars.vue' /* webpackChunkName: "pages/dashboard/upcoming-webinars" */))
-const _75260785 = () => interopDefault(import('../pages/dashboard/webinars/index.vue' /* webpackChunkName: "pages/dashboard/webinars/index" */))
-const _28d1b39c = () => interopDefault(import('../pages/dashboard/webinars/create/index.vue' /* webpackChunkName: "pages/dashboard/webinars/create/index" */))
-const _3ad5e856 = () => interopDefault(import('../pages/dashboard/webinars/new/index.vue' /* webpackChunkName: "pages/dashboard/webinars/new/index" */))
-const _8d361760 = () => interopDefault(import('../pages/dashboard/courses/view/_slug.vue' /* webpackChunkName: "pages/dashboard/courses/view/_slug" */))
-const _a0baac94 = () => interopDefault(import('../pages/dashboard/webinars/preview/_slug.vue' /* webpackChunkName: "pages/dashboard/webinars/preview/_slug" */))
-const _871d6c06 = () => interopDefault(import('../pages/dashboard/webinars/view/_slug.vue' /* webpackChunkName: "pages/dashboard/webinars/view/_slug" */))
-const _b103c7b8 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _3abbaaab = () => interopDefault(import('../pages/dashboard/index.vue' /* webpackChunkName: "pages/dashboard/index" */))
+const _00a4265e = () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
+const _c6064b74 = () => interopDefault(import('../pages/dashboard/account.vue' /* webpackChunkName: "pages/dashboard/account" */))
+const _488ac58f = () => interopDefault(import('../pages/dashboard/chat.vue' /* webpackChunkName: "pages/dashboard/chat" */))
+const _058d07d8 = () => interopDefault(import('../pages/dashboard/courses/index.vue' /* webpackChunkName: "pages/dashboard/courses/index" */))
+const _29221fd4 = () => interopDefault(import('../pages/dashboard/faqs.vue' /* webpackChunkName: "pages/dashboard/faqs" */))
+const _0d209fe4 = () => interopDefault(import('../pages/dashboard/my-courses.vue' /* webpackChunkName: "pages/dashboard/my-courses" */))
+const _66d61f3a = () => interopDefault(import('../pages/dashboard/my-webinars.vue' /* webpackChunkName: "pages/dashboard/my-webinars" */))
+const _5aeddf4b = () => interopDefault(import('../pages/dashboard/saved-courses.vue' /* webpackChunkName: "pages/dashboard/saved-courses" */))
+const _37eaad4c = () => interopDefault(import('../pages/dashboard/settings.vue' /* webpackChunkName: "pages/dashboard/settings" */))
+const _797b8967 = () => interopDefault(import('../pages/dashboard/suggested-courses.vue' /* webpackChunkName: "pages/dashboard/suggested-courses" */))
+const _4e04422a = () => interopDefault(import('../pages/dashboard/suggested-webinars.vue' /* webpackChunkName: "pages/dashboard/suggested-webinars" */))
+const _3db7b39a = () => interopDefault(import('../pages/dashboard/upcoming-webinars.vue' /* webpackChunkName: "pages/dashboard/upcoming-webinars" */))
+const _4d654dfa = () => interopDefault(import('../pages/dashboard/webinars/index.vue' /* webpackChunkName: "pages/dashboard/webinars/index" */))
+const _7ad1585e = () => interopDefault(import('../pages/dashboard/webinars/create/index.vue' /* webpackChunkName: "pages/dashboard/webinars/create/index" */))
+const _a0476a58 = () => interopDefault(import('../pages/dashboard/webinars/new/index.vue' /* webpackChunkName: "pages/dashboard/webinars/new/index" */))
+const _2e6b56ce = () => interopDefault(import('../pages/dashboard/courses/view/_slug.vue' /* webpackChunkName: "pages/dashboard/courses/view/_slug" */))
+const _c4d0c598 = () => interopDefault(import('../pages/dashboard/webinars/preview/_slug.vue' /* webpackChunkName: "pages/dashboard/webinars/preview/_slug" */))
+const _2f919182 = () => interopDefault(import('../pages/dashboard/webinars/view/_slug.vue' /* webpackChunkName: "pages/dashboard/webinars/view/_slug" */))
+const _ebcda134 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -43,83 +43,83 @@ export const routerOptions = {
 
   routes: [{
     path: "/dashboard",
-    component: _41a641e9,
+    component: _3abbaaab,
     name: "dashboard"
   }, {
     path: "/auth/login",
-    component: _c4a8ff40,
+    component: _00a4265e,
     name: "auth-login"
   }, {
     path: "/dashboard/account",
-    component: _d8c2cbf8,
+    component: _c6064b74,
     name: "dashboard-account"
   }, {
     path: "/dashboard/chat",
-    component: _031d62de,
+    component: _488ac58f,
     name: "dashboard-chat"
   }, {
     path: "/dashboard/courses",
-    component: _7fa0155c,
+    component: _058d07d8,
     name: "dashboard-courses"
   }, {
     path: "/dashboard/faqs",
-    component: _41eeae54,
+    component: _29221fd4,
     name: "dashboard-faqs"
   }, {
     path: "/dashboard/my-courses",
-    component: _6b5020e0,
+    component: _0d209fe4,
     name: "dashboard-my-courses"
   }, {
     path: "/dashboard/my-webinars",
-    component: _18b4a121,
+    component: _66d61f3a,
     name: "dashboard-my-webinars"
   }, {
     path: "/dashboard/saved-courses",
-    component: _1de45889,
+    component: _5aeddf4b,
     name: "dashboard-saved-courses"
   }, {
     path: "/dashboard/settings",
-    component: _7cbe3d48,
+    component: _37eaad4c,
     name: "dashboard-settings"
   }, {
     path: "/dashboard/suggested-courses",
-    component: _7df733a5,
+    component: _797b8967,
     name: "dashboard-suggested-courses"
   }, {
     path: "/dashboard/suggested-webinars",
-    component: _4e0440a8,
+    component: _4e04422a,
     name: "dashboard-suggested-webinars"
   }, {
     path: "/dashboard/upcoming-webinars",
-    component: _34c05f1e,
+    component: _3db7b39a,
     name: "dashboard-upcoming-webinars"
   }, {
     path: "/dashboard/webinars",
-    component: _75260785,
+    component: _4d654dfa,
     name: "dashboard-webinars"
   }, {
     path: "/dashboard/webinars/create",
-    component: _28d1b39c,
+    component: _7ad1585e,
     name: "dashboard-webinars-create"
   }, {
     path: "/dashboard/webinars/new",
-    component: _3ad5e856,
+    component: _a0476a58,
     name: "dashboard-webinars-new"
   }, {
     path: "/dashboard/courses/view/:slug?",
-    component: _8d361760,
+    component: _2e6b56ce,
     name: "dashboard-courses-view-slug"
   }, {
     path: "/dashboard/webinars/preview/:slug?",
-    component: _a0baac94,
+    component: _c4d0c598,
     name: "dashboard-webinars-preview-slug"
   }, {
     path: "/dashboard/webinars/view/:slug?",
-    component: _871d6c06,
+    component: _2f919182,
     name: "dashboard-webinars-view-slug"
   }, {
     path: "/",
-    component: _b103c7b8,
+    component: _ebcda134,
     name: "index"
   }],
 

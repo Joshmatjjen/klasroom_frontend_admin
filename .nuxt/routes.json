@@ -2,141 +2,141 @@
   {
     "name": "dashboard",
     "path": "/dashboard",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/index.vue",
     "chunkName": "pages/dashboard/index",
-    "_name": "_41a641e9"
+    "_name": "_3abbaaab"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/auth/login.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/auth/login.vue",
     "chunkName": "pages/auth/login",
-    "_name": "_c4a8ff40"
+    "_name": "_00a4265e"
   },
   {
     "name": "dashboard-account",
     "path": "/dashboard/account",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/account.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/account.vue",
     "chunkName": "pages/dashboard/account",
-    "_name": "_d8c2cbf8"
+    "_name": "_c6064b74"
   },
   {
     "name": "dashboard-chat",
     "path": "/dashboard/chat",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/chat.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/chat.vue",
     "chunkName": "pages/dashboard/chat",
-    "_name": "_031d62de"
+    "_name": "_488ac58f"
   },
   {
     "name": "dashboard-courses",
     "path": "/dashboard/courses",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/courses/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/courses/index.vue",
     "chunkName": "pages/dashboard/courses/index",
-    "_name": "_7fa0155c"
+    "_name": "_058d07d8"
   },
   {
     "name": "dashboard-faqs",
     "path": "/dashboard/faqs",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/faqs.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/faqs.vue",
     "chunkName": "pages/dashboard/faqs",
-    "_name": "_41eeae54"
+    "_name": "_29221fd4"
   },
   {
     "name": "dashboard-my-courses",
     "path": "/dashboard/my-courses",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/my-courses.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/my-courses.vue",
     "chunkName": "pages/dashboard/my-courses",
-    "_name": "_6b5020e0"
+    "_name": "_0d209fe4"
   },
   {
     "name": "dashboard-my-webinars",
     "path": "/dashboard/my-webinars",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/my-webinars.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/my-webinars.vue",
     "chunkName": "pages/dashboard/my-webinars",
-    "_name": "_18b4a121"
+    "_name": "_66d61f3a"
   },
   {
     "name": "dashboard-saved-courses",
     "path": "/dashboard/saved-courses",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/saved-courses.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/saved-courses.vue",
     "chunkName": "pages/dashboard/saved-courses",
-    "_name": "_1de45889"
+    "_name": "_5aeddf4b"
   },
   {
     "name": "dashboard-settings",
     "path": "/dashboard/settings",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/settings.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/settings.vue",
     "chunkName": "pages/dashboard/settings",
-    "_name": "_7cbe3d48"
+    "_name": "_37eaad4c"
   },
   {
     "name": "dashboard-suggested-courses",
     "path": "/dashboard/suggested-courses",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/suggested-courses.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/suggested-courses.vue",
     "chunkName": "pages/dashboard/suggested-courses",
-    "_name": "_7df733a5"
+    "_name": "_797b8967"
   },
   {
     "name": "dashboard-suggested-webinars",
     "path": "/dashboard/suggested-webinars",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/suggested-webinars.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/suggested-webinars.vue",
     "chunkName": "pages/dashboard/suggested-webinars",
-    "_name": "_4e0440a8"
+    "_name": "_4e04422a"
   },
   {
     "name": "dashboard-upcoming-webinars",
     "path": "/dashboard/upcoming-webinars",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/upcoming-webinars.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/upcoming-webinars.vue",
     "chunkName": "pages/dashboard/upcoming-webinars",
-    "_name": "_34c05f1e"
+    "_name": "_3db7b39a"
   },
   {
     "name": "dashboard-webinars",
     "path": "/dashboard/webinars",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/webinars/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/webinars/index.vue",
     "chunkName": "pages/dashboard/webinars/index",
-    "_name": "_75260785"
+    "_name": "_4d654dfa"
   },
   {
     "name": "dashboard-webinars-create",
     "path": "/dashboard/webinars/create",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/webinars/create/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/webinars/create/index.vue",
     "chunkName": "pages/dashboard/webinars/create/index",
-    "_name": "_28d1b39c"
+    "_name": "_7ad1585e"
   },
   {
     "name": "dashboard-webinars-new",
     "path": "/dashboard/webinars/new",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/webinars/new/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/webinars/new/index.vue",
     "chunkName": "pages/dashboard/webinars/new/index",
-    "_name": "_3ad5e856"
+    "_name": "_a0476a58"
   },
   {
     "name": "dashboard-courses-view-slug",
     "path": "/dashboard/courses/view/:slug?",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/courses/view/_slug.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/courses/view/_slug.vue",
     "chunkName": "pages/dashboard/courses/view/_slug",
-    "_name": "_8d361760"
+    "_name": "_2e6b56ce"
   },
   {
     "name": "dashboard-webinars-preview-slug",
     "path": "/dashboard/webinars/preview/:slug?",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/webinars/preview/_slug.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/webinars/preview/_slug.vue",
     "chunkName": "pages/dashboard/webinars/preview/_slug",
-    "_name": "_a0baac94"
+    "_name": "_c4d0c598"
   },
   {
     "name": "dashboard-webinars-view-slug",
     "path": "/dashboard/webinars/view/:slug?",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/dashboard/webinars/view/_slug.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/dashboard/webinars/view/_slug.vue",
     "chunkName": "pages/dashboard/webinars/view/_slug",
-    "_name": "_871d6c06"
+    "_name": "_2f919182"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/home/dukstack/Apps/JSApps/vueJs/klasroom_admin_ui/pages/index.vue",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_b103c7b8"
+    "_name": "_ebcda134"
   }
 ]
