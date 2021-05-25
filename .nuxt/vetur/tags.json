@@ -269,30 +269,6 @@
   "LazyWhyKlasroom": {
     "description": "Auto imported from components/card/WhyKlasroom.vue"
   },
-  "EditChip": {
-    "description": "Auto imported from components/chip/EditChip.vue"
-  },
-  "LazyEditChip": {
-    "description": "Auto imported from components/chip/EditChip.vue"
-  },
-  "EmptyChip": {
-    "description": "Auto imported from components/chip/EmptyChip.vue"
-  },
-  "LazyEmptyChip": {
-    "description": "Auto imported from components/chip/EmptyChip.vue"
-  },
-  "ResourceChip": {
-    "description": "Auto imported from components/chip/ResourceChip.vue"
-  },
-  "LazyResourceChip": {
-    "description": "Auto imported from components/chip/ResourceChip.vue"
-  },
-  "UserChip": {
-    "description": "Auto imported from components/chip/UserChip.vue"
-  },
-  "LazyUserChip": {
-    "description": "Auto imported from components/chip/UserChip.vue"
-  },
   "ChatComplete": {
     "description": "Auto imported from components/chat/ChatComplete.vue"
   },
@@ -322,6 +298,30 @@
   },
   "LazyChatWindow": {
     "description": "Auto imported from components/chat/ChatWindow.vue"
+  },
+  "EditChip": {
+    "description": "Auto imported from components/chip/EditChip.vue"
+  },
+  "LazyEditChip": {
+    "description": "Auto imported from components/chip/EditChip.vue"
+  },
+  "EmptyChip": {
+    "description": "Auto imported from components/chip/EmptyChip.vue"
+  },
+  "LazyEmptyChip": {
+    "description": "Auto imported from components/chip/EmptyChip.vue"
+  },
+  "ResourceChip": {
+    "description": "Auto imported from components/chip/ResourceChip.vue"
+  },
+  "LazyResourceChip": {
+    "description": "Auto imported from components/chip/ResourceChip.vue"
+  },
+  "UserChip": {
+    "description": "Auto imported from components/chip/UserChip.vue"
+  },
+  "LazyUserChip": {
+    "description": "Auto imported from components/chip/UserChip.vue"
   },
   "FilterCourse": {
     "description": "Auto imported from components/filter/FilterCourse.vue"

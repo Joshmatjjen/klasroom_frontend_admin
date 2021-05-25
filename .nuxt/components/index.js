@@ -43,15 +43,15 @@ export { default as WebinarItem } from '../../components/card/WebinarItem.vue'
 export { default as WebinarItemWide } from '../../components/card/WebinarItemWide.vue'
 export { default as WebinarsCalendar } from '../../components/card/WebinarsCalendar.vue'
 export { default as WhyKlasroom } from '../../components/card/WhyKlasroom.vue'
-export { default as EditChip } from '../../components/chip/EditChip.vue'
-export { default as EmptyChip } from '../../components/chip/EmptyChip.vue'
-export { default as ResourceChip } from '../../components/chip/ResourceChip.vue'
-export { default as UserChip } from '../../components/chip/UserChip.vue'
 export { default as ChatComplete } from '../../components/chat/ChatComplete.vue'
 export { default as ChatContacts } from '../../components/chat/ChatContacts.vue'
 export { default as ChatMembers } from '../../components/chat/ChatMembers.vue'
 export { default as ChatMessages } from '../../components/chat/ChatMessages.vue'
 export { default as ChatWindow } from '../../components/chat/ChatWindow.vue'
+export { default as EditChip } from '../../components/chip/EditChip.vue'
+export { default as EmptyChip } from '../../components/chip/EmptyChip.vue'
+export { default as ResourceChip } from '../../components/chip/ResourceChip.vue'
+export { default as UserChip } from '../../components/chip/UserChip.vue'
 export { default as FilterCourse } from '../../components/filter/FilterCourse.vue'
 export { default as FilterWebinar } from '../../components/filter/FilterWebinar.vue'
 export { default as InputToggleSwitch } from '../../components/form/InputToggleSwitch.vue'
@@ -123,15 +123,15 @@ export const LazyWebinarItem = import('../../components/card/WebinarItem.vue' /*
 export const LazyWebinarItemWide = import('../../components/card/WebinarItemWide.vue' /* webpackChunkName: "components/card/WebinarItemWide" */).then(c => c.default || c)
 export const LazyWebinarsCalendar = import('../../components/card/WebinarsCalendar.vue' /* webpackChunkName: "components/card/WebinarsCalendar" */).then(c => c.default || c)
 export const LazyWhyKlasroom = import('../../components/card/WhyKlasroom.vue' /* webpackChunkName: "components/card/WhyKlasroom" */).then(c => c.default || c)
-export const LazyEditChip = import('../../components/chip/EditChip.vue' /* webpackChunkName: "components/chip/EditChip" */).then(c => c.default || c)
-export const LazyEmptyChip = import('../../components/chip/EmptyChip.vue' /* webpackChunkName: "components/chip/EmptyChip" */).then(c => c.default || c)
-export const LazyResourceChip = import('../../components/chip/ResourceChip.vue' /* webpackChunkName: "components/chip/ResourceChip" */).then(c => c.default || c)
-export const LazyUserChip = import('../../components/chip/UserChip.vue' /* webpackChunkName: "components/chip/UserChip" */).then(c => c.default || c)
 export const LazyChatComplete = import('../../components/chat/ChatComplete.vue' /* webpackChunkName: "components/chat/ChatComplete" */).then(c => c.default || c)
 export const LazyChatContacts = import('../../components/chat/ChatContacts.vue' /* webpackChunkName: "components/chat/ChatContacts" */).then(c => c.default || c)
 export const LazyChatMembers = import('../../components/chat/ChatMembers.vue' /* webpackChunkName: "components/chat/ChatMembers" */).then(c => c.default || c)
 export const LazyChatMessages = import('../../components/chat/ChatMessages.vue' /* webpackChunkName: "components/chat/ChatMessages" */).then(c => c.default || c)
 export const LazyChatWindow = import('../../components/chat/ChatWindow.vue' /* webpackChunkName: "components/chat/ChatWindow" */).then(c => c.default || c)
+export const LazyEditChip = import('../../components/chip/EditChip.vue' /* webpackChunkName: "components/chip/EditChip" */).then(c => c.default || c)
+export const LazyEmptyChip = import('../../components/chip/EmptyChip.vue' /* webpackChunkName: "components/chip/EmptyChip" */).then(c => c.default || c)
+export const LazyResourceChip = import('../../components/chip/ResourceChip.vue' /* webpackChunkName: "components/chip/ResourceChip" */).then(c => c.default || c)
+export const LazyUserChip = import('../../components/chip/UserChip.vue' /* webpackChunkName: "components/chip/UserChip" */).then(c => c.default || c)
 export const LazyFilterCourse = import('../../components/filter/FilterCourse.vue' /* webpackChunkName: "components/filter/FilterCourse" */).then(c => c.default || c)
 export const LazyFilterWebinar = import('../../components/filter/FilterWebinar.vue' /* webpackChunkName: "components/filter/FilterWebinar" */).then(c => c.default || c)
 export const LazyInputToggleSwitch = import('../../components/form/InputToggleSwitch.vue' /* webpackChunkName: "components/form/InputToggleSwitch" */).then(c => c.default || c)
