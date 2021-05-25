@@ -155,6 +155,99 @@
                 </a>
               </div>
             </form>
+
+            <!-- Reset password form -->
+            <form v-if="formState === 'resetPassword'" id="forgot-form">
+              <div class="form-group mb-5">
+                <label for="input-code">Enter Code</label>
+                <div>
+                  <input
+                    id="input-code"
+                    type="text"
+                    class="form-input"
+                    placeholder="Enter code that was sent to your email"
+                    v-model="resetForm.token"
+                    @input="checkResetFormError('token')"
+                  />
+                </div>
+                <span
+                  v-if="resetFormError.find((i) => i === 'token')"
+                  class="text-sm text-red-700"
+                  >Code is required</span
+                >
+              </div>
+              <div class="form-group mb-5">
+                <label for="input-password">New Password</label>
+                <div>
+                  <input
+                    id="input-password"
+                    type="password"
+                    class="form-input"
+                    placeholder="Enter your password here"
+                    v-model="resetForm.password"
+                    @input="
+                      () => {
+                        checkResetFormError('password')
+                        checkConfirmPassword()
+                      }
+                    "
+                  />
+                </div>
+                <span
+                  v-if="resetFormError.find((i) => i === 'password')"
+                  class="text-sm text-red-700"
+                  >Password is required</span
+                >
+              </div>
+              <div class="form-group">
+                <label for="input-re_password">Confirm Password</label>
+                <div>
+                  <input
+                    id="input-re_password"
+                    type="password"
+                    class="form-input"
+                    placeholder="Confirm password"
+                    v-model="resetForm.confirmPassword"
+                    @input="
+                      () => {
+                        checkResetFormError('confirmPassword')
+                        checkConfirmPassword()
+                      }
+                    "
+                  />
+                </div>
+                <span
+                  v-if="resetFormError.find((i) => i === 'confirmPassword')"
+                  class="text-sm text-red-700 block"
+                  >Confirm password categories is required</span
+                >
+                <span v-if="showConfirmPasswordErr" class="text-sm text-red-700"
+                  >Confirm password dosen't match</span
+                >
+              </div>
+              <div class="flex text-center pt-8 pb-4 sm:pb-4">
+                <span class="flex mx-auto">
+                  <button
+                    type="button"
+                    class="btn btn-primary shadow"
+                    @click="resetPassword"
+                  >
+                    Set new password
+                    <loader v-if="loading" color="white" />
+                  </button>
+                </span>
+              </div>
+              <hr class="mt-4 mb-4" />
+              <div class="text-center">
+                <a
+                  href="#"
+                  class="text-sm leading-5 text-gray-700"
+                  @click.prevent="(e) => switchForm(e, 'forgotPassword')"
+                >
+                  Didn't get the message?
+                </a>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -165,6 +258,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
   layout: 'auth',
   middleware: ['check-auth', 'isAuth'],
@@ -179,8 +274,15 @@ export default {
     forgotForm: {
       email: '',
     },
+    resetForm: {
+      token: '',
+      password: '',
+      confirmPassword: '',
+    },
     forgotFormError: false,
     loginFormError: [],
+    resetFormError: [],
+    showConfirmPasswordErr: false,
   }),
   watch: {
     formState(value) {
@@ -193,20 +295,25 @@ export default {
     checkLoginFormError(value) {
       this.loginFormError = this.loginFormError.filter((i) => i !== value)
     },
+    checkResetFormError(value) {
+      this.resetFormError = this.resetFormError.filter((i) => i !== value)
+    },
     checkSignupFormError(value) {
       this.signupFormError = this.signupFormError.filter((i) => i !== value)
     },
     checkForgotFormError() {
       this.forgotFormError = false
     },
+    checkConfirmPassword() {
+      this.showConfirmPasswordErr = false
+    },
     switchForm(e, type) {
       if (e) e.preventDefault()
       this.formState = type
-      this.clearInput()
+      // this.clearInput()
     },
     onLogin(e) {
       if (e) e.preventDefault()
-      return
       this.loading = true
 
       const data = {
@@ -227,7 +334,7 @@ export default {
       this.$store
         .dispatch('auth/loginUser', {
           ...data,
-          userType,
+          userType: 'admin',
         })
         .then((res) => {
           this.loading = false
@@ -239,7 +346,6 @@ export default {
     },
     onForgot(e) {
       if (e) e.preventDefault()
-      return
       this.loading = true
       if (!this.forgotForm.email) {
         this.forgotFormError = true
@@ -253,11 +359,12 @@ export default {
         .then((res) => {
           this.loading = false
           if (res) {
-            this.$store.commit(
-              'app/RESET_PASSWORD_MODAL',
-              this.forgotForm.email
-            )
-            this.$store.commit('app/FORGOT_PASSWORD_MODAL', false)
+            this.switchForm(null, 'resetPassword')
+            // this.$store.commit(
+            //   'app/RESET_PASSWORD_MODAL',
+            //   this.forgotForm.email
+            // )
+            // this.$store.commit('app/FORGOT_PASSWORD_MODAL', false)
             Swal.fire({
               position: 'top-end',
               width: '350px',
@@ -274,16 +381,57 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
     },
+    resetPassword(e) {
+      if (e) e.preventDefault()
+      if (this.resetForm.password !== this.resetForm.confirmPassword) {
+        this.showConfirmPasswordErr = true
+        return
+      }
+      this.loading = true
+
+      for (let i in this.resetForm) {
+        console.log(i)
+        if (this.resetForm[i].length === 0) {
+          this.resetFormError.push(i)
+        }
+      }
+
+      if (this.resetFormError.length) {
+        this.loading = false
+        return
+      }
+
+      this.$store
+        .dispatch('auth/resetPassword', {
+          ...this.resetForm,
+        })
+        .then((res) => {
+          this.loading = false
+          if (res) {
+            // this.clearInput()
+            this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
     showSuccess(res) {
       this.$store.commit('app/NOTICE_MODAL', {
-        title: 'All done!',
+        title: 'Congratulations!',
         text: res.message
           ? res.message
-          : `You have successfully signed up to klasroom.com. 
-          Please check your email and click the link in it to 
-          complete your registration.`,
+          : `Your password has been changed successfully. 
+          Please log in to your account to proceed.`,
+        confirmCallback: () => {
+          // this.$store.commit('app/LOGIN_MODAL', {
+          //   status: true,
+          //   type: 'login',
+          //   userType: 'student',
+          // });
+          this.$store.commit('app/NOTICE_MODAL', false)
+        },
       })
-      this.close()
+      // this.$store.commit('app/RESET_PASSWORD_MODAL', false)
+      this.switchForm(null, 'login')
     },
     gotoDashboard() {
       // console.log('callback: ', this.showLogin.callback)
@@ -299,8 +447,14 @@ export default {
         password: '',
       }
 
-      this.forgotForm = {
-        email: '',
+      // this.forgotForm = {
+      //   email: '',
+      // }
+
+      this.resetForm = {
+        token: '',
+        password: '',
+        confirmPassword: '',
       }
     },
   },
