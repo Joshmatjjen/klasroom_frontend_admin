@@ -55,7 +55,7 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <webinar-table :columns="columnsUpcoming" :rows="rowsUpcoming" />
+            <simple-table :columns="columnsUpcoming" :rows="rowsUpcoming" />
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <webinar-table :columns="columnsRecorded" :rows="rowsRecorded" />
+            <simple-table :columns="columnsRecorded" :rows="rowsRecorded" />
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@
       <div v-if="isWebinars.draft" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <webinar-table
+            <simple-table
               :columns="columnsDraft"
               :rows="rowsDraft"
               :onDraft="true"

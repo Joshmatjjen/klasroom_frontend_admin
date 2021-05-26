@@ -1,7 +1,7 @@
 <template>
   <div v-if="tabs" class="tabs flex flex-col overflow-hidden overflow-x-auto">
     <div
-      class="grid grid-flow-col gap-4"
+      class="flex flex-row gap-10 place-items-start px-10"
       :class="{
         'pr-10': !center,
         'place-items-center': center,

@@ -52,23 +52,31 @@
       </div>
     </section>
 
-    <!-- <section>
+    <section-switcher
+      v-model="tab"
+      :tabs="[
+        `${(23443).toLocaleString()}  Live Courses`,
+        `${(14).toLocaleString()} Klasroom courses`,
+        `${(301).toLocaleString()} Unapproved courses`,
+        `${(23434).toLocaleString()} Live webinars`,
+      ]"
+    />
+
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <webinar-table :columns="columns" :rows="rows" />
+            <simple-table :columns="columns" :rows="rows" />
           </div>
         </div>
       </div>
-    </section> -->
-
-    <tabs-menu v-model="tab" :tabs="tabs" />
+    </section>
   </div>
 </template>
 
 <script>
 const courses = require('@/static/json/courses.json')
-const webinarCourse = require('@/static/json/webinar-course.json')
+const webinarCourse = require('@/static/json/live-courses.json')
 
 export default {
   middleware: ['check-auth', 'auth'],
@@ -79,11 +87,15 @@ export default {
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
     tab: 0,
-    tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
+    // tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
     columns: [
       {
         label: 'Course title',
         field: 'courseTitle',
+      },
+      {
+        label: 'Tutor',
+        field: 'tutor',
       },
       {
         label: 'Price',
@@ -94,8 +106,12 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Webinar Type',
-        field: 'webinarType',
+        label: 'Comp',
+        field: 'comp',
+      },
+      {
+        label: 'Rating',
+        field: 'rating',
       },
       {
         label: 'Created On',
@@ -105,7 +121,7 @@ export default {
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    rows: _.take(webinarCourse, 4),
+    rows: _.take(webinarCourse, 10),
   }),
 }
 </script>

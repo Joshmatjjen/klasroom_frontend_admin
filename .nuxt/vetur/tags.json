@@ -473,10 +473,10 @@
   "LazyListTable1": {
     "description": "Auto imported from components/table/ListTable1.vue"
   },
-  "WebinarTable": {
-    "description": "Auto imported from components/table/WebinarTable.vue"
+  "SimpleTable": {
+    "description": "Auto imported from components/table/SimpleTable.vue"
   },
-  "LazyWebinarTable": {
-    "description": "Auto imported from components/table/WebinarTable.vue"
+  "LazySimpleTable": {
+    "description": "Auto imported from components/table/SimpleTable.vue"
   }
 }
