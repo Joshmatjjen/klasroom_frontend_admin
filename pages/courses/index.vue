@@ -47,6 +47,7 @@
 
 <script>
 const courses = require('@/static/json/courses.json')
+const reviews = require('@/static/json/webinar-reviews.json')
 
 export default {
   middleware: ['check-auth', 'auth'],
@@ -56,6 +57,28 @@ export default {
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
+    columnsReviews: [
+      {
+        label: 'Name',
+        field: 'name',
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        type: 'date',
+        dateInputFormat: 'yyyy-MM-dd',
+        dateOutputFormat: 'MMM do yy',
+      },
+      {
+        label: 'Review',
+        field: 'review',
+      },
+      {
+        label: 'Rating',
+        field: 'rating',
+      },
+    ],
+    rowsReviews: _.take(reviews, 10),
   }),
 }
 </script>

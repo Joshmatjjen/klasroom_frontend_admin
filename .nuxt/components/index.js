@@ -25,6 +25,11 @@ export { default as WebinarPoll } from '../../components/WebinarPoll.vue'
 export { default as WebinarVideoFrame } from '../../components/WebinarVideoFrame.vue'
 export { default as WebinarViewBanner } from '../../components/WebinarViewBanner.vue'
 export { default as WebinarViewDetails } from '../../components/WebinarViewDetails.vue'
+export { default as ChatComplete } from '../../components/chat/ChatComplete.vue'
+export { default as ChatContacts } from '../../components/chat/ChatContacts.vue'
+export { default as ChatMembers } from '../../components/chat/ChatMembers.vue'
+export { default as ChatMessages } from '../../components/chat/ChatMessages.vue'
+export { default as ChatWindow } from '../../components/chat/ChatWindow.vue'
 export { default as BecomeTutorOrStudent } from '../../components/card/BecomeTutorOrStudent.vue'
 export { default as CategoryItem } from '../../components/card/CategoryItem.vue'
 export { default as CourseItem } from '../../components/card/CourseItem.vue'
@@ -43,11 +48,6 @@ export { default as WebinarItem } from '../../components/card/WebinarItem.vue'
 export { default as WebinarItemWide } from '../../components/card/WebinarItemWide.vue'
 export { default as WebinarsCalendar } from '../../components/card/WebinarsCalendar.vue'
 export { default as WhyKlasroom } from '../../components/card/WhyKlasroom.vue'
-export { default as ChatComplete } from '../../components/chat/ChatComplete.vue'
-export { default as ChatContacts } from '../../components/chat/ChatContacts.vue'
-export { default as ChatMembers } from '../../components/chat/ChatMembers.vue'
-export { default as ChatMessages } from '../../components/chat/ChatMessages.vue'
-export { default as ChatWindow } from '../../components/chat/ChatWindow.vue'
 export { default as EditChip } from '../../components/chip/EditChip.vue'
 export { default as EmptyChip } from '../../components/chip/EmptyChip.vue'
 export { default as ResourceChip } from '../../components/chip/ResourceChip.vue'
@@ -105,6 +105,11 @@ export const LazyWebinarPoll = import('../../components/WebinarPoll.vue' /* webp
 export const LazyWebinarVideoFrame = import('../../components/WebinarVideoFrame.vue' /* webpackChunkName: "components/WebinarVideoFrame" */).then(c => c.default || c)
 export const LazyWebinarViewBanner = import('../../components/WebinarViewBanner.vue' /* webpackChunkName: "components/WebinarViewBanner" */).then(c => c.default || c)
 export const LazyWebinarViewDetails = import('../../components/WebinarViewDetails.vue' /* webpackChunkName: "components/WebinarViewDetails" */).then(c => c.default || c)
+export const LazyChatComplete = import('../../components/chat/ChatComplete.vue' /* webpackChunkName: "components/chat/ChatComplete" */).then(c => c.default || c)
+export const LazyChatContacts = import('../../components/chat/ChatContacts.vue' /* webpackChunkName: "components/chat/ChatContacts" */).then(c => c.default || c)
+export const LazyChatMembers = import('../../components/chat/ChatMembers.vue' /* webpackChunkName: "components/chat/ChatMembers" */).then(c => c.default || c)
+export const LazyChatMessages = import('../../components/chat/ChatMessages.vue' /* webpackChunkName: "components/chat/ChatMessages" */).then(c => c.default || c)
+export const LazyChatWindow = import('../../components/chat/ChatWindow.vue' /* webpackChunkName: "components/chat/ChatWindow" */).then(c => c.default || c)
 export const LazyBecomeTutorOrStudent = import('../../components/card/BecomeTutorOrStudent.vue' /* webpackChunkName: "components/card/BecomeTutorOrStudent" */).then(c => c.default || c)
 export const LazyCategoryItem = import('../../components/card/CategoryItem.vue' /* webpackChunkName: "components/card/CategoryItem" */).then(c => c.default || c)
 export const LazyCourseItem = import('../../components/card/CourseItem.vue' /* webpackChunkName: "components/card/CourseItem" */).then(c => c.default || c)
@@ -123,11 +128,6 @@ export const LazyWebinarItem = import('../../components/card/WebinarItem.vue' /*
 export const LazyWebinarItemWide = import('../../components/card/WebinarItemWide.vue' /* webpackChunkName: "components/card/WebinarItemWide" */).then(c => c.default || c)
 export const LazyWebinarsCalendar = import('../../components/card/WebinarsCalendar.vue' /* webpackChunkName: "components/card/WebinarsCalendar" */).then(c => c.default || c)
 export const LazyWhyKlasroom = import('../../components/card/WhyKlasroom.vue' /* webpackChunkName: "components/card/WhyKlasroom" */).then(c => c.default || c)
-export const LazyChatComplete = import('../../components/chat/ChatComplete.vue' /* webpackChunkName: "components/chat/ChatComplete" */).then(c => c.default || c)
-export const LazyChatContacts = import('../../components/chat/ChatContacts.vue' /* webpackChunkName: "components/chat/ChatContacts" */).then(c => c.default || c)
-export const LazyChatMembers = import('../../components/chat/ChatMembers.vue' /* webpackChunkName: "components/chat/ChatMembers" */).then(c => c.default || c)
-export const LazyChatMessages = import('../../components/chat/ChatMessages.vue' /* webpackChunkName: "components/chat/ChatMessages" */).then(c => c.default || c)
-export const LazyChatWindow = import('../../components/chat/ChatWindow.vue' /* webpackChunkName: "components/chat/ChatWindow" */).then(c => c.default || c)
 export const LazyEditChip = import('../../components/chip/EditChip.vue' /* webpackChunkName: "components/chip/EditChip" */).then(c => c.default || c)
 export const LazyEmptyChip = import('../../components/chip/EmptyChip.vue' /* webpackChunkName: "components/chip/EmptyChip" */).then(c => c.default || c)
 export const LazyResourceChip = import('../../components/chip/ResourceChip.vue' /* webpackChunkName: "components/chip/ResourceChip" */).then(c => c.default || c)

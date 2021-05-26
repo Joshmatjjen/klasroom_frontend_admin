@@ -28,7 +28,7 @@
             :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'"
           >
             <nuxt-link
-              :to="`/${userDash}/webinars/new`"
+              :to="`/webinars/new`"
               class="btn btn-primary flex flex-row"
               style="padding-left: 1rem; padding-right: 1rem"
             >
@@ -38,10 +38,7 @@
             </nuxt-link>
           </span>
           <span v-if="userDash === 'tutor'" class="flex justify-center mb-10">
-            <nuxt-link
-              :to="`/${userDash}/courses/create`"
-              class="btn btn-primary"
-            >
+            <nuxt-link :to="`}/courses/create`" class="btn btn-primary">
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
               New Course
             </nuxt-link>
@@ -49,7 +46,7 @@
           <ul class="relative h-full" @click="toggleNav">
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-dashboard` }"
+                :to="{ name: 'dashboard' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -59,7 +56,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-courses` }"
+                :to="{ name: 'people' }"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
@@ -69,7 +66,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-courses` }"
+                :to="{ name: 'courses' }"
                 class="nav-link nav-courses"
                 active-class="active"
                 exact
@@ -79,7 +76,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-webinars` }"
+                :to="{ name: 'webinars' }"
                 class="nav-link nav-webinars"
                 active-class="active"
                 exact
@@ -89,7 +86,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-chat` }"
+                :to="{ name: 'chat' }"
                 class="nav-link nav-chat"
                 active-class="active"
                 exact
@@ -99,7 +96,7 @@
             </li>
             <li v-if="userDash === 'tutor'" class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-financials` }"
+                :to="{ name: 'financials' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -109,7 +106,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-analytics` }"
+                :to="{ name: 'analytics' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -119,7 +116,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-courses` }"
+                :to="{ name: 'trail' }"
                 class="nav-link nav-trail"
                 active-class="active"
                 exact
@@ -129,7 +126,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-faqs` }"
+                :to="{ name: 'faqs' }"
                 class="nav-link nav-faqs"
                 active-class="active"
                 exact
@@ -139,7 +136,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-faqs` }"
+                :to="{ name: 'settings' }"
                 class="nav-link nav-settings"
                 active-class="active"
                 exact
