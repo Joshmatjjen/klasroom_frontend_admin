@@ -4,26 +4,30 @@
       <div class="container mx-auto mb-10 px-4 lg:px-0">
         <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
           <dash-wallet-status
-            amount="30,055.24"
+            amount="12,330,055.24"
             :items="courses"
             weekSales="32,420"
-            courseSales="82"
-            webinarSales="105"
-            more="/student/my-courses"
+            planSales="82,000"
+            productSales="105,000"
+            more="/dashboard"
           />
           <dash-items-status
             title="Courses"
             :items="courses"
             weekSales="+13 sales this week"
-            published="4 published"
-            more="/student/my-webinars"
+            :sold="314 + ' courses sold'"
+            :published="102 + ' courses published this week'"
+            :total="12420 + ' total courses'"
+            more="/courses"
           />
           <dash-items-status
             title="Webinars"
             :items="courses"
             weekSales="+28 sales this week"
-            webinars="6 webinars"
-            more="/student/my-webinars"
+            :sold="314 + ' courses sold'"
+            :published="102 + ' courses published this week'"
+            :total="12420 + ' total webinars'"
+            more="/webinars"
           />
         </div>
       </div>

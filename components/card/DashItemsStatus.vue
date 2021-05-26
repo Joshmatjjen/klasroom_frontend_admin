@@ -12,11 +12,14 @@
         <p v-if="weekSales" class="text-xs md:text-sm text-green-500">
           {{ weekSales }}
         </p>
+        <p v-if="sold" class="text-xs md:text-sm text-gray-700">
+          {{ sold }}
+        </p>
         <p v-if="published" class="text-xs md:text-sm text-gray-700">
           {{ published }}
         </p>
-        <p v-if="webinars" class="text-xs md:text-sm text-gray-700">
-          {{ webinars }}
+        <p v-if="total" class="text-xs md:text-sm text-gray-700">
+          {{ total }}
         </p>
       </div>
       <div class="hidden md:block mt-8">
@@ -46,8 +49,9 @@ export default {
     done: { type: String, required: false },
     undone: { type: String, required: false },
     weekSales: { type: String, required: false },
+    sold: { type: String, required: false },
     published: { type: String, required: false },
-    webinars: { type: String, required: false },
+    total: { type: String, required: false },
     more: { type: String, default: null },
   },
 }
