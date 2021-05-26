@@ -22,30 +22,31 @@
       </div>
       <div class="menu-scroll">
         <nav class="h-full">
-          <span v-if="$route.name !== `${userDash}-webinars-new`" class="flex justify-center" :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'">
+          <span
+            v-if="$route.name !== `${userDash}-webinars-new`"
+            class="flex justify-center"
+            :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'"
+          >
             <nuxt-link
-              :to="`/${userDash}/webinars/new`"
-              class="btn btn-primary"
-              style="padding-left: 1rem; padding-right: 1rem;"
+              :to="`/webinars/new`"
+              class="btn btn-primary flex flex-row"
+              style="padding-left: 1rem; padding-right: 1rem"
             >
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
-              New Meeting or Webinar
+              Create New
+              <img class="pl-3" src="~/static/icon/plus-white.svg" />
             </nuxt-link>
           </span>
           <span v-if="userDash === 'tutor'" class="flex justify-center mb-10">
-            <nuxt-link
-              :to="`/${userDash}/courses/create`"
-              class="btn btn-primary"
-            >
+            <nuxt-link :to="`}/courses/create`" class="btn btn-primary">
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
               New Course
             </nuxt-link>
           </span>
           <ul class="relative h-full" @click="toggleNav">
-            
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-dashboard` }"
+                :to="{ name: 'dashboard' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -55,7 +56,17 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-courses` }"
+                :to="{ name: 'people' }"
+                class="nav-link nav-people"
+                active-class="active"
+                exact
+              >
+                People
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'courses' }"
                 class="nav-link nav-courses"
                 active-class="active"
                 exact
@@ -65,7 +76,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-webinars` }"
+                :to="{ name: 'webinars' }"
                 class="nav-link nav-webinars"
                 active-class="active"
                 exact
@@ -75,7 +86,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-chat` }"
+                :to="{ name: 'chat' }"
                 class="nav-link nav-chat"
                 active-class="active"
                 exact
@@ -85,7 +96,7 @@
             </li>
             <li v-if="userDash === 'tutor'" class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-financials` }"
+                :to="{ name: 'financials' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -93,9 +104,9 @@
                 Financials
               </router-link>
             </li>
-            <li v-if="userDash === 'tutor'" class="nav-item">
+            <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-analytics` }"
+                :to="{ name: 'analytics' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -105,12 +116,32 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-faqs` }"
+                :to="{ name: 'trail' }"
+                class="nav-link nav-trail"
+                active-class="active"
+                exact
+              >
+                Trail
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'faqs' }"
                 class="nav-link nav-faqs"
                 active-class="active"
                 exact
               >
                 FAQs
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'settings' }"
+                class="nav-link nav-settings"
+                active-class="active"
+                exact
+              >
+                Settings
               </router-link>
             </li>
           </ul>
@@ -149,11 +180,12 @@ export default {
     ...mapState({
       menu: (state) => state.app.menu,
       user: (state) => state.auth.user,
-      userType: (state) => state.auth.user && state.auth.user.isTutor ? "tutor" : "student",
+      userType: (state) =>
+        state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
     userDash() {
       return this.$route.path.split('/')[1]
-    }
+    },
   },
 
   methods: {
@@ -254,6 +286,18 @@ ul.btn-gray-share > li {
 }
 .nav-link.nav-telegram {
   background-image: url('/icon/dashboard/telegram.svg');
+}
+.nav-link.nav-chart {
+  background-image: url('/icon/dashboard/chart.svg');
+}
+.nav-link.nav-trail {
+  background-image: url('/icon/dashboard/trail.svg');
+}
+.nav-link.nav-settings {
+  background-image: url('/icon/dashboard/settings.svg');
+}
+.nav-link.nav-people {
+  background-image: url('/icon/dashboard/people.svg');
 }
 
 .menu-close {
