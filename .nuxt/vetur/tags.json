@@ -83,6 +83,12 @@
   "LazySearchBox": {
     "description": "Auto imported from components/SearchBox.vue"
   },
+  "SectionSwitcher": {
+    "description": "Auto imported from components/SectionSwitcher.vue"
+  },
+  "LazySectionSwitcher": {
+    "description": "Auto imported from components/SectionSwitcher.vue"
+  },
   "Sidebar": {
     "description": "Auto imported from components/Sidebar.vue"
   },
@@ -160,36 +166,6 @@
   },
   "LazyWebinarViewDetails": {
     "description": "Auto imported from components/WebinarViewDetails.vue"
-  },
-  "ChatComplete": {
-    "description": "Auto imported from components/chat/ChatComplete.vue"
-  },
-  "LazyChatComplete": {
-    "description": "Auto imported from components/chat/ChatComplete.vue"
-  },
-  "ChatContacts": {
-    "description": "Auto imported from components/chat/ChatContacts.vue"
-  },
-  "LazyChatContacts": {
-    "description": "Auto imported from components/chat/ChatContacts.vue"
-  },
-  "ChatMembers": {
-    "description": "Auto imported from components/chat/ChatMembers.vue"
-  },
-  "LazyChatMembers": {
-    "description": "Auto imported from components/chat/ChatMembers.vue"
-  },
-  "ChatMessages": {
-    "description": "Auto imported from components/chat/ChatMessages.vue"
-  },
-  "LazyChatMessages": {
-    "description": "Auto imported from components/chat/ChatMessages.vue"
-  },
-  "ChatWindow": {
-    "description": "Auto imported from components/chat/ChatWindow.vue"
-  },
-  "LazyChatWindow": {
-    "description": "Auto imported from components/chat/ChatWindow.vue"
   },
   "BecomeTutorOrStudent": {
     "description": "Auto imported from components/card/BecomeTutorOrStudent.vue"
@@ -298,6 +274,36 @@
   },
   "LazyWhyKlasroom": {
     "description": "Auto imported from components/card/WhyKlasroom.vue"
+  },
+  "ChatComplete": {
+    "description": "Auto imported from components/chat/ChatComplete.vue"
+  },
+  "LazyChatComplete": {
+    "description": "Auto imported from components/chat/ChatComplete.vue"
+  },
+  "ChatContacts": {
+    "description": "Auto imported from components/chat/ChatContacts.vue"
+  },
+  "LazyChatContacts": {
+    "description": "Auto imported from components/chat/ChatContacts.vue"
+  },
+  "ChatMembers": {
+    "description": "Auto imported from components/chat/ChatMembers.vue"
+  },
+  "LazyChatMembers": {
+    "description": "Auto imported from components/chat/ChatMembers.vue"
+  },
+  "ChatMessages": {
+    "description": "Auto imported from components/chat/ChatMessages.vue"
+  },
+  "LazyChatMessages": {
+    "description": "Auto imported from components/chat/ChatMessages.vue"
+  },
+  "ChatWindow": {
+    "description": "Auto imported from components/chat/ChatWindow.vue"
+  },
+  "LazyChatWindow": {
+    "description": "Auto imported from components/chat/ChatWindow.vue"
   },
   "EditChip": {
     "description": "Auto imported from components/chip/EditChip.vue"
