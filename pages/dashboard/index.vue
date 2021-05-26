@@ -33,6 +33,25 @@
       </div>
     </section>
 
+    <section class="bg-orange-100">
+      <div class="container mx-auto mb-10 px-4 lg:px-0">
+        <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
+          <dash-item-metrics title="16,000" label="Student" more="/courses" />
+          <dash-item-metrics
+            title="600"
+            label="Webinar tutors"
+            more="/webinars"
+          />
+          <dash-item-metrics
+            title="540"
+            label="Course tutors"
+            more="/courses"
+          />
+          <dash-item-metrics title="12" label="Admins" more="/courses" />
+        </div>
+      </div>
+    </section>
+
     <!-- <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
