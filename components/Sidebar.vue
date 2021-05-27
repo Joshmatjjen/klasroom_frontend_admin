@@ -22,16 +22,22 @@
       </div>
       <div class="menu-scroll">
         <nav class="h-full">
+          <span
+            v-if="peopleOpt || createOpt"
+            class="transparent h-screen w-screen absolute -mt-24"
+            @click.prevent="toggleModals"
+          ></span>
           <span class="flex justify-center mb-3">
             <div
               class="btn btn-primary flex flex-row"
               style="padding-left: 1rem; padding-right: 1rem"
-              @click="toggleCreate"
+              @click.prevent="toggleCreate"
             >
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
               Create New
               <img class="pl-3" src="~/static/icon/plus-white.svg" />
             </div>
+
             <simple-pop-up
               :createOpt="createOpt"
               :styles="
@@ -84,7 +90,7 @@
                   right: '1rem',
                 }"
                 src="/actions/arrow-right.svg"
-                v-on:click="togglePeople"
+                @click.prevent="togglePeople"
               />
               <simple-pop-up
                 v-if="!$device.isMobile"
@@ -92,7 +98,7 @@
                 :styles="
                   'top-0 ml-5' && $device.isMobile
                     ? 'mt-16'
-                    : 'mt-0 right-0 -mr-24'
+                    : '-mt-12 right-0 -mr-24'
                 "
                 :options="[
                   {
@@ -239,15 +245,31 @@ export default {
 
   methods: {
     toggleNav(e) {
-      if (e) e.preventDefault()
+      // if (e) e.preventDefault()
 
       this.$store.commit('app/SET_MENU', !this.menu)
+      // if (this.createOpt) this.createOpt = false
+      // if (this.peopleOpt) this.peopleOpt = false
+      // this.toggleCreate(false)
+      // this.togglePeople(false)
     },
-    toggleCreate() {
+    toggleCreate(value) {
+      // if (value) {
+      //   this.createOpt = value
+      // } else {
       this.createOpt = !this.createOpt
+      if (this.createOpt) this.peopleOpt = false
+      // }
+      // if (this.peopleOpt === true) this.peopleOpt = false
     },
-    togglePeople() {
+    togglePeople(value) {
       this.peopleOpt = !this.peopleOpt
+      if (this.peopleOpt) this.createOpt = false
+      // if (this.createOpt === true) this.createOpt = false
+    },
+    toggleModals() {
+      if (this.createOpt) this.createOpt = false
+      if (this.peopleOpt) this.peopleOpt = false
     },
     async logout() {
       // Log out the user.
