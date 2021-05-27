@@ -76,6 +76,7 @@ export { default as PurchaseModal } from '../../components/modal/PurchaseModal.v
 export { default as ResetPasswordModal } from '../../components/modal/ResetPasswordModal.vue'
 export { default as ValidationModal } from '../../components/modal/ValidationModal.vue'
 export { default as WebinarTestingModal } from '../../components/modal/WebinarTestingModal.vue'
+export { default as SimplePopUp } from '../../components/popup/SimplePopUp.vue'
 export { default as ListTable1 } from '../../components/table/ListTable1.vue'
 export { default as SimpleTable } from '../../components/table/SimpleTable.vue'
 
@@ -157,5 +158,6 @@ export const LazyPurchaseModal = import('../../components/modal/PurchaseModal.vu
 export const LazyResetPasswordModal = import('../../components/modal/ResetPasswordModal.vue' /* webpackChunkName: "components/modal/ResetPasswordModal" */).then(c => c.default || c)
 export const LazyValidationModal = import('../../components/modal/ValidationModal.vue' /* webpackChunkName: "components/modal/ValidationModal" */).then(c => c.default || c)
 export const LazyWebinarTestingModal = import('../../components/modal/WebinarTestingModal.vue' /* webpackChunkName: "components/modal/WebinarTestingModal" */).then(c => c.default || c)
+export const LazySimplePopUp = import('../../components/popup/SimplePopUp.vue' /* webpackChunkName: "components/popup/SimplePopUp" */).then(c => c.default || c)
 export const LazyListTable1 = import('../../components/table/ListTable1.vue' /* webpackChunkName: "components/table/ListTable1" */).then(c => c.default || c)
 export const LazySimpleTable = import('../../components/table/SimpleTable.vue' /* webpackChunkName: "components/table/SimpleTable" */).then(c => c.default || c)
