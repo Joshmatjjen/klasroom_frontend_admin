@@ -83,6 +83,12 @@
   "LazySearchBox": {
     "description": "Auto imported from components/SearchBox.vue"
   },
+  "SectionSwitcher": {
+    "description": "Auto imported from components/SectionSwitcher.vue"
+  },
+  "LazySectionSwitcher": {
+    "description": "Auto imported from components/SectionSwitcher.vue"
+  },
   "Sidebar": {
     "description": "Auto imported from components/Sidebar.vue"
   },
@@ -461,16 +467,22 @@
   "LazyWebinarTestingModal": {
     "description": "Auto imported from components/modal/WebinarTestingModal.vue"
   },
+  "SimplePopUp": {
+    "description": "Auto imported from components/popup/SimplePopUp.vue"
+  },
+  "LazySimplePopUp": {
+    "description": "Auto imported from components/popup/SimplePopUp.vue"
+  },
   "ListTable1": {
     "description": "Auto imported from components/table/ListTable1.vue"
   },
   "LazyListTable1": {
     "description": "Auto imported from components/table/ListTable1.vue"
   },
-  "WebinarTable": {
-    "description": "Auto imported from components/table/WebinarTable.vue"
+  "SimpleTable": {
+    "description": "Auto imported from components/table/SimpleTable.vue"
   },
-  "LazyWebinarTable": {
-    "description": "Auto imported from components/table/WebinarTable.vue"
+  "LazySimpleTable": {
+    "description": "Auto imported from components/table/SimpleTable.vue"
   }
 }

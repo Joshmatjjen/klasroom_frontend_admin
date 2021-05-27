@@ -12,6 +12,7 @@ export { default as Navbar } from '../../components/Navbar.vue'
 export { default as ProgressBar } from '../../components/ProgressBar.vue'
 export { default as Rating } from '../../components/Rating.vue'
 export { default as SearchBox } from '../../components/SearchBox.vue'
+export { default as SectionSwitcher } from '../../components/SectionSwitcher.vue'
 export { default as Sidebar } from '../../components/Sidebar.vue'
 export { default as TabsMenu } from '../../components/TabsMenu.vue'
 export { default as TagsSlider } from '../../components/TagsSlider.vue'
@@ -75,8 +76,9 @@ export { default as PurchaseModal } from '../../components/modal/PurchaseModal.v
 export { default as ResetPasswordModal } from '../../components/modal/ResetPasswordModal.vue'
 export { default as ValidationModal } from '../../components/modal/ValidationModal.vue'
 export { default as WebinarTestingModal } from '../../components/modal/WebinarTestingModal.vue'
+export { default as SimplePopUp } from '../../components/popup/SimplePopUp.vue'
 export { default as ListTable1 } from '../../components/table/ListTable1.vue'
-export { default as WebinarTable } from '../../components/table/WebinarTable.vue'
+export { default as SimpleTable } from '../../components/table/SimpleTable.vue'
 
 export const LazyCourseViewBanner = import('../../components/CourseViewBanner.vue' /* webpackChunkName: "components/CourseViewBanner" */).then(c => c.default || c)
 export const LazyCourseViewDetails = import('../../components/CourseViewDetails.vue' /* webpackChunkName: "components/CourseViewDetails" */).then(c => c.default || c)
@@ -92,6 +94,7 @@ export const LazyNavbar = import('../../components/Navbar.vue' /* webpackChunkNa
 export const LazyProgressBar = import('../../components/ProgressBar.vue' /* webpackChunkName: "components/ProgressBar" */).then(c => c.default || c)
 export const LazyRating = import('../../components/Rating.vue' /* webpackChunkName: "components/Rating" */).then(c => c.default || c)
 export const LazySearchBox = import('../../components/SearchBox.vue' /* webpackChunkName: "components/SearchBox" */).then(c => c.default || c)
+export const LazySectionSwitcher = import('../../components/SectionSwitcher.vue' /* webpackChunkName: "components/SectionSwitcher" */).then(c => c.default || c)
 export const LazySidebar = import('../../components/Sidebar.vue' /* webpackChunkName: "components/Sidebar" */).then(c => c.default || c)
 export const LazyTabsMenu = import('../../components/TabsMenu.vue' /* webpackChunkName: "components/TabsMenu" */).then(c => c.default || c)
 export const LazyTagsSlider = import('../../components/TagsSlider.vue' /* webpackChunkName: "components/TagsSlider" */).then(c => c.default || c)
@@ -155,5 +158,6 @@ export const LazyPurchaseModal = import('../../components/modal/PurchaseModal.vu
 export const LazyResetPasswordModal = import('../../components/modal/ResetPasswordModal.vue' /* webpackChunkName: "components/modal/ResetPasswordModal" */).then(c => c.default || c)
 export const LazyValidationModal = import('../../components/modal/ValidationModal.vue' /* webpackChunkName: "components/modal/ValidationModal" */).then(c => c.default || c)
 export const LazyWebinarTestingModal = import('../../components/modal/WebinarTestingModal.vue' /* webpackChunkName: "components/modal/WebinarTestingModal" */).then(c => c.default || c)
+export const LazySimplePopUp = import('../../components/popup/SimplePopUp.vue' /* webpackChunkName: "components/popup/SimplePopUp" */).then(c => c.default || c)
 export const LazyListTable1 = import('../../components/table/ListTable1.vue' /* webpackChunkName: "components/table/ListTable1" */).then(c => c.default || c)
-export const LazyWebinarTable = import('../../components/table/WebinarTable.vue' /* webpackChunkName: "components/table/WebinarTable" */).then(c => c.default || c)
+export const LazySimpleTable = import('../../components/table/SimpleTable.vue' /* webpackChunkName: "components/table/SimpleTable" */).then(c => c.default || c)

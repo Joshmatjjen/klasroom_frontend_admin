@@ -176,7 +176,7 @@ export default {
     onDraft: { type: Boolean, required: false },
     // more: { type: String, default: null },
   },
-  name: 'webinar-table',
+  name: 'list-table1',
   data: () => ({
     opt: false,
     optId: null,
