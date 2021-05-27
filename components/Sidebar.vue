@@ -66,37 +66,48 @@
                 Dashboard
               </router-link>
             </li>
-            <li class="nav-item">
-              <div
-                @click.prevent="toggleCreate"
+            <li class="nav-item relative">
+              <router-link
+                :to="{ name: 'people' }"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
               >
-                People
-              </div>
+                <p>People</p>
+              </router-link>
+              <img
+                v-if="!$device.isMobile"
+                class="cursor-pointer"
+                :style="{
+                  position: 'absolute',
+                  top: '40%',
+                  right: '1rem',
+                }"
+                src="/actions/arrow-right.svg"
+                v-on:click="togglePeople"
+              />
               <simple-pop-up
-              :createOpt="createOpt"
-              :styles="
-                'top-0 ml-5' && $device.isMobile
-                  ? 'mt-16'
-                  : 'mt-0 right-0 -mr-24'
-              "
-              :options="[
-                {
-                  name: 'Create course',
-                  type: 'link',
-                  link: '/courses/create',
-                },
-                {
-                  name: 'Create webinar',
-                  type: 'link',
-                  link: '/webinars/create',
-                },
-                { name: 'Create admin', type: 'link', link: '/admin/create' },
-              ]"
-            />
-          </span>
+                v-if="!$device.isMobile"
+                :createOpt="peopleOpt"
+                :styles="
+                  'top-0 ml-5' && $device.isMobile
+                    ? 'mt-16'
+                    : 'mt-0 right-0 -mr-24'
+                "
+                :options="[
+                  {
+                    name: 'Admins',
+                    type: 'props',
+                    props: 'admin',
+                  },
+                  {
+                    name: 'Tutors',
+                    type: 'props',
+                    props: 'tutors',
+                  },
+                  { name: 'Students', type: 'props', props: 'students' },
+                ]"
+              />
             </li>
             <li class="nav-item">
               <router-link
@@ -206,7 +217,7 @@ export default {
   data: () => ({
     appName: process.env.appName,
     createOpt: false,
-    peopleOpt: false
+    peopleOpt: false,
   }),
 
   // computed: mapGetters({
@@ -235,8 +246,8 @@ export default {
     toggleCreate() {
       this.createOpt = !this.createOpt
     },
-     togglePeople() {
-      this.createOpt = !this.createOpt
+    togglePeople() {
+      this.peopleOpt = !this.peopleOpt
     },
     async logout() {
       // Log out the user.
