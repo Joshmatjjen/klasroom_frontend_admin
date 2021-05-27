@@ -22,30 +22,49 @@
       </div>
       <div class="menu-scroll">
         <nav class="h-full">
-          <span v-if="$route.name !== `${userDash}-webinars-new`" class="flex justify-center" :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'">
-            <nuxt-link
-              :to="`/${userDash}/webinars/new`"
-              class="btn btn-primary"
-              style="padding-left: 1rem; padding-right: 1rem;"
+          <span
+            v-if="peopleOpt || createOpt"
+            class="transparent h-screen w-screen absolute -mt-24"
+            @click.prevent="toggleModals"
+          ></span>
+          <span class="flex justify-center mb-3">
+            <div
+              class="btn btn-primary flex flex-row"
+              style="padding-left: 1rem; padding-right: 1rem"
+              @click.prevent="toggleCreate"
             >
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
-              New Meeting or Webinar
-            </nuxt-link>
+              Create New
+              <img class="pl-3" src="~/static/icon/plus-white.svg" />
+            </div>
+
+            <simple-pop-up
+              :createOpt="createOpt"
+              :styles="
+                'top-0 ml-5' && $device.isMobile
+                  ? 'mt-16'
+                  : 'mt-0 right-0 -mr-24'
+              "
+              :options="[
+                {
+                  name: 'Create course',
+                  type: 'link',
+                  link: '/courses/create',
+                },
+                {
+                  name: 'Create webinar',
+                  type: 'link',
+                  link: '/webinars/create',
+                },
+                { name: 'Create admin', type: 'link', link: '/admin/create' },
+              ]"
+            />
           </span>
-          <span v-if="userDash === 'tutor'" class="flex justify-center mb-10">
-            <nuxt-link
-              :to="`/${userDash}/courses/create`"
-              class="btn btn-primary"
-            >
-              <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
-              New Course
-            </nuxt-link>
-          </span>
+
           <ul class="relative h-full" @click="toggleNav">
-            
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-dashboard` }"
+                :to="{ name: 'dashboard' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -53,9 +72,52 @@
                 Dashboard
               </router-link>
             </li>
+            <li class="nav-item relative">
+              <router-link
+                :to="{ name: 'people' }"
+                class="nav-link nav-people"
+                active-class="active"
+                exact
+              >
+                <p>People</p>
+              </router-link>
+              <img
+                v-if="!$device.isMobile"
+                class="cursor-pointer"
+                :style="{
+                  position: 'absolute',
+                  top: '40%',
+                  right: '1rem',
+                }"
+                src="/actions/arrow-right.svg"
+                @click.prevent="togglePeople"
+              />
+              <simple-pop-up
+                v-if="!$device.isMobile"
+                :createOpt="peopleOpt"
+                :styles="
+                  'top-0 ml-5' && $device.isMobile
+                    ? 'mt-16'
+                    : '-mt-12 right-0 -mr-24'
+                "
+                :options="[
+                  {
+                    name: 'Admins',
+                    type: 'props',
+                    props: 'admin',
+                  },
+                  {
+                    name: 'Tutors',
+                    type: 'props',
+                    props: 'tutors',
+                  },
+                  { name: 'Students', type: 'props', props: 'students' },
+                ]"
+              />
+            </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-courses` }"
+                :to="{ name: 'courses' }"
                 class="nav-link nav-courses"
                 active-class="active"
                 exact
@@ -65,7 +127,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-webinars` }"
+                :to="{ name: 'webinars' }"
                 class="nav-link nav-webinars"
                 active-class="active"
                 exact
@@ -75,7 +137,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-chat` }"
+                :to="{ name: 'chat' }"
                 class="nav-link nav-chat"
                 active-class="active"
                 exact
@@ -85,7 +147,7 @@
             </li>
             <li v-if="userDash === 'tutor'" class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-financials` }"
+                :to="{ name: 'financials' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -93,9 +155,9 @@
                 Financials
               </router-link>
             </li>
-            <li v-if="userDash === 'tutor'" class="nav-item">
+            <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-analytics` }"
+                :to="{ name: 'analytics' }"
                 class="nav-link nav-home"
                 active-class="active"
                 exact
@@ -105,12 +167,32 @@
             </li>
             <li class="nav-item">
               <router-link
-                :to="{ name: `${userDash}-faqs` }"
+                :to="{ name: 'trail' }"
+                class="nav-link nav-trail"
+                active-class="active"
+                exact
+              >
+                Trail
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'faqs' }"
                 class="nav-link nav-faqs"
                 active-class="active"
                 exact
               >
                 FAQs
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'settings' }"
+                class="nav-link nav-settings"
+                active-class="active"
+                exact
+              >
+                Settings
               </router-link>
             </li>
           </ul>
@@ -134,10 +216,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import SimplePopUp from './popup/SimplePopUp.vue'
 
 export default {
+  components: { SimplePopUp },
   data: () => ({
     appName: process.env.appName,
+    createOpt: false,
+    peopleOpt: false,
   }),
 
   // computed: mapGetters({
@@ -149,18 +235,41 @@ export default {
     ...mapState({
       menu: (state) => state.app.menu,
       user: (state) => state.auth.user,
-      userType: (state) => state.auth.user && state.auth.user.isTutor ? "tutor" : "student",
+      userType: (state) =>
+        state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
     userDash() {
       return this.$route.path.split('/')[1]
-    }
+    },
   },
 
   methods: {
     toggleNav(e) {
-      if (e) e.preventDefault()
+      // if (e) e.preventDefault()
 
       this.$store.commit('app/SET_MENU', !this.menu)
+      // if (this.createOpt) this.createOpt = false
+      // if (this.peopleOpt) this.peopleOpt = false
+      // this.toggleCreate(false)
+      // this.togglePeople(false)
+    },
+    toggleCreate(value) {
+      // if (value) {
+      //   this.createOpt = value
+      // } else {
+      this.createOpt = !this.createOpt
+      if (this.createOpt) this.peopleOpt = false
+      // }
+      // if (this.peopleOpt === true) this.peopleOpt = false
+    },
+    togglePeople(value) {
+      this.peopleOpt = !this.peopleOpt
+      if (this.peopleOpt) this.createOpt = false
+      // if (this.createOpt === true) this.createOpt = false
+    },
+    toggleModals() {
+      if (this.createOpt) this.createOpt = false
+      if (this.peopleOpt) this.peopleOpt = false
     },
     async logout() {
       // Log out the user.
@@ -254,6 +363,18 @@ ul.btn-gray-share > li {
 }
 .nav-link.nav-telegram {
   background-image: url('/icon/dashboard/telegram.svg');
+}
+.nav-link.nav-chart {
+  background-image: url('/icon/dashboard/chart.svg');
+}
+.nav-link.nav-trail {
+  background-image: url('/icon/dashboard/trail.svg');
+}
+.nav-link.nav-settings {
+  background-image: url('/icon/dashboard/settings.svg');
+}
+.nav-link.nav-people {
+  background-image: url('/icon/dashboard/people.svg');
 }
 
 .menu-close {

@@ -30,7 +30,10 @@
             class="relative"
           >
             <span
-              v-if="props.column.field == 'webinarTitle'"
+              v-if="
+                props.column.field == 'webinarTitle' ||
+                props.column.field == 'courseTitle'
+              "
               class=""
               :class="onDraft && 'flex flex-row justify-between'"
             >
@@ -87,8 +90,14 @@
             </span>
             <span v-else-if="props.column.field == 'price'">
               <span class="text-gray-700 font-semibold"
-                >₦{{ props.row.price }}</span
+                >₦{{ props.row.price.toLocaleString() }}</span
               >
+            </span>
+            <span v-else-if="props.column.field == 'sales'">
+              <span>{{ props.row.sales.toLocaleString() }}</span>
+            </span>
+            <span v-else-if="props.column.field == 'comp'">
+              <span>{{ props.row.comp.toLocaleString() }}</span>
             </span>
             <span v-else-if="props.column.field == 'rating'">
               <rating :grade="props.row.rating" :viewOnly="true" />
@@ -99,7 +108,9 @@
             </span>
             <span
               v-if="
-                props.column.field == 'date' || props.column.field == 'heldOn'
+                props.column.field == 'date' ||
+                props.column.field == 'heldOn' ||
+                props.column.field == 'createdAt'
               "
             >
               <div
@@ -173,7 +184,7 @@ export default {
     onDraft: { type: Boolean, required: false },
     // more: { type: String, default: null },
   },
-  name: 'webinar-table',
+  name: 'simple-table',
   data: () => ({
     opt: false,
     optId: null,
