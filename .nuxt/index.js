@@ -40,14 +40,16 @@ Vue.component(ClientOnly.name, ClientOnly)
 // TODO: Remove in Nuxt 3: <NoSsr>
 Vue.component(NoSsr.name, {
   ...NoSsr,
-  render (h, ctx) {
+  render(h, ctx) {
     if (process.client && !NoSsr._warned) {
       NoSsr._warned = true
 
-      console.warn('<no-ssr> has been deprecated and will be removed in Nuxt 3, please use <client-only> instead')
+      console.warn(
+        '<no-ssr> has been deprecated and will be removed in Nuxt 3, please use <client-only> instead'
+      )
     }
     return NoSsr.render(h, ctx)
-  }
+  },
 })
 
 // Component: <NuxtChild>
@@ -63,18 +65,33 @@ Object.defineProperty(Vue.prototype, '$nuxt', {
   get() {
     return this.$root.$options.$nuxt
   },
-  configurable: true
+  configurable: true,
 })
 
-Vue.use(Meta, {"keyName":"head","attribute":"data-n-head","ssrAttribute":"data-n-head-ssr","tagIDKeyName":"hid"})
+Vue.use(Meta, {
+  keyName: 'head',
+  attribute: 'data-n-head',
+  ssrAttribute: 'data-n-head-ssr',
+  tagIDKeyName: 'hid',
+})
 
-const defaultTransition = {"name":"page","mode":"out-in","appear":false,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
+const defaultTransition = {
+  name: 'page',
+  mode: 'out-in',
+  appear: false,
+  appearClass: 'appear',
+  appearActiveClass: 'appear-active',
+  appearToClass: 'appear-to',
+}
 
 const originalRegisterModule = Vuex.Store.prototype.registerModule
 const baseStoreOptions = { preserveState: process.client }
 
-function registerModule (path, rawModule, options = {}) {
-  return originalRegisterModule.call(this, path, rawModule, { ...baseStoreOptions, ...options })
+function registerModule(path, rawModule, options = {}) {
+  return originalRegisterModule.call(this, path, rawModule, {
+    ...baseStoreOptions,
+    ...options,
+  })
 }
 
 async function createApp(ssrContext, config = {}) {
@@ -92,14 +109,1571 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"KlasroomAdminApp","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"## Build Setup"},{"http-equiv":"Content-Security-Policy","content":"img-src 'self' data: *; default-src 'self' data: 'unsafe-inline' 'unsafe-eval' https:\u002F\u002F*; connect-src 'self' http:\u002F\u002F* https:\u002F\u002F* ws:\u002F\u002F* wss:\u002F\u002F*"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"script":[{"src":"https:\u002F\u002Fwebrtc.github.io\u002Fadapter\u002Fadapter-latest.js"}],"style":[]},
+    head: {
+      title: 'KlasroomAdminApp',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: '## Build Setup' },
+        {
+          'http-equiv': 'Content-Security-Policy',
+          content:
+            "img-src 'self' data: *; default-src 'self' data: 'unsafe-inline' 'unsafe-eval' https:\u002F\u002F*; connect-src 'self' http:\u002F\u002F* https:\u002F\u002F* ws:\u002F\u002F* wss:\u002F\u002F*",
+        },
+        { hid: 'charset', charset: 'utf-8' },
+        {
+          hid: 'mobile-web-app-capable',
+          name: 'mobile-web-app-capable',
+          content: 'yes',
+        },
+        {
+          hid: 'apple-mobile-web-app-title',
+          name: 'apple-mobile-web-app-title',
+          content: 'KlasroomAdminApp',
+        },
+        {
+          hid: 'og:type',
+          name: 'og:type',
+          property: 'og:type',
+          content: 'website',
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          property: 'og:title',
+          content: 'KlasroomAdminApp',
+        },
+        {
+          hid: 'og:site_name',
+          name: 'og:site_name',
+          property: 'og:site_name',
+          content: 'KlasroomAdminApp',
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          property: 'og:description',
+          content: '## Build Setup',
+        },
+      ],
+      link: [
+        { rel: 'icon', type: 'image\u002Fx-icon', href: '\u002Ffavicon.ico' },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'manifest',
+          href: '\u002F_nuxt\u002Fmanifest.1f839ec7.json',
+          hid: 'manifest',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+        {
+          rel: 'shortcut icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_64x64.6bbcf1.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '\u002F_nuxt\u002Ficons\u002Ficon_512x512.6bbcf1.png',
+          sizes: '512x512',
+        },
+      ],
+      script: [
+        {
+          src:
+            'https:\u002F\u002Fwebrtc.github.io\u002Fadapter\u002Fadapter-latest.js',
+        },
+      ],
+      style: [],
+      htmlAttrs: { lang: 'en' },
+    },
 
     store,
     router,
     nuxt: {
       defaultTransition,
       transitions: [defaultTransition],
-      setTransitions (transitions) {
+      setTransitions(transitions) {
         if (!Array.isArray(transitions)) {
           transitions = [transitions]
         }
@@ -107,7 +1681,9 @@ async function createApp(ssrContext, config = {}) {
           if (!transition) {
             transition = defaultTransition
           } else if (typeof transition === 'string') {
-            transition = Object.assign({}, defaultTransition, { name: transition })
+            transition = Object.assign({}, defaultTransition, {
+              name: transition,
+            })
           } else {
             transition = Object.assign({}, defaultTransition, transition)
           }
@@ -119,7 +1695,7 @@ async function createApp(ssrContext, config = {}) {
 
       err: null,
       dateErr: null,
-      error (err) {
+      error(err) {
         err = err || null
         app.context._errored = Boolean(err)
         err = err ? normalizeError(err) : null
@@ -134,15 +1710,17 @@ async function createApp(ssrContext, config = {}) {
           ssrContext.nuxt.error = err
         }
         return err
-      }
+      },
     },
-    ...App
+    ...App,
   }
 
   // Make app available into store via this.app
   store.app = app
 
-  const next = ssrContext ? ssrContext.next : location => app.router.push(location)
+  const next = ssrContext
+    ? ssrContext.next
+    : (location) => app.router.push(location)
   // Resolve route
   let route
   if (ssrContext) {
@@ -162,7 +1740,7 @@ async function createApp(ssrContext, config = {}) {
     req: ssrContext ? ssrContext.req : undefined,
     res: ssrContext ? ssrContext.res : undefined,
     beforeRenderFns: ssrContext ? ssrContext.beforeRenderFns : undefined,
-    ssrContext
+    ssrContext,
   })
 
   function inject(key, value) {
@@ -194,9 +1772,9 @@ async function createApp(ssrContext, config = {}) {
     Vue.use(() => {
       if (!Object.prototype.hasOwnProperty.call(Vue.prototype, key)) {
         Object.defineProperty(Vue.prototype, key, {
-          get () {
+          get() {
             return this.$root.$options[key]
-          }
+          },
         })
       }
     })
@@ -233,15 +1811,24 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_nuxtsocketio_1ad87eea(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_srcplugin208b1cdc_14fbdea4 === 'function') {
+  if (
+    process.client &&
+    typeof nuxt_plugin_srcplugin208b1cdc_14fbdea4 === 'function'
+  ) {
     await nuxt_plugin_srcplugin208b1cdc_14fbdea4(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_pluginclient_468debde === 'function') {
+  if (
+    process.client &&
+    typeof nuxt_plugin_pluginclient_468debde === 'function'
+  ) {
     await nuxt_plugin_pluginclient_468debde(app.context, inject)
   }
 
-  if (process.server && typeof nuxt_plugin_pluginserver_a7714534 === 'function') {
+  if (
+    process.server &&
+    typeof nuxt_plugin_pluginserver_a7714534 === 'function'
+  ) {
     await nuxt_plugin_pluginserver_a7714534(app.context, inject)
   }
 
@@ -297,7 +1884,10 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_paystack_46971bb7(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_vuegoodtable_6479f65b === 'function') {
+  if (
+    process.client &&
+    typeof nuxt_plugin_vuegoodtable_6479f65b === 'function'
+  ) {
     await nuxt_plugin_vuegoodtable_6479f65b(app.context, inject)
   }
 
@@ -314,7 +1904,8 @@ async function createApp(ssrContext, config = {}) {
       router.push(ssrContext.url, resolve, (err) => {
         // https://github.com/vuejs/vue-router/blob/v3.4.3/src/util/errors.js
         if (!err._isRouter) return reject(err)
-        if (err.type !== 2 /* NavigationFailureType.redirected */) return resolve()
+        if (err.type !== 2 /* NavigationFailureType.redirected */)
+          return resolve()
 
         // navigated to a different route in router guard
         const unregister = router.afterEach(async (to, from) => {
@@ -332,7 +1923,7 @@ async function createApp(ssrContext, config = {}) {
   return {
     store,
     app,
-    router
+    router,
   }
 }
 
