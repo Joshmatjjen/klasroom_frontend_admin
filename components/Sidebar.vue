@@ -22,27 +22,39 @@
       </div>
       <div class="menu-scroll">
         <nav class="h-full">
-          <span
-            v-if="$route.name !== `${userDash}-webinars-new`"
-            class="flex justify-center"
-            :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'"
-          >
-            <nuxt-link
-              :to="`/webinars/new`"
+          <span class="flex justify-center mb-3">
+            <div
               class="btn btn-primary flex flex-row"
               style="padding-left: 1rem; padding-right: 1rem"
+              @click="toggleCreate"
             >
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
               Create New
               <img class="pl-3" src="~/static/icon/plus-white.svg" />
-            </nuxt-link>
+            </div>
+            <simple-pop-up
+              :createOpt="createOpt"
+              :styles="
+                'top-0 ml-5' && $device.isMobile
+                  ? 'mt-16'
+                  : 'mt-0 right-0 -mr-24'
+              "
+              :options="[
+                {
+                  name: 'Create course',
+                  type: 'link',
+                  link: '/courses/create',
+                },
+                {
+                  name: 'Create webinar',
+                  type: 'link',
+                  link: '/webinars/create',
+                },
+                { name: 'Create admin', type: 'link', link: '/admin/create' },
+              ]"
+            />
           </span>
-          <span v-if="userDash === 'tutor'" class="flex justify-center mb-10">
-            <nuxt-link :to="`}/courses/create`" class="btn btn-primary">
-              <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
-              New Course
-            </nuxt-link>
-          </span>
+
           <ul class="relative h-full" @click="toggleNav">
             <li class="nav-item">
               <router-link
@@ -55,14 +67,36 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link
-                :to="{ name: 'people' }"
+              <div
+                @click.prevent="toggleCreate"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
               >
                 People
-              </router-link>
+              </div>
+              <simple-pop-up
+              :createOpt="createOpt"
+              :styles="
+                'top-0 ml-5' && $device.isMobile
+                  ? 'mt-16'
+                  : 'mt-0 right-0 -mr-24'
+              "
+              :options="[
+                {
+                  name: 'Create course',
+                  type: 'link',
+                  link: '/courses/create',
+                },
+                {
+                  name: 'Create webinar',
+                  type: 'link',
+                  link: '/webinars/create',
+                },
+                { name: 'Create admin', type: 'link', link: '/admin/create' },
+              ]"
+            />
+          </span>
             </li>
             <li class="nav-item">
               <router-link
@@ -165,10 +199,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import SimplePopUp from './popup/SimplePopUp.vue'
 
 export default {
+  components: { SimplePopUp },
   data: () => ({
     appName: process.env.appName,
+    createOpt: false,
+    peopleOpt: false
   }),
 
   // computed: mapGetters({
@@ -193,6 +231,12 @@ export default {
       if (e) e.preventDefault()
 
       this.$store.commit('app/SET_MENU', !this.menu)
+    },
+    toggleCreate() {
+      this.createOpt = !this.createOpt
+    },
+     togglePeople() {
+      this.createOpt = !this.createOpt
     },
     async logout() {
       // Log out the user.

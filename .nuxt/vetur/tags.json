@@ -467,6 +467,12 @@
   "LazyWebinarTestingModal": {
     "description": "Auto imported from components/modal/WebinarTestingModal.vue"
   },
+  "SimplePopUp": {
+    "description": "Auto imported from components/popup/SimplePopUp.vue"
+  },
+  "LazySimplePopUp": {
+    "description": "Auto imported from components/popup/SimplePopUp.vue"
+  },
   "ListTable1": {
     "description": "Auto imported from components/table/ListTable1.vue"
   },
