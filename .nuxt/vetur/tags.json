@@ -53,17 +53,17 @@
   "LazyItemsSectionGroup": {
     "description": "Auto imported from components/ItemsSectionGroup.vue"
   },
-  "Navbar": {
-    "description": "Auto imported from components/Navbar.vue"
-  },
-  "LazyNavbar": {
-    "description": "Auto imported from components/Navbar.vue"
-  },
   "NavSearchBox": {
     "description": "Auto imported from components/NavSearchBox.vue"
   },
   "LazyNavSearchBox": {
     "description": "Auto imported from components/NavSearchBox.vue"
+  },
+  "Navbar": {
+    "description": "Auto imported from components/Navbar.vue"
+  },
+  "LazyNavbar": {
+    "description": "Auto imported from components/Navbar.vue"
   },
   "ProgressBar": {
     "description": "Auto imported from components/ProgressBar.vue"
@@ -191,12 +191,6 @@
   "LazyCourseItemWide": {
     "description": "Auto imported from components/card/CourseItemWide.vue"
   },
-  "CourseMetrics": {
-    "description": "Auto imported from components/card/courseMetrics.vue"
-  },
-  "LazyCourseMetrics": {
-    "description": "Auto imported from components/card/courseMetrics.vue"
-  },
   "CreateWebinar": {
     "description": "Auto imported from components/card/CreateWebinar.vue"
   },
@@ -280,6 +274,12 @@
   },
   "LazyWhyKlasroom": {
     "description": "Auto imported from components/card/WhyKlasroom.vue"
+  },
+  "CourseMetrics": {
+    "description": "Auto imported from components/card/courseMetrics.vue"
+  },
+  "LazyCourseMetrics": {
+    "description": "Auto imported from components/card/courseMetrics.vue"
   },
   "ChatComplete": {
     "description": "Auto imported from components/chat/ChatComplete.vue"
