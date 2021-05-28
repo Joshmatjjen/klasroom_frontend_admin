@@ -275,6 +275,12 @@
   "LazyWhyKlasroom": {
     "description": "Auto imported from components/card/WhyKlasroom.vue"
   },
+  "CourseMetrics": {
+    "description": "Auto imported from components/card/courseMetrics.vue"
+  },
+  "LazyCourseMetrics": {
+    "description": "Auto imported from components/card/courseMetrics.vue"
+  },
   "ChatComplete": {
     "description": "Auto imported from components/chat/ChatComplete.vue"
   },

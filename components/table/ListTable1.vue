@@ -107,6 +107,13 @@
               props.row.status
             }}</span>
           </span>
+          <span
+            v-else-if="props.column.field == 'progress'"
+            class="flex flex-row"
+          >
+            <progress-bar :percentage="props.row.progress" />
+            <span class="pl-2">{{ ' ' + props.row.progress + '%' }}</span>
+          </span>
           <span v-else>
             {{ props.formattedRow[props.column.field] }}
           </span>

@@ -44,6 +44,7 @@ export { default as WebinarItem } from '../../components/card/WebinarItem.vue'
 export { default as WebinarItemWide } from '../../components/card/WebinarItemWide.vue'
 export { default as WebinarsCalendar } from '../../components/card/WebinarsCalendar.vue'
 export { default as WhyKlasroom } from '../../components/card/WhyKlasroom.vue'
+export { default as CourseMetrics } from '../../components/card/courseMetrics.vue'
 export { default as ChatComplete } from '../../components/chat/ChatComplete.vue'
 export { default as ChatContacts } from '../../components/chat/ChatContacts.vue'
 export { default as ChatMembers } from '../../components/chat/ChatMembers.vue'
@@ -126,6 +127,7 @@ export const LazyWebinarItem = import('../../components/card/WebinarItem.vue' /*
 export const LazyWebinarItemWide = import('../../components/card/WebinarItemWide.vue' /* webpackChunkName: "components/card/WebinarItemWide" */).then(c => c.default || c)
 export const LazyWebinarsCalendar = import('../../components/card/WebinarsCalendar.vue' /* webpackChunkName: "components/card/WebinarsCalendar" */).then(c => c.default || c)
 export const LazyWhyKlasroom = import('../../components/card/WhyKlasroom.vue' /* webpackChunkName: "components/card/WhyKlasroom" */).then(c => c.default || c)
+export const LazyCourseMetrics = import('../../components/card/courseMetrics.vue' /* webpackChunkName: "components/card/courseMetrics" */).then(c => c.default || c)
 export const LazyChatComplete = import('../../components/chat/ChatComplete.vue' /* webpackChunkName: "components/chat/ChatComplete" */).then(c => c.default || c)
 export const LazyChatContacts = import('../../components/chat/ChatContacts.vue' /* webpackChunkName: "components/chat/ChatContacts" */).then(c => c.default || c)
 export const LazyChatMembers = import('../../components/chat/ChatMembers.vue' /* webpackChunkName: "components/chat/ChatMembers" */).then(c => c.default || c)

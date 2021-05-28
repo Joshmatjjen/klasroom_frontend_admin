@@ -1,78 +1,50 @@
 [{
-    "id": 1,
-    "name": "Chidimma Ugwu",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 2,
-    "name": "Joshmat jjen",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 3,
-    "name": "Duk Nwakwuo",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 4,
-    "name": "Duk Nwakwuo",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 5,
-    "name": "Duk Nwakwuo",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 6,
-    "name": "Duk Nwakwuo",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   },
   {
-    "id": 7,
-    "name": "Duk Nwakwuo",
-    "email": "chidimmaugwu@gmail.com",
+    "name": "Sandra Eze",
+    "paymentDate": "2020-10-31",
     "imageUrl": "/profile.jpg",
-    "phone": "+2349035982285",
-    "location": "Lagos, Nigeria",
-    "lastActive": "2 Nov 2020, 11:04pm",
-    "memberSince": "2020-10-31",
-    "status": "Active"
+    "progress": 50,
+    "lastActive": "2 Nov. 2020, 11:04pm"
   }
 ]

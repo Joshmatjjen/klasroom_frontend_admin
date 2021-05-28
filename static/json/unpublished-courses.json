@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Really great course for beginners!",
+    "tutor": "Sandra Eze",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": "---",
+    "comp": "----",
+    "rating": "--",
+    "createdAt": "---"
+  },
+  {
+    "id": 2,
+    "title": "Really great course for beginners!",
+    "tutor": "Sandra Eze",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": "---",
+    "comp": "----",
+    "rating": "--",
+    "createdAt": "---"
+  },
+  {
+    "id": 3,
+    "title": "Really great course for beginners!",
+    "tutor": "Sandra Eze",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": "---",
+    "comp": "----",
+    "rating": "--",
+    "createdAt": "---"
+  }
+]

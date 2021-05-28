@@ -45,7 +45,7 @@
 <script>
 const courses = require('@/static/json/courses.json')
 const webinarCourse = require('@/static/json/live-courses.json')
-const studentsData = require('@/static/json/students.json')
+const studentsData = require('@/static/json/people-student.json')
 
 export default {
   middleware: ['check-auth', 'auth'],

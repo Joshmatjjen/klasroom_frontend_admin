@@ -1,7 +1,54 @@
 <template>
   <div class="min-h-screen mb-24">
     <section class="bg-orange-100">
-      <div class="container mx-auto mb-10 px-4 lg:px-0">
+      <section>
+      <div
+        class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
+      >
+        <button
+          v-on:click="switcher('preview')"
+          v-bind:class="{ active: isCourses.preview }"
+          class="menu-btn"
+        >
+          <p class="text-xs text-gray-700"> Course preview</p>
+        </button>
+        <button
+          v-on:click="switcher('students')"
+          v-bind:class="{ active: isCourses.students }"
+          class="menu-btn"
+        >
+          <p class="text-xs text-gray-700">Course students</p>
+        </button>
+        <button
+          v-on:click="switcher('ratings')"
+          v-bind:class="{ active: isCourses.ratings }"
+          class="menu-btn"
+        >
+          <p class="text-xs text-gray-700">Ratings and reviews</p>
+        </button>
+      </div>
+    </section>
+      <div v-if="isCourses.preview" class="container mt-10 mx-auto mb-10 px-4 lg:px-0">
+        <div class="container mx-auto mb-10 px-4 lg:px-0">
+        <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
+          <course-metrics
+            :title="0"
+            label="Course sales"
+            text="Filter"
+          />
+          <course-metrics
+            :title="0"
+            label="Course completions"
+            text="Filter"
+          />
+          <course-metrics
+            :title="0"
+            label="Rating"
+            text="Open reviews"
+            @click="switcher('ratings')"
+          />
+        </div>
+      </div>
         <div class="grid grid-cols-12 gap-5">
           <div
             v-if="!$device.isMobile"
@@ -248,15 +295,98 @@
           </div>
         </div>
       </div>
+      <div v-if="isCourses.students" class="container mt-5 mx-auto mb-10 px-4 lg:px-0">
+         <section class="grid grid-cols-12 gap-5">
+          <div class="col-span-full lg:col-span-8 xl:col-span-8">
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-full">
+                <nuxt-link to="/">
+                  <div class="col-span-12">
+                    <list-table-1
+                      :columns="columnsStudents"
+                      :rows="rowsStudents"
+                      type="Reviews"
+                    />
+                  </div>
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-full lg:col-span-4 xl:col-span-4">
+            <div
+              class="bg-white rounded-xl border border-gray-300 shadow-hover relative min-h-full"
+            >
+              <div class="block mb-2">
+                <div
+                  class="big-avatar relative rounded-xl overflow-hidden"
+                >
+                <img src="https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png" alt="">
+                </div>
+              </div>
+              <div class="px-4 md:px-5 lg:px-6 py-4">
+                <ul class="text-gray-700">
+                  <li class="text-center">
+                    <h5 class="name-text font-bold mb-2 capitalize">
+                      {{ user ? user.name : '' }}
+                    </h5>
+                    <p class="text-sm text-gray-700">
+                      Registered
+                      {{ user ? user.createdAt : '' }}
+                    </p>
+                  </li>
+                  <li>
+                    <hr class="my-5" />
+                    <label class="checkbox" @click="passwordReset">
+                      <span class="text-sm">Initiate password reset</span>
+                      <input type="checkbox" value="intermediate" disabled />
+                      <span class="checkmark"></span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox" @click="suspendAccount">
+                      <span class="text-sm">Suspend account</span>
+                      <input type="checkbox" value="intermediate" disabled />
+                      <span class="checkmark"></span>
+                    </label>
+                  </li>
+                    <hr class="my-5" />
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div v-if="isCourses.ratings">
+        <section>
+          <div class="container mx-auto my-10 px-2 lg:px-0">
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-full">
+                <div class="col-span-12">
+                  <list-table-1
+                    :columns="columnsReviews"
+                    :rows="rowsReviews"
+                    type="Reviews"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 const courses = require('@/static/json/latest-courses.json')
 const videos = require('@/static/json/videos-list.json')
 const youLearn = require('@/static/json/courses-you-learn.json')
 const reviews = require('@/static/json/reviews.json')
+const webreviews = require('@/static/json/webinar-reviews.json')
+const students = require('@/static/json/students.json')
+
 
 export default {
   middleware: ['check-auth', 'auth'],
@@ -273,7 +403,60 @@ export default {
     reviews,
     tab: 0,
     tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
+    isCourses: {
+      preview: true,
+      students: false,
+      draft: false,
+    },
+    columnsReviews: [
+      {
+        label: 'Name',
+        field: 'name',
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        type: 'date',
+        dateInputFormat: 'yyyy-MM-dd',
+        dateOutputFormat: 'MMM do yy',
+      },
+      {
+        label: 'Review',
+        field: 'review',
+      },
+      {
+        label: 'Rating',
+        field: 'rating',
+      },
+    ],
+    columnsStudents: [
+      {
+        label: 'Name',
+        field: 'name',
+      },
+      {
+        label: 'Payment date',
+        field: 'paymentDate',
+      },
+      {
+        label: 'Last Active',
+        field: 'lastActive',
+      },
+      {
+        label: 'Course progress',
+        field: 'progress',
+      },
+    ],
+    rowsReviews: _.take(webreviews, 10),
+    rowsStudents: _.take(students, 4),
+
   }),
+   computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      profileImage: (state) => state.auth.profileImage,
+    }),
+  },
   mounted() {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
@@ -290,6 +473,48 @@ export default {
         price: 2500,
       })
     },
+    switcher: function (value) {
+      switch (value) {
+        case 'preview':
+          this.isCourses.preview = true
+          this.isCourses.students = false
+          this.isCourses.ratings = false
+          break
+        case 'students':
+          this.isCourses.preview = false
+          this.isCourses.students = true
+          this.isCourses.ratings = false
+          break
+        case 'ratings':
+          this.isCourses.preview = false
+          this.isCourses.students = false
+          this.isCourses.ratings = true
+          break
+        default:
+          this.isCourses.preview = true
+          this.isCourses.students = false
+          this.isCourses.ratings = false
+      }
+      // some code to filter users
+    },
   },
 }
 </script>
+<style scoped>
+.menu-btn {
+  border-top: 5px solid;
+  border-bottom: 5px solid;
+  padding: 0.938rem 0;
+  display: inline-block;
+  border-color: transparent;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.menu-btn.active {
+  border-bottom-color: #f99e42;
+  font-weight: 700;
+}
+.big-avatar {
+  background-image: url(https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png);
+}
+</style>
