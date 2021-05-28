@@ -8,14 +8,9 @@
           </h5>
           <p class="text-sm text-gray-600">{{ label }}</p>
         </div>
-        <div v-if="more" class="text-right pl-5">
+        <div class="text-right pl-5">
           <!-- <span class="text-xs text-gray-700">Due 12th Oct. 2020</span> -->
-          <nuxt-link
-            to="/courses"
-            class="text-gray-700 inline-block my-3"
-          >
-            <span class="text-sm">See more</span>
-          </nuxt-link>
+            <span class="cursor-pointer text-gray-700 inline-block my-3 text-sm" @click="$emit('click')">{{ text }}</span>
         </div>
       </div>
     </div>
@@ -27,7 +22,7 @@ export default {
   props: {
     title: { type: Number, required: true },
     label: { type: String, required: true },
-    more: { type: String, default: null },
+    text: { type: String, required: true },
   },
 }
 </script>
