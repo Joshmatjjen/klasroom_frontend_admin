@@ -98,6 +98,15 @@
             <rating :grade="props.row.rating" :viewOnly="true" />
             <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
           </span>
+          <span
+            class="items-center relative"
+            v-else-if="props.column.field == 'status'"
+          >
+            <span class="dot absolute bg-green-500 rounded-full"></span>
+            <span class="text-gray-700 text-center">{{
+              props.row.status
+            }}</span>
+          </span>
           <span v-else>
             {{ props.formattedRow[props.column.field] }}
           </span>
@@ -194,6 +203,12 @@ export default {
 </script>
 
 <style scoped>
+.dot {
+  top: 0.3rem;
+  left: -0.8rem;
+  width: 0.3rem;
+  height: 0.3rem;
+}
 .course-image {
   display: inline-block;
   width: 40px;
