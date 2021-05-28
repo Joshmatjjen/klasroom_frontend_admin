@@ -6,22 +6,22 @@
           <dash-item-metrics
             title="12 courses"
             label="Published"
-            more="/student/courses"
+            link="/student/courses"
           />
           <dash-item-metrics
             title="2 courses"
             label="Draft"
-            more="/student/courses"
+            link="/student/courses"
           />
           <dash-item-metrics
             title="34,600"
             label="Course sales"
-            more="/student/courses"
+            link="/student/courses"
           />
           <dash-item-metrics
             title="3,540"
             label="Completions"
-            more="/student/courses"
+            link="/student/courses"
           />
         </div>
       </div>

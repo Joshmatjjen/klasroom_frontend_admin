@@ -8,6 +8,7 @@ const _4699dcf7 = () => interopDefault(import('../pages/chat/index.vue' /* webpa
 const _36d015cf = () => interopDefault(import('../pages/courses/index.vue' /* webpackChunkName: "pages/courses/index" */))
 const _3abbaaab = () => interopDefault(import('../pages/dashboard/index.vue' /* webpackChunkName: "pages/dashboard/index" */))
 const _4cd3af7c = () => interopDefault(import('../pages/faqs/index.vue' /* webpackChunkName: "pages/faqs/index" */))
+const _3a4b126e = () => interopDefault(import('../pages/people/index.vue' /* webpackChunkName: "pages/people/index" */))
 const _50bc3bfc = () => interopDefault(import('../pages/settings/index.vue' /* webpackChunkName: "pages/settings/index" */))
 const _5aec12b0 = () => interopDefault(import('../pages/webinars/index.vue' /* webpackChunkName: "pages/webinars/index" */))
 const _00a4265e = () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
@@ -57,6 +58,10 @@ export const routerOptions = {
     path: "/faqs",
     component: _4cd3af7c,
     name: "faqs"
+  }, {
+    path: "/people",
+    component: _3a4b126e,
+    name: "people"
   }, {
     path: "/settings",
     component: _50bc3bfc,

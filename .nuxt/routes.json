@@ -28,6 +28,13 @@
     "_name": "_4cd3af7c"
   },
   {
+    "name": "people",
+    "path": "/people",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/index.vue",
+    "chunkName": "pages/people/index",
+    "_name": "_3a4b126e"
+  },
+  {
     "name": "settings",
     "path": "/settings",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/settings/index.vue",

@@ -8,13 +8,15 @@
           </h5>
           <p class="text-sm text-gray-600">{{ label }}</p>
         </div>
-        <div v-if="more" class="text-right pl-5">
+        <div v-if="link" class="text-right pl-5">
           <!-- <span class="text-xs text-gray-700">Due 12th Oct. 2020</span> -->
           <nuxt-link
             to="/student/undone-tasks"
             class="text-gray-700 inline-block my-3"
           >
-            <span class="text-sm">See more</span>
+            <span class="text-sm">{{
+              type ? (type === 'link' ? 'See link' : 'Filter') : 'See link'
+            }}</span>
           </nuxt-link>
         </div>
       </div>
@@ -27,7 +29,8 @@ export default {
   props: {
     title: { type: Number, required: true },
     label: { type: String, required: true },
-    more: { type: String, default: null },
+    link: { type: String, default: null },
+    type: { type: String, default: null },
   },
 }
 </script>
