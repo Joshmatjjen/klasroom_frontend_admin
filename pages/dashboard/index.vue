@@ -9,7 +9,7 @@
             weekSales="32,420"
             planSales="82,000"
             productSales="105,000"
-            more="/dashboard"
+            link="/dashboard"
           />
           <dash-items-status
             title="Courses"
@@ -18,7 +18,7 @@
             :sold="314 + ' courses sold'"
             :published="102 + ' courses published this week'"
             :total="12420 + ' total courses'"
-            more="/courses"
+            link="/courses"
           />
           <dash-items-status
             title="Webinars"
@@ -27,7 +27,7 @@
             :sold="314 + ' courses sold'"
             :published="102 + ' courses published this week'"
             :total="12420 + ' total webinars'"
-            more="/webinars"
+            link="/webinars"
           />
         </div>
       </div>
@@ -36,18 +36,18 @@
     <section class="bg-orange-100">
       <div class="container mx-auto mb-10 px-4 lg:px-0">
         <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
-          <dash-item-metrics title="16,000" label="Student" more="/courses" />
+          <dash-item-metrics title="16,000" label="Student" link="/courses" />
           <dash-item-metrics
             title="600"
             label="Webinar tutors"
-            more="/webinars"
+            link="/webinars"
           />
           <dash-item-metrics
             title="540"
             label="Course tutors"
-            more="/courses"
+            link="/courses"
           />
-          <dash-item-metrics title="12" label="Admins" more="/courses" />
+          <dash-item-metrics title="12" label="Admins" link="/courses" />
         </div>
       </div>
     </section>

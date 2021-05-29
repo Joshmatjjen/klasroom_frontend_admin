@@ -32,10 +32,10 @@
         />
       </div>
     </div>
-    <div v-if="more" class="absolute text-center bottom-0 mb-5 w-full px-5">
+    <div v-if="link" class="absolute text-center bottom-0 mb-5 w-full px-5">
       <hr data-v-6cf0f546="" class="mb-4" />
-      <nuxt-link :to="more" class="text-gray-700 inline-block">
-        <span class="text-xs">See more</span>
+      <nuxt-link :to="link" class="text-gray-700 inline-block">
+        <span class="text-xs">See link</span>
       </nuxt-link>
     </div>
   </div>
@@ -52,7 +52,7 @@ export default {
     sold: { type: String, required: false },
     published: { type: String, required: false },
     total: { type: String, required: false },
-    more: { type: String, default: null },
+    link: { type: String, default: null },
   },
 }
 </script>

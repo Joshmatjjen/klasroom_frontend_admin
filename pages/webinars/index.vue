@@ -6,12 +6,12 @@
           <dash-item-metrics
             title="3 webinars"
             label="Published"
-            more="/student/webinars"
+            link="/student/webinars"
           />
           <dash-item-metrics
             title="34,600"
             label="Webinar sales"
-            more="/student/webinars"
+            link="/student/webinars"
           />
           <dash-item-metrics title="3,540" label="Attendants" />
           <dash-item-metrics title="20 webinars" label="Attended" />
@@ -92,7 +92,7 @@
           <div class="col-span-12">
             <dash-items-section-group
               title="Upcoming Websinars"
-              more="/student/my-webinars"
+              link="/student/my-webinars"
             >
               <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <webinar-item
