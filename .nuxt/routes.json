@@ -126,6 +126,13 @@
     "_name": "_51b2cc1a"
   },
   {
+    "name": "people-students-slug",
+    "path": "/people/students/:slug?",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/_slug.vue",
+    "chunkName": "pages/people/students/_slug",
+    "_name": "_68d1c1e7"
+  },
+  {
     "name": "webinars-preview-slug",
     "path": "/webinars/preview/:slug?",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/webinars/preview/_slug.vue",

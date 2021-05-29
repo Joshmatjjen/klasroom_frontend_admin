@@ -22,6 +22,7 @@ const _3db7b39a = () => interopDefault(import('../pages/dashboard/upcoming-webin
 const _1a87f1ce = () => interopDefault(import('../pages/webinars/create/index.vue' /* webpackChunkName: "pages/webinars/create/index" */))
 const _58978df9 = () => interopDefault(import('../pages/webinars/new/index.vue' /* webpackChunkName: "pages/webinars/new/index" */))
 const _51b2cc1a = () => interopDefault(import('../pages/courses/view/_slug.vue' /* webpackChunkName: "pages/courses/view/_slug" */))
+const _68d1c1e7 = () => interopDefault(import('../pages/people/students/_slug.vue' /* webpackChunkName: "pages/people/students/_slug" */))
 const _2302c5d9 = () => interopDefault(import('../pages/webinars/preview/_slug.vue' /* webpackChunkName: "pages/webinars/preview/_slug" */))
 const _56e458ba = () => interopDefault(import('../pages/webinars/view/_slug.vue' /* webpackChunkName: "pages/webinars/view/_slug" */))
 const _ebcda134 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
@@ -114,6 +115,10 @@ export const routerOptions = {
     path: "/courses/view/:slug?",
     component: _51b2cc1a,
     name: "courses-view-slug"
+  }, {
+    path: "/people/students/:slug?",
+    component: _68d1c1e7,
+    name: "people-students-slug"
   }, {
     path: "/webinars/preview/:slug?",
     component: _2302c5d9,
