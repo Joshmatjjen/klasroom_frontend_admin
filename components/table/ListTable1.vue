@@ -148,10 +148,19 @@
                 (props.column.field === 'status' &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateStarted')
+                  ) &&
+                  !rows.some((obj) =>
+                    Object.keys(obj).includes('dateCompleted')
                   )) ||
                 props.column.field === 'dateStarted' ||
+                props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
-                  !rows.some((obj) => Object.keys(obj).includes('dateStarted')))
+                  !rows.some((obj) =>
+                    Object.keys(obj).includes('dateStarted')
+                  ) &&
+                  !rows.some((obj) =>
+                    Object.keys(obj).includes('dateCompleted')
+                  ))
               "
             >
               <div class="absolute right-0 -mr-4">
