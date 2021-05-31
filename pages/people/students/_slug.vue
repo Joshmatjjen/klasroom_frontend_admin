@@ -83,8 +83,25 @@
             <list-table-1
               :columns="completedCoursesColumns"
               :rows="completedCoursesRows"
-              type="Students"
-              :total="124322"
+              type="Previous Courses"
+              :total="4"
+              route="/people/students/"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcomming Webinars -->
+    <section v-if="tabs === 2">
+      <div class="container mx-auto my-10 px-2 lg:px-0">
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-12">
+            <list-table-1
+              :columns="upcomingWebinarsColumns"
+              :rows="upcomingWebinarsRows"
+              type="Upcoming Webinars"
+              :total="6"
               route="/people/students/"
             />
           </div>
@@ -166,6 +183,7 @@ import { mapState } from 'vuex'
 const courses = require('@/static/json/latest-courses.json')
 const currentCourses = require('@/static/json/current-courses.json')
 const completedCourses = require('@/static/json/completed-courses.json')
+const upcomingWebinars = require('@/static/json/upcoming-webinars.json')
 const webreviews = require('@/static/json/webinar-reviews.json')
 const students = require('@/static/json/students.json')
 
@@ -253,6 +271,41 @@ export default {
       },
     ],
     completedCoursesRows: _.take(completedCourses, 10),
+    upcomingWebinarsColumns: [
+      {
+        label: 'Course title',
+        field: 'courseTitle',
+      },
+      {
+        label: 'Status',
+        field: 'status',
+      },
+      {
+        label: 'Price',
+        field: 'price',
+      },
+      {
+        label: 'Sales',
+        field: 'sales',
+      },
+      {
+        label: 'Attendance',
+        field: 'attendance',
+      },
+      {
+        label: 'Rating',
+        field: 'rating',
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        type: 'date',
+        dateInputFormat: 'yyyy-MM-dd',
+        dateOutputFormat: 'MMM do yy',
+      },
+    ],
+    upcomingWebinarsRows: _.take(upcomingWebinars, 10),
+
     columnsStudents: [
       {
         label: 'Name',
