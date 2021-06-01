@@ -6,7 +6,7 @@
           <dash-item-metrics
             :title="12 + ' courses'"
             label="Published"
-            more="/student/courses"
+            link="/student/courses"
           />
           <dash-item-metrics
             :title="316 + ' courses'"
@@ -17,17 +17,17 @@
           <dash-item-metrics
             :title="316 + ' courses'"
             label="Course sales"
-            more="/student/courses"
+            link="/student/courses"
           />
           <dash-item-metrics
             :title="206 + ' courses'"
             label="Completions"
-            more="/student/courses"
+            link="/student/courses"
           />
         </div>
       </div>
     </section>
-     <section>
+    <section>
       <div
         class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
       >
@@ -36,7 +36,7 @@
           v-bind:class="{ active: isCourses.live }"
           class="menu-btn"
         >
-          <p class="text-xs text-gray-700"> Live Courses</p>
+          <p class="text-xs text-gray-700">Live Courses</p>
         </button>
         <button
           v-on:click="switcher('unpublished')"
@@ -57,13 +57,14 @@
 
     <section>
       <!-- live -->
-      <div
-        v-if="isCourses.live"
-        class="container mx-auto my-10 px-2 lg:px-0"
-      >
+      <div v-if="isCourses.live" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnLive" :rows="rowsLive" type="live courses" />
+            <simple-table
+              :columns="columnLive"
+              :rows="rowsLive"
+              type="live courses"
+            />
           </div>
         </div>
       </div>
@@ -75,7 +76,11 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsUnpublished" :rows="rowsUnpublished" type="unpublished courses" />
+            <simple-table
+              :columns="columnsUnpublished"
+              :rows="rowsUnpublished"
+              type="unpublished courses"
+            />
           </div>
         </div>
       </div>
@@ -87,7 +92,11 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsArchived" :rows="rowsArchived" type="archived courses" />
+            <simple-table
+              :columns="columnsArchived"
+              :rows="rowsArchived"
+              type="archived courses"
+            />
           </div>
         </div>
       </div>

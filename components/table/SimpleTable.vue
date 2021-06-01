@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <hr/>
+    <hr />
     <div class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto">
       <vue-good-table
         :columns="columns"
@@ -50,10 +50,7 @@
         styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
-            :to="'/courses/view/' + props.row.title"
-            class="relative"
-          >
+          <nuxt-link :to="'/courses/view/' + props.row.title" class="relative">
             <span
               v-if="
                 props.column.field == 'webinarTitle' ||
@@ -139,9 +136,7 @@
                 props.column.field == 'createdAt'
               "
             >
-              <div
-                class="flex flex-row gap-10 items-center justify-end relative"
-              >
+              <div class="absolute right-0 -mr-4">
                 <span
                   v-on:click.prevent="toggleMenu(props.row.id)"
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
@@ -151,8 +146,8 @@
                   :class="{
                     hidden: opt && props.row.id === optId ? false : true,
                   }"
-                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 mt-5 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
-                  :style="{ zIndex: 3 }"
+                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
+                  :style="{ zIndex: 100 }"
                 >
                   <a
                     href="#"
