@@ -56,35 +56,35 @@
     <section-switcher
       v-model="tabs"
       :tabs="[
-        `${2} Current Courses`,
-        `${4} Completed Courses`,
-        `${6} Upcoming Webinars`,
-        `${6} Prev. Webinars`,
+        `${12} Courses`,
+        `${6} Webinars`,
         `Active log`,
         `Account summary`,
+        `${4006} Sales`,
+        `${46} Withdrawals`,
       ]"
     />
-    <!-- Current Courses -->
+    <!-- Courses -->
     <section v-if="tabs === 0">
       <current-courses :tabs="tabs" />
     </section>
 
-    <!-- Completed Courses -->
+    <!-- Webinars -->
     <section v-if="tabs === 1">
-      <completed-courses :tabs="tabs" />
-    </section>
-
-    <!-- Upcomming Webinars -->
-    <section v-if="tabs === 2">
-      <upcoming-webinars :tabs="tabs" />
-    </section>
-
-    <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
       <previous-webinars :tabs="tabs" />
     </section>
 
-    <!-- Activity Log -->
+    <!-- Activity Logs -->
+    <section v-if="tabs === 2">
+      <activity-log :tabs="tabs" />
+    </section>
+
+    <!-- Account Summary  -->
+    <section v-if="tabs === 3">
+      <account-summary :tabs="tabs" />
+    </section>
+
+    <!--  -->
     <section v-if="tabs === 4">
       <activity-log :tabs="tabs" />
     </section>
@@ -98,12 +98,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import currentCourses from './components/currentCourses.vue'
-import completedCourses from './components/completedCourses.vue'
-import upcomingWebinars from './components/upcomingWebinars.vue'
-import previousWebinars from './components/previousWebinars.vue'
-import activityLog from './components/activityLog.vue'
-import accountSummary from './components/accountSummary.vue'
+import currentCourses from '../components/currentCourses.vue'
+import completedCourses from '../components/completedCourses.vue'
+import upcomingWebinars from '../components/upcomingWebinars.vue'
+import previousWebinars from '../components/previousWebinars.vue'
+import activityLog from '../components/activityLog.vue'
+import accountSummary from '../components/accountSummary.vue'
 
 export default {
   components: {

@@ -21,12 +21,12 @@ const _4e04422a = () => interopDefault(import('../pages/dashboard/suggested-webi
 const _3db7b39a = () => interopDefault(import('../pages/dashboard/upcoming-webinars.vue' /* webpackChunkName: "pages/dashboard/upcoming-webinars" */))
 const _1a87f1ce = () => interopDefault(import('../pages/webinars/create/index.vue' /* webpackChunkName: "pages/webinars/create/index" */))
 const _58978df9 = () => interopDefault(import('../pages/webinars/new/index.vue' /* webpackChunkName: "pages/webinars/new/index" */))
-const _4d6ba2a2 = () => interopDefault(import('../pages/people/students/components/accountSummary.vue' /* webpackChunkName: "pages/people/students/components/accountSummary" */))
-const _7539e2a2 = () => interopDefault(import('../pages/people/students/components/activityLog.vue' /* webpackChunkName: "pages/people/students/components/activityLog" */))
-const _7d3a4763 = () => interopDefault(import('../pages/people/students/components/completedCourses.vue' /* webpackChunkName: "pages/people/students/components/completedCourses" */))
-const _78d356f5 = () => interopDefault(import('../pages/people/students/components/currentCourses.vue' /* webpackChunkName: "pages/people/students/components/currentCourses" */))
-const _0cb2a954 = () => interopDefault(import('../pages/people/students/components/previousWebinars.vue' /* webpackChunkName: "pages/people/students/components/previousWebinars" */))
-const _36a069fb = () => interopDefault(import('../pages/people/students/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/students/components/upcomingWebinars" */))
+const _44f86f24 = () => interopDefault(import('../pages/people/components/accountSummary.vue' /* webpackChunkName: "pages/people/components/accountSummary" */))
+const _4b5ae550 = () => interopDefault(import('../pages/people/components/activityLog.vue' /* webpackChunkName: "pages/people/components/activityLog" */))
+const _59746d62 = () => interopDefault(import('../pages/people/components/completedCourses.vue' /* webpackChunkName: "pages/people/components/completedCourses" */))
+const _7d0cf0b4 = () => interopDefault(import('../pages/people/components/currentCourses.vue' /* webpackChunkName: "pages/people/components/currentCourses" */))
+const _543e5d56 = () => interopDefault(import('../pages/people/components/previousWebinars.vue' /* webpackChunkName: "pages/people/components/previousWebinars" */))
+const _12da8ffa = () => interopDefault(import('../pages/people/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/components/upcomingWebinars" */))
 const _821ead58 = () => interopDefault(import('../pages/people/tutors/components/accountSummary.vue' /* webpackChunkName: "pages/people/tutors/components/accountSummary" */))
 const _9833c3ac = () => interopDefault(import('../pages/people/tutors/components/activityLog.vue' /* webpackChunkName: "pages/people/tutors/components/activityLog" */))
 const _d9a6a670 = () => interopDefault(import('../pages/people/tutors/components/completedCourses.vue' /* webpackChunkName: "pages/people/tutors/components/completedCourses" */))
@@ -125,29 +125,29 @@ export const routerOptions = {
     component: _58978df9,
     name: "webinars-new"
   }, {
-    path: "/people/students/components/accountSummary",
-    component: _4d6ba2a2,
-    name: "people-students-components-accountSummary"
+    path: "/people/components/accountSummary",
+    component: _44f86f24,
+    name: "people-components-accountSummary"
   }, {
-    path: "/people/students/components/activityLog",
-    component: _7539e2a2,
-    name: "people-students-components-activityLog"
+    path: "/people/components/activityLog",
+    component: _4b5ae550,
+    name: "people-components-activityLog"
   }, {
-    path: "/people/students/components/completedCourses",
-    component: _7d3a4763,
-    name: "people-students-components-completedCourses"
+    path: "/people/components/completedCourses",
+    component: _59746d62,
+    name: "people-components-completedCourses"
   }, {
-    path: "/people/students/components/currentCourses",
-    component: _78d356f5,
-    name: "people-students-components-currentCourses"
+    path: "/people/components/currentCourses",
+    component: _7d0cf0b4,
+    name: "people-components-currentCourses"
   }, {
-    path: "/people/students/components/previousWebinars",
-    component: _0cb2a954,
-    name: "people-students-components-previousWebinars"
+    path: "/people/components/previousWebinars",
+    component: _543e5d56,
+    name: "people-components-previousWebinars"
   }, {
-    path: "/people/students/components/upcomingWebinars",
-    component: _36a069fb,
-    name: "people-students-components-upcomingWebinars"
+    path: "/people/components/upcomingWebinars",
+    component: _12da8ffa,
+    name: "people-components-upcomingWebinars"
   }, {
     path: "/people/tutors/components/accountSummary",
     component: _821ead58,

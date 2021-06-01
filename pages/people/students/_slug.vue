@@ -92,12 +92,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import currentCourses from './components/currentCourses.vue'
-import completedCourses from './components/completedCourses.vue'
-import upcomingWebinars from './components/upcomingWebinars.vue'
-import previousWebinars from './components/previousWebinars.vue'
-import activityLog from './components/activityLog.vue'
-import accountSummary from './components/accountSummary.vue'
+import currentCourses from '../components/currentCourses.vue'
+import completedCourses from '../components/completedCourses.vue'
+import upcomingWebinars from '../components/upcomingWebinars.vue'
+import previousWebinars from '../components/previousWebinars.vue'
+import activityLog from '../components/activityLog.vue'
+import accountSummary from '../components/accountSummary.vue'
 
 export default {
   components: {

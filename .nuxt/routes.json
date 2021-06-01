@@ -119,46 +119,46 @@
     "_name": "_58978df9"
   },
   {
-    "name": "people-students-components-accountSummary",
-    "path": "/people/students/components/accountSummary",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/accountSummary.vue",
-    "chunkName": "pages/people/students/components/accountSummary",
-    "_name": "_4d6ba2a2"
+    "name": "people-components-accountSummary",
+    "path": "/people/components/accountSummary",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/accountSummary.vue",
+    "chunkName": "pages/people/components/accountSummary",
+    "_name": "_44f86f24"
   },
   {
-    "name": "people-students-components-activityLog",
-    "path": "/people/students/components/activityLog",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/activityLog.vue",
-    "chunkName": "pages/people/students/components/activityLog",
-    "_name": "_7539e2a2"
+    "name": "people-components-activityLog",
+    "path": "/people/components/activityLog",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/activityLog.vue",
+    "chunkName": "pages/people/components/activityLog",
+    "_name": "_4b5ae550"
   },
   {
-    "name": "people-students-components-completedCourses",
-    "path": "/people/students/components/completedCourses",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/completedCourses.vue",
-    "chunkName": "pages/people/students/components/completedCourses",
-    "_name": "_7d3a4763"
+    "name": "people-components-completedCourses",
+    "path": "/people/components/completedCourses",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/completedCourses.vue",
+    "chunkName": "pages/people/components/completedCourses",
+    "_name": "_59746d62"
   },
   {
-    "name": "people-students-components-currentCourses",
-    "path": "/people/students/components/currentCourses",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/currentCourses.vue",
-    "chunkName": "pages/people/students/components/currentCourses",
-    "_name": "_78d356f5"
+    "name": "people-components-currentCourses",
+    "path": "/people/components/currentCourses",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/currentCourses.vue",
+    "chunkName": "pages/people/components/currentCourses",
+    "_name": "_7d0cf0b4"
   },
   {
-    "name": "people-students-components-previousWebinars",
-    "path": "/people/students/components/previousWebinars",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/previousWebinars.vue",
-    "chunkName": "pages/people/students/components/previousWebinars",
-    "_name": "_0cb2a954"
+    "name": "people-components-previousWebinars",
+    "path": "/people/components/previousWebinars",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/previousWebinars.vue",
+    "chunkName": "pages/people/components/previousWebinars",
+    "_name": "_543e5d56"
   },
   {
-    "name": "people-students-components-upcomingWebinars",
-    "path": "/people/students/components/upcomingWebinars",
-    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/upcomingWebinars.vue",
-    "chunkName": "pages/people/students/components/upcomingWebinars",
-    "_name": "_36a069fb"
+    "name": "people-components-upcomingWebinars",
+    "path": "/people/components/upcomingWebinars",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/upcomingWebinars.vue",
+    "chunkName": "pages/people/components/upcomingWebinars",
+    "_name": "_12da8ffa"
   },
   {
     "name": "people-tutors-components-accountSummary",

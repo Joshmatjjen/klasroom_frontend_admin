@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Activity Log -->
-    <section v-if="tabs === 4">
+    <!-- Upcoming Webinar -->
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
-              :columns="activityLogColumns"
-              :rows="activityLogRows"
+              :columns="upcomingWebinarsColumns"
+              :rows="upcomingWebinarsRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const activityLog = require('@/static/json/activity-log.json')
+const upcomingWebinars = require('@/static/json/upcoming-webinars.json')
 
 export default {
   // components: { tester },
@@ -43,10 +43,30 @@ export default {
       students: false,
       draft: false,
     },
-    activityLogColumns: [
+    upcomingWebinarsColumns: [
       {
-        label: 'Action',
-        field: 'action',
+        label: 'Course title',
+        field: 'courseTitle',
+      },
+      {
+        label: 'Status',
+        field: 'status',
+      },
+      {
+        label: 'Price',
+        field: 'price',
+      },
+      {
+        label: 'Sales',
+        field: 'sales',
+      },
+      {
+        label: 'Attendance',
+        field: 'attendance',
+      },
+      {
+        label: 'Rating',
+        field: 'rating',
       },
       {
         label: 'Date',
@@ -55,12 +75,27 @@ export default {
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
       },
+    ],
+    upcomingWebinarsRows: _.take(upcomingWebinars, 10),
+
+    columnsStudents: [
       {
-        label: 'Status',
-        field: 'status',
+        label: 'Name',
+        field: 'name',
+      },
+      {
+        label: 'Payment date',
+        field: 'paymentDate',
+      },
+      {
+        label: 'Last Active',
+        field: 'lastActive',
+      },
+      {
+        label: 'Course progress',
+        field: 'progress',
       },
     ],
-    activityLogRows: _.take(activityLog, 10),
   }),
   computed: {
     ...mapState({

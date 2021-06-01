@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Current Courses -->
-    <section v-if="tabs === 0">
+    <!-- Completed Courses -->
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
-              :columns="currentCoursesColumns"
-              :rows="currentCoursesRows"
+              :columns="completedCoursesColumns"
+              :rows="completedCoursesRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,8 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const courses = require('@/static/json/latest-courses.json')
-const currentCourses = require('@/static/json/current-courses.json')
+const completedCourses = require('@/static/json/completed-courses.json')
 
 export default {
   // components: { tester },
@@ -31,7 +30,7 @@ export default {
   props: {
     tabs: { type: Number, required: false },
   },
-  name: 'current-courses',
+  name: 'completed-courses',
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
     store.commit('app/SET_TITLE', 'Students')
@@ -39,12 +38,7 @@ export default {
   data: () => ({
     home: 'home',
     actionOpt: false,
-    isCourses: {
-      preview: true,
-      students: false,
-      draft: false,
-    },
-    currentCoursesColumns: [
+    completedCoursesColumns: [
       {
         label: 'Course title',
         field: 'courseTitle',
@@ -70,14 +64,14 @@ export default {
         field: 'rating',
       },
       {
-        label: 'Date started',
-        field: 'dateStarted',
+        label: 'Date completed',
+        field: 'dateCompleted',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    currentCoursesRows: _.take(currentCourses, 10),
+    completedCoursesRows: _.take(completedCourses, 10),
   }),
   computed: {
     ...mapState({
