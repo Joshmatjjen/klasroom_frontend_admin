@@ -37,7 +37,9 @@
       </div>
     </div>
     <hr />
-    <div class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto">
+    <div
+      class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto overflow-y-auto scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
+    >
       <vue-good-table
         :columns="columns"
         :rows="rows"
@@ -112,8 +114,17 @@
                 >₦{{ props.row.price }}</span
               >
             </span>
+            <span v-else-if="props.column.field == 'attendance'">
+              <span class="text-gray-700 font-normal">{{
+                props.row.attendance
+                  ? props.row.attendance.toLocaleString()
+                  : '-----'
+              }}</span>
+            </span>
             <span
-              v-else-if="props.column.field == 'rating'"
+              v-else-if="
+                props.column.field == 'rating' && props.row.rating !== ''
+              "
               class="flex flex-row"
             >
               <rating :grade="props.row.rating" :viewOnly="true" />
@@ -123,7 +134,17 @@
               class="items-center relative"
               v-else-if="props.column.field == 'status'"
             >
-              <span class="dot absolute bg-green-500 rounded-full"></span>
+              <span
+                class="dot absolute rounded-full"
+                :class="
+                  props.row.status === 'Active' ||
+                  props.row.status === 'Completed'
+                    ? 'bg-green-500'
+                    : props.row.status === 'Upcoming'
+                    ? 'bg-gray-500'
+                    : 'bg-gray-500'
+                "
+              ></span>
               <span class="text-gray-700 text-center">{{
                 props.row.status
               }}</span>
@@ -146,15 +167,21 @@
                     Object.keys(obj).includes('dateStarted')
                   )) ||
                 (props.column.field === 'status' &&
+                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateStarted')
                   ) &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateCompleted')
                   )) ||
+                (props.column.field === 'status' &&
+                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                (props.column.field === 'date' &&
+                  !rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
+                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateStarted')
                   ) &&
