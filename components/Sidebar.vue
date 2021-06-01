@@ -23,26 +23,44 @@
       <div class="menu-scroll">
         <nav class="h-full">
           <span
-            v-if="$route.name !== `${userDash}-webinars-new`"
-            class="flex justify-center"
-            :class="userDash === 'tutor' ? 'mb-3' : 'mb-10'"
-          >
-            <nuxt-link
-              :to="`/webinars/new`"
+            v-if="peopleOpt || createOpt"
+            class="transparent h-screen w-screen absolute -mt-24"
+            @click.prevent="toggleModals"
+          ></span>
+          <span class="flex justify-center mb-3">
+            <div
               class="btn btn-primary flex flex-row"
               style="padding-left: 1rem; padding-right: 1rem"
+              @click.prevent="toggleCreate"
             >
               <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
               Create New
               <img class="pl-3" src="~/static/icon/plus-white.svg" />
-            </nuxt-link>
+            </div>
+
+            <simple-pop-up
+              :createOpt="createOpt"
+              :styles="
+                'top-0 ml-5' && $device.isMobile
+                  ? 'mt-16'
+                  : 'mt-0 right-0 -mr-24'
+              "
+              :options="[
+                {
+                  name: 'Create course',
+                  type: 'link',
+                  link: '/courses/create',
+                },
+                {
+                  name: 'Create webinar',
+                  type: 'link',
+                  link: '/webinars/create',
+                },
+                { name: 'Create admin', type: 'link', link: '/admin/create' },
+              ]"
+            />
           </span>
-          <span v-if="userDash === 'tutor'" class="flex justify-center mb-10">
-            <nuxt-link :to="`}/courses/create`" class="btn btn-primary">
-              <!-- <img src="/icon/camera.svg" class="inline h-5 mr-2" /> -->
-              New Course
-            </nuxt-link>
-          </span>
+
           <ul class="relative h-full" @click="toggleNav">
             <li class="nav-item">
               <router-link
@@ -54,15 +72,48 @@
                 Dashboard
               </router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item relative">
               <router-link
                 :to="{ name: 'people' }"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
               >
-                People
+                <p>People</p>
               </router-link>
+              <img
+                v-if="!$device.isMobile"
+                class="cursor-pointer"
+                :style="{
+                  position: 'absolute',
+                  top: '40%',
+                  right: '1rem',
+                }"
+                src="/actions/arrow-right.svg"
+                @click.prevent="togglePeople"
+              />
+              <simple-pop-up
+                v-if="!$device.isMobile"
+                :createOpt="peopleOpt"
+                :styles="
+                  'top-0 ml-5' && $device.isMobile
+                    ? 'mt-16'
+                    : '-mt-12 right-0 -mr-24'
+                "
+                :options="[
+                  {
+                    name: 'Admins',
+                    type: 'props',
+                    props: 'admin',
+                  },
+                  {
+                    name: 'Tutors',
+                    type: 'props',
+                    props: 'tutors',
+                  },
+                  { name: 'Students', type: 'props', props: 'students' },
+                ]"
+              />
             </li>
             <li class="nav-item">
               <router-link
@@ -165,10 +216,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import SimplePopUp from './popup/SimplePopUp.vue'
 
 export default {
+  components: { SimplePopUp },
   data: () => ({
     appName: process.env.appName,
+    createOpt: false,
+    peopleOpt: false,
   }),
 
   // computed: mapGetters({
@@ -190,9 +245,31 @@ export default {
 
   methods: {
     toggleNav(e) {
-      if (e) e.preventDefault()
+      // if (e) e.preventDefault()
 
       this.$store.commit('app/SET_MENU', !this.menu)
+      // if (this.createOpt) this.createOpt = false
+      // if (this.peopleOpt) this.peopleOpt = false
+      // this.toggleCreate(false)
+      // this.togglePeople(false)
+    },
+    toggleCreate(value) {
+      // if (value) {
+      //   this.createOpt = value
+      // } else {
+      this.createOpt = !this.createOpt
+      if (this.createOpt) this.peopleOpt = false
+      // }
+      // if (this.peopleOpt === true) this.peopleOpt = false
+    },
+    togglePeople(value) {
+      this.peopleOpt = !this.peopleOpt
+      if (this.peopleOpt) this.createOpt = false
+      // if (this.createOpt === true) this.createOpt = false
+    },
+    toggleModals() {
+      if (this.createOpt) this.createOpt = false
+      if (this.peopleOpt) this.peopleOpt = false
     },
     async logout() {
       // Log out the user.

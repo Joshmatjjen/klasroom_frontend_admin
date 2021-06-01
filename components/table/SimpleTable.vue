@@ -12,7 +12,32 @@
       }"
       @click="toggleMenu"
     ></div>
-    <div class="p-1 md:p-5 lg:p-6 overflow-x-auto">
+    <div class="flex flex-row justify-between px-5 my-5">
+      <p class="text-sm font-semibold">
+        {{ rows ? rows.length : 0 }} {{ type }}
+      </p>
+      <div class="flex flex-row gap-5">
+        <p class="text-xs font-medium">Export CSV</p>
+        <div class="vl"></div>
+        <div class="flex flex-row">
+          <p class="text-xs font-medium pr-3">Filter</p>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
+              fill="#545454"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto">
       <vue-good-table
         :columns="columns"
         :rows="rows"
@@ -25,10 +50,7 @@
         styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
-            :to="'/tutor/webinars/preview/' + props.row.title"
-            class="relative"
-          >
+          <nuxt-link :to="'/courses/view/' + props.row.title" class="relative">
             <span
               v-if="
                 props.column.field == 'webinarTitle' ||
@@ -101,6 +123,7 @@
             </span>
             <span v-else-if="props.column.field == 'rating'">
               <rating :grade="props.row.rating" :viewOnly="true" />
+              <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
             </span>
 
             <span v-else>
@@ -113,9 +136,7 @@
                 props.column.field == 'createdAt'
               "
             >
-              <div
-                class="flex flex-row gap-10 items-center justify-end relative"
-              >
+              <div class="absolute right-0 -mr-4">
                 <span
                   v-on:click.prevent="toggleMenu(props.row.id)"
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
@@ -125,8 +146,8 @@
                   :class="{
                     hidden: opt && props.row.id === optId ? false : true,
                   }"
-                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 mt-5 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
-                  :style="{ zIndex: 3 }"
+                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
+                  :style="{ zIndex: 100 }"
                 >
                   <a
                     href="#"
@@ -182,6 +203,7 @@ export default {
     columns: { type: Array, required: false },
     rows: { type: Array, required: false },
     onDraft: { type: Boolean, required: false },
+    type: { type: String, required: false },
     // more: { type: String, default: null },
   },
   name: 'simple-table',
