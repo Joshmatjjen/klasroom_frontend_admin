@@ -53,60 +53,24 @@
         `${2} Current Courses`,
         `${4} Completed Courses`,
         `${6} Upcoming Webinars`,
-        `${6} Completed Webinars`,
+        `${6} Prev. Webinars`,
         `Active log`,
         `Account summary`,
       ]"
     />
     <!-- Current Courses -->
     <section v-if="tabs === 0">
-      <div class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <list-table-1
-              :columns="currentCoursesColumns"
-              :rows="currentCoursesRows"
-              type="Students"
-              :total="124322"
-              route="/people/students/"
-            />
-          </div>
-        </div>
-      </div>
+      <current-courses :tabs="tabs" />
     </section>
 
     <!-- Completed Courses -->
     <section v-if="tabs === 1">
-      <div class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <list-table-1
-              :columns="completedCoursesColumns"
-              :rows="completedCoursesRows"
-              type="Previous Courses"
-              :total="4"
-              route="/people/students/"
-            />
-          </div>
-        </div>
-      </div>
+      <completed-courses :tabs="tabs" />
     </section>
 
     <!-- Upcomming Webinars -->
     <section v-if="tabs === 2">
-      <div class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <list-table-1
-              :columns="upcomingWebinarsColumns"
-              :rows="upcomingWebinarsRows"
-              type="Upcoming Webinars"
-              :total="6"
-              route="/people/students/"
-            />
-          </div>
-        </div>
-      </div>
+      <upcoming-webinars :tabs="tabs" />
     </section>
 
     <!-- <div
@@ -179,15 +143,12 @@
 
 <script>
 import { mapState } from 'vuex'
-
-const courses = require('@/static/json/latest-courses.json')
-const currentCourses = require('@/static/json/current-courses.json')
-const completedCourses = require('@/static/json/completed-courses.json')
-const upcomingWebinars = require('@/static/json/upcoming-webinars.json')
-const webreviews = require('@/static/json/webinar-reviews.json')
-const students = require('@/static/json/students.json')
+import currentCourses from './components/currentCourses.vue'
+import completedCourses from './components/completedCourses.vue'
+import upcomingWebinars from './components/upcomingWebinars.vue'
 
 export default {
+  components: { currentCourses, completedCourses, upcomingWebinars },
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
@@ -195,7 +156,6 @@ export default {
   },
   data: () => ({
     home: 'home',
-    course: courses[0],
     tabs: 0,
     actionOpt: false,
     isCourses: {
@@ -203,129 +163,6 @@ export default {
       students: false,
       draft: false,
     },
-    currentCoursesColumns: [
-      {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Comp',
-        field: 'comp',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
-      },
-      {
-        label: 'Date started',
-        field: 'dateStarted',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
-    ],
-    currentCoursesRows: _.take(currentCourses, 10),
-    completedCoursesColumns: [
-      {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Comp',
-        field: 'comp',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
-      },
-      {
-        label: 'Date completed',
-        field: 'dateCompleted',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
-    ],
-    completedCoursesRows: _.take(completedCourses, 10),
-    upcomingWebinarsColumns: [
-      {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Attendance',
-        field: 'attendance',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
-      },
-      {
-        label: 'Date',
-        field: 'date',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
-    ],
-    upcomingWebinarsRows: _.take(upcomingWebinars, 10),
-
-    columnsStudents: [
-      {
-        label: 'Name',
-        field: 'name',
-      },
-      {
-        label: 'Payment date',
-        field: 'paymentDate',
-      },
-      {
-        label: 'Last Active',
-        field: 'lastActive',
-      },
-      {
-        label: 'Course progress',
-        field: 'progress',
-      },
-    ],
-    rowsReviews: _.take(webreviews, 10),
-    rowsStudents: _.take(students, 4),
   }),
   computed: {
     ...mapState({
@@ -350,7 +187,7 @@ export default {
       this.$store.commit('app/SET_VIEW_DATA', {
         type: 'Course',
         title: 'How to Build Multiple Sources of Income',
-        desc: `Learn how to build and manage multiple sources of 
+        desc: `Learn how to build and manage multiple sources of
           income that leads to sustainable wealth`,
         price: 2500,
       })

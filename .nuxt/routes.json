@@ -119,6 +119,27 @@
     "_name": "_58978df9"
   },
   {
+    "name": "people-students-components-completedCourses",
+    "path": "/people/students/components/completedCourses",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/completedCourses.vue",
+    "chunkName": "pages/people/students/components/completedCourses",
+    "_name": "_7d3a4763"
+  },
+  {
+    "name": "people-students-components-currentCourses",
+    "path": "/people/students/components/currentCourses",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/currentCourses.vue",
+    "chunkName": "pages/people/students/components/currentCourses",
+    "_name": "_78d356f5"
+  },
+  {
+    "name": "people-students-components-upcomingWebinars",
+    "path": "/people/students/components/upcomingWebinars",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/upcomingWebinars.vue",
+    "chunkName": "pages/people/students/components/upcomingWebinars",
+    "_name": "_36a069fb"
+  },
+  {
     "name": "courses-view-slug",
     "path": "/courses/view/:slug?",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/courses/view/_slug.vue",
