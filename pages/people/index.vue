@@ -182,5 +182,29 @@ export default {
     ],
     studentRows: _.take(studentsData, 10),
   }),
+
+  created() {
+    if (
+      this.$route.params &&
+      Object.keys(this.$route.params).length !== 0 &&
+      this.$route.params.constructor === Object
+    ) {
+      console.log(this.$route.params)
+      this.tab = this.$route.params.tab
+    } else this.tab = 0
+  },
+
+  mounted() {
+    if (this.$device.isMobile) {
+      this.tabs.unshift('Home')
+    }
+  },
+  methods: {
+    isEmptyObject(value) {
+      return (
+        value && Object.keys(value).length === 0 && value.constructor === Object
+      )
+    },
+  },
 }
 </script>
