@@ -174,7 +174,10 @@
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateCompleted')
                   )) ||
-                props.column.field === 'date' ||
+                (props.column.field === 'status' &&
+                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                (props.column.field === 'date' &&
+                  !rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&

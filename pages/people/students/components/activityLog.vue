@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
+    <!-- Activity Log -->
+    <section v-if="tabs === 4">
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
-              :columns="prevWebinarsColumns"
-              :rows="prevWebinarsRows"
+              :columns="activityLogColumns"
+              :rows="activityLogRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const prevWebinars = require('@/static/json/previous-webinars.json')
+const activityLog = require('@/static/json/activity-log.json')
 
 export default {
   // components: { tester },
@@ -43,30 +43,10 @@ export default {
       students: false,
       draft: false,
     },
-    prevWebinarsColumns: [
+    activityLogColumns: [
       {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Attendance',
-        field: 'attendance',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
+        label: 'Action',
+        field: 'action',
       },
       {
         label: 'Date',
@@ -75,27 +55,12 @@ export default {
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
       },
-    ],
-    prevWebinarsRows: _.take(prevWebinars, 10),
-
-    columnsStudents: [
       {
-        label: 'Name',
-        field: 'name',
-      },
-      {
-        label: 'Payment date',
-        field: 'paymentDate',
-      },
-      {
-        label: 'Last Active',
-        field: 'lastActive',
-      },
-      {
-        label: 'Course progress',
-        field: 'progress',
+        label: 'Status',
+        field: 'status',
       },
     ],
+    activityLogRows: _.take(activityLog, 10),
   }),
   computed: {
     ...mapState({

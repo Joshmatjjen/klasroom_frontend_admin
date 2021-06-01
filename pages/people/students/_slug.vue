@@ -73,71 +73,20 @@
       <upcoming-webinars :tabs="tabs" />
     </section>
 
-    <!-- <div
-      v-if="!isCourses.students"
-      class="container mt-5 mx-auto mb-10 px-4 lg:px-0"
-    >
-      <section class="grid grid-cols-12 gap-5">
-        <div class="col-span-full lg:col-span-8 xl:col-span-8">
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-full">
-              <nuxt-link to="/">
-                <div class="col-span-12">
-                  <list-table-1
-                    :columns="columnsStudents"
-                    :rows="rowsStudents"
-                    type="Reviews"
-                  />
-                </div>
-              </nuxt-link>
-            </div>
-          </div>
-        </div>
-        <div class="col-span-full lg:col-span-4 xl:col-span-4">
-          <div
-            class="bg-white rounded-xl border border-gray-300 shadow-hover relative min-h-full"
-          >
-            <div class="block mb-2">
-              <div class="big-avatar relative rounded-xl overflow-hidden">
-                <img
-                  src="https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="px-4 md:px-5 lg:px-6 py-4">
-              <ul class="text-gray-700">
-                <li class="text-center">
-                  <h5 class="name-text font-bold mb-2 capitalize">
-                    {{ user ? user.name : '' }}
-                  </h5>
-                  <p class="text-sm text-gray-700">
-                    Registered
-                    {{ user ? user.createdAt : '' }}
-                  </p>
-                </li>
-                <li>
-                  <hr class="my-5" />
-                  <label class="checkbox" @click="passwordReset">
-                    <span class="text-sm">Initiate password reset</span>
-                    <input type="checkbox" value="intermediate" disabled />
-                    <span class="checkmark"></span>
-                  </label>
-                </li>
-                <li>
-                  <label class="checkbox" @click="suspendAccount">
-                    <span class="text-sm">Suspend account</span>
-                    <input type="checkbox" value="intermediate" disabled />
-                    <span class="checkmark"></span>
-                  </label>
-                </li>
-                <hr class="my-5" />
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div> -->
+    <!-- Previous Webinars -->
+    <section v-if="tabs === 3">
+      <previous-webinars :tabs="tabs" />
+    </section>
+
+    <!-- Activity Log -->
+    <section v-if="tabs === 4">
+      <activity-log :tabs="tabs" />
+    </section>
+
+    <!-- Account Summary -->
+    <section v-if="tabs === 5">
+      <account-summary :tabs="tabs" />
+    </section>
   </div>
 </template>
 
@@ -147,6 +96,8 @@ import currentCourses from './components/currentCourses.vue'
 import completedCourses from './components/completedCourses.vue'
 import upcomingWebinars from './components/upcomingWebinars.vue'
 import previousWebinars from './components/previousWebinars.vue'
+import activityLog from './components/activityLog.vue'
+import accountSummary from './components/accountSummary.vue'
 
 export default {
   components: {
@@ -154,6 +105,8 @@ export default {
     completedCourses,
     upcomingWebinars,
     previousWebinars,
+    activityLog,
+    accountSummary,
   },
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {

@@ -119,6 +119,20 @@
     "_name": "_58978df9"
   },
   {
+    "name": "people-students-components-accountSummary",
+    "path": "/people/students/components/accountSummary",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/accountSummary.vue",
+    "chunkName": "pages/people/students/components/accountSummary",
+    "_name": "_4d6ba2a2"
+  },
+  {
+    "name": "people-students-components-activityLog",
+    "path": "/people/students/components/activityLog",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/activityLog.vue",
+    "chunkName": "pages/people/students/components/activityLog",
+    "_name": "_7539e2a2"
+  },
+  {
     "name": "people-students-components-completedCourses",
     "path": "/people/students/components/completedCourses",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/completedCourses.vue",
