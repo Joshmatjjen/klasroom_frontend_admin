@@ -81,7 +81,7 @@
 
     <!-- Account Summary  -->
     <section v-if="tabs === 3">
-      <account-summary :tabs="tabs" />
+      <account-summary :tabs="tabs" type="tutors" />
     </section>
 
     <!--  -->

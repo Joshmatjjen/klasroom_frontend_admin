@@ -27,12 +27,6 @@ const _59746d62 = () => interopDefault(import('../pages/people/components/comple
 const _7d0cf0b4 = () => interopDefault(import('../pages/people/components/currentCourses.vue' /* webpackChunkName: "pages/people/components/currentCourses" */))
 const _543e5d56 = () => interopDefault(import('../pages/people/components/previousWebinars.vue' /* webpackChunkName: "pages/people/components/previousWebinars" */))
 const _12da8ffa = () => interopDefault(import('../pages/people/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/components/upcomingWebinars" */))
-const _821ead58 = () => interopDefault(import('../pages/people/tutors/components/accountSummary.vue' /* webpackChunkName: "pages/people/tutors/components/accountSummary" */))
-const _9833c3ac = () => interopDefault(import('../pages/people/tutors/components/activityLog.vue' /* webpackChunkName: "pages/people/tutors/components/activityLog" */))
-const _d9a6a670 = () => interopDefault(import('../pages/people/tutors/components/completedCourses.vue' /* webpackChunkName: "pages/people/tutors/components/completedCourses" */))
-const _5e79d19a = () => interopDefault(import('../pages/people/tutors/components/currentCourses.vue' /* webpackChunkName: "pages/people/tutors/components/currentCourses" */))
-const _0f9910bb = () => interopDefault(import('../pages/people/tutors/components/previousWebinars.vue' /* webpackChunkName: "pages/people/tutors/components/previousWebinars" */))
-const _4c92cf60 = () => interopDefault(import('../pages/people/tutors/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/tutors/components/upcomingWebinars" */))
 const _51b2cc1a = () => interopDefault(import('../pages/courses/view/_slug.vue' /* webpackChunkName: "pages/courses/view/_slug" */))
 const _68d1c1e7 = () => interopDefault(import('../pages/people/students/_slug.vue' /* webpackChunkName: "pages/people/students/_slug" */))
 const _0adb7de8 = () => interopDefault(import('../pages/people/tutors/_slug.vue' /* webpackChunkName: "pages/people/tutors/_slug" */))
@@ -148,30 +142,6 @@ export const routerOptions = {
     path: "/people/components/upcomingWebinars",
     component: _12da8ffa,
     name: "people-components-upcomingWebinars"
-  }, {
-    path: "/people/tutors/components/accountSummary",
-    component: _821ead58,
-    name: "people-tutors-components-accountSummary"
-  }, {
-    path: "/people/tutors/components/activityLog",
-    component: _9833c3ac,
-    name: "people-tutors-components-activityLog"
-  }, {
-    path: "/people/tutors/components/completedCourses",
-    component: _d9a6a670,
-    name: "people-tutors-components-completedCourses"
-  }, {
-    path: "/people/tutors/components/currentCourses",
-    component: _5e79d19a,
-    name: "people-tutors-components-currentCourses"
-  }, {
-    path: "/people/tutors/components/previousWebinars",
-    component: _0f9910bb,
-    name: "people-tutors-components-previousWebinars"
-  }, {
-    path: "/people/tutors/components/upcomingWebinars",
-    component: _4c92cf60,
-    name: "people-tutors-components-upcomingWebinars"
   }, {
     path: "/courses/view/:slug?",
     component: _51b2cc1a,
