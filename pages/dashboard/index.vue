@@ -7,6 +7,7 @@
             amount="12,330,055.24"
             :items="courses"
             weekSales="32,420"
+            totalSales="32,420"
             planSales="82,000"
             productSales="105,000"
             more="/dashboard"
@@ -14,19 +15,15 @@
           <dash-items-status
             title="Courses"
             :items="courses"
-            weekSales="+13 sales this week"
             :sold="314 + ' courses sold'"
             :published="102 + ' courses published this week'"
-            :total="12420 + ' total courses'"
             more="/courses"
           />
           <dash-items-status
             title="Webinars"
             :items="courses"
-            weekSales="+28 sales this week"
-            :sold="314 + ' courses sold'"
-            :published="102 + ' courses published this week'"
-            :total="12420 + ' total webinars'"
+            :sold="314 + ' Webinars sold'"
+            :published="102 + ' Webinars published this week'"
             more="/webinars"
           />
         </div>
