@@ -133,6 +133,13 @@
     "_name": "_78d356f5"
   },
   {
+    "name": "people-students-components-previousWebinars",
+    "path": "/people/students/components/previousWebinars",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/previousWebinars.vue",
+    "chunkName": "pages/people/students/components/previousWebinars",
+    "_name": "_0cb2a954"
+  },
+  {
     "name": "people-students-components-upcomingWebinars",
     "path": "/people/students/components/upcomingWebinars",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/components/upcomingWebinars.vue",

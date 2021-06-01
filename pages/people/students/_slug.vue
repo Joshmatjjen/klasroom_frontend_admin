@@ -146,9 +146,15 @@ import { mapState } from 'vuex'
 import currentCourses from './components/currentCourses.vue'
 import completedCourses from './components/completedCourses.vue'
 import upcomingWebinars from './components/upcomingWebinars.vue'
+import previousWebinars from './components/previousWebinars.vue'
 
 export default {
-  components: { currentCourses, completedCourses, upcomingWebinars },
+  components: {
+    currentCourses,
+    completedCourses,
+    upcomingWebinars,
+    previousWebinars,
+  },
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
