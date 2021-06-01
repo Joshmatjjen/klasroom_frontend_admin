@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <hr/>
+    <hr />
     <div class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto">
       <vue-good-table
         :columns="columns"
@@ -50,10 +50,7 @@
         styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
-            :to="'/courses/view/' + props.row.title"
-            class="relative"
-          >
+          <nuxt-link :to="'/courses/view/' + props.row.title" class="relative">
             <span
               v-if="
                 props.column.field == 'webinarTitle' ||
@@ -139,7 +136,7 @@
                 props.column.field == 'createdAt'
               "
             >
-              <div class="absolute right-0 mr-2">
+              <div class="absolute right-0 -mr-4">
                 <span
                   v-on:click.prevent="toggleMenu(props.row.id)"
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
