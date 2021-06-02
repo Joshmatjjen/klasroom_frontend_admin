@@ -182,6 +182,13 @@
     "_name": "_51b2cc1a"
   },
   {
+    "name": "people-admins-slug",
+    "path": "/people/admins/:slug?",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/admins/_slug.vue",
+    "chunkName": "pages/people/admins/_slug",
+    "_name": "_62437b53"
+  },
+  {
     "name": "people-students-slug",
     "path": "/people/students/:slug?",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/students/_slug.vue",
