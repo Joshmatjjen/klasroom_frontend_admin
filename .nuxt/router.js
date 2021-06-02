@@ -21,8 +21,18 @@ const _4e04422a = () => interopDefault(import('../pages/dashboard/suggested-webi
 const _3db7b39a = () => interopDefault(import('../pages/dashboard/upcoming-webinars.vue' /* webpackChunkName: "pages/dashboard/upcoming-webinars" */))
 const _1a87f1ce = () => interopDefault(import('../pages/webinars/create/index.vue' /* webpackChunkName: "pages/webinars/create/index" */))
 const _58978df9 = () => interopDefault(import('../pages/webinars/new/index.vue' /* webpackChunkName: "pages/webinars/new/index" */))
+const _44f86f24 = () => interopDefault(import('../pages/people/components/accountSummary.vue' /* webpackChunkName: "pages/people/components/accountSummary" */))
+const _4b5ae550 = () => interopDefault(import('../pages/people/components/activityLog.vue' /* webpackChunkName: "pages/people/components/activityLog" */))
+const _59746d62 = () => interopDefault(import('../pages/people/components/completedCourses.vue' /* webpackChunkName: "pages/people/components/completedCourses" */))
+const _7d0cf0b4 = () => interopDefault(import('../pages/people/components/currentCourses.vue' /* webpackChunkName: "pages/people/components/currentCourses" */))
+const _543e5d56 = () => interopDefault(import('../pages/people/components/previousWebinars.vue' /* webpackChunkName: "pages/people/components/previousWebinars" */))
+const _99cfc132 = () => interopDefault(import('../pages/people/components/sales.vue' /* webpackChunkName: "pages/people/components/sales" */))
+const _12da8ffa = () => interopDefault(import('../pages/people/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/components/upcomingWebinars" */))
+const _30634d0e = () => interopDefault(import('../pages/people/components/withdrawals.vue' /* webpackChunkName: "pages/people/components/withdrawals" */))
 const _51b2cc1a = () => interopDefault(import('../pages/courses/view/_slug.vue' /* webpackChunkName: "pages/courses/view/_slug" */))
+const _62437b53 = () => interopDefault(import('../pages/people/admins/_slug.vue' /* webpackChunkName: "pages/people/admins/_slug" */))
 const _68d1c1e7 = () => interopDefault(import('../pages/people/students/_slug.vue' /* webpackChunkName: "pages/people/students/_slug" */))
+const _0adb7de8 = () => interopDefault(import('../pages/people/tutors/_slug.vue' /* webpackChunkName: "pages/people/tutors/_slug" */))
 const _2302c5d9 = () => interopDefault(import('../pages/webinars/preview/_slug.vue' /* webpackChunkName: "pages/webinars/preview/_slug" */))
 const _56e458ba = () => interopDefault(import('../pages/webinars/view/_slug.vue' /* webpackChunkName: "pages/webinars/view/_slug" */))
 const _ebcda134 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
@@ -112,13 +122,53 @@ export const routerOptions = {
     component: _58978df9,
     name: "webinars-new"
   }, {
+    path: "/people/components/accountSummary",
+    component: _44f86f24,
+    name: "people-components-accountSummary"
+  }, {
+    path: "/people/components/activityLog",
+    component: _4b5ae550,
+    name: "people-components-activityLog"
+  }, {
+    path: "/people/components/completedCourses",
+    component: _59746d62,
+    name: "people-components-completedCourses"
+  }, {
+    path: "/people/components/currentCourses",
+    component: _7d0cf0b4,
+    name: "people-components-currentCourses"
+  }, {
+    path: "/people/components/previousWebinars",
+    component: _543e5d56,
+    name: "people-components-previousWebinars"
+  }, {
+    path: "/people/components/sales",
+    component: _99cfc132,
+    name: "people-components-sales"
+  }, {
+    path: "/people/components/upcomingWebinars",
+    component: _12da8ffa,
+    name: "people-components-upcomingWebinars"
+  }, {
+    path: "/people/components/withdrawals",
+    component: _30634d0e,
+    name: "people-components-withdrawals"
+  }, {
     path: "/courses/view/:slug?",
     component: _51b2cc1a,
     name: "courses-view-slug"
   }, {
+    path: "/people/admins/:slug?",
+    component: _62437b53,
+    name: "people-admins-slug"
+  }, {
     path: "/people/students/:slug?",
     component: _68d1c1e7,
     name: "people-students-slug"
+  }, {
+    path: "/people/tutors/:slug?",
+    component: _0adb7de8,
+    name: "people-tutors-slug"
   }, {
     path: "/webinars/preview/:slug?",
     component: _2302c5d9,

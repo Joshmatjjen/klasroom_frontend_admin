@@ -1,0 +1,85 @@
+[{
+    "id": 1,
+    "title": "The best course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 3622,
+    "comp": 18260,
+    "rating": 4.5,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 2,
+    "title": "View great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 400,
+    "comp": 18260,
+    "rating": 3,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 3,
+    "title": "Really great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 2345,
+    "comp": 18260,
+    "rating": 5,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 4,
+    "title": "Really great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 235,
+    "comp": 18260,
+    "rating": 1,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 4,
+    "title": "Really great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 235,
+    "comp": 18260,
+    "rating": 5,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 4,
+    "title": "Really great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 235,
+    "comp": 18260,
+    "rating": 1,
+    "dateCompleted": "2020-10-31"
+  },
+  {
+    "id": 4,
+    "title": "Really great course for beginners!",
+    "imageUrl": "/profile.jpg",
+    "status": "Completed",
+    "desc": "You’ll understand what money is all about, how it derives its value and its origins....",
+    "price": 25000,
+    "sales": 235,
+    "comp": 18260,
+    "rating": 4,
+    "dateCompleted": "2020-10-31"
+  }
+]
