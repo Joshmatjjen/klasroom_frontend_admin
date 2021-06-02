@@ -15,7 +15,7 @@
       ref="scrollbar"
       class="mt-4 mb-3 mx-2 p-3 pt-1 flex flex-col space-y-4 overflow-y-auto scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
     >
-    <p>We are pleased to announce that our free webinar that teaches how to maximize the Klasroom platform. Please, follow this link to register.</p>
+    <p class="text-sm">We are pleased to announce that our free webinar that teaches how to maximize the Klasroom platform. Please, follow this link to register.</p>
     </div>
   </div>
 </template>
