@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Current Courses -->
-    <section v-if="tabs === 0">
+    <!-- Activity Log -->
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <list-table-1
-              :columns="currentCoursesColumns"
-              :rows="currentCoursesRows"
+            <list-table-2
+              :columns="allSalesColumns"
+              :rows="allSalesRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,8 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const courses = require('@/static/json/latest-courses.json')
-const currentCourses = require('@/static/json/current-courses.json')
+const allSales = require('@/static/json/all-sales.json')
 
 export default {
   // components: { tester },
@@ -31,7 +30,7 @@ export default {
   props: {
     tabs: { type: Number, required: false },
   },
-  name: 'current-courses',
+  name: 'completed-courses',
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
     store.commit('app/SET_TITLE', 'Students')
@@ -44,40 +43,36 @@ export default {
       students: false,
       draft: false,
     },
-    currentCoursesColumns: [
+    allSalesColumns: [
       {
-        label: 'Course title',
-        field: 'courseTitle',
+        label: 'Title',
+        field: 'title',
       },
       {
-        label: 'Status',
-        field: 'status',
+        label: 'Student',
+        field: 'student',
+      },
+      {
+        label: 'Date',
+        field: 'date',
+        type: 'date',
+        dateInputFormat: 'yyyy-MM-dd',
+        dateOutputFormat: 'MMM do yy',
+      },
+      {
+        label: 'Time',
+        field: 'time',
+      },
+      {
+        label: 'Purchaser',
+        field: 'purchaser',
       },
       {
         label: 'Price',
         field: 'price',
       },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Comp',
-        field: 'comp',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
-      },
-      {
-        label: 'Date started',
-        field: 'dateStarted',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
     ],
-    currentCoursesRows: _.take(currentCourses, 10),
+    allSalesRows: _.take(allSales, 10),
   }),
   computed: {
     ...mapState({
@@ -93,19 +88,6 @@ export default {
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
-    },
-    texting() {
-      console.log('Testing!!!!!')
-    },
-    purchaseCourse() {
-      this.$store.commit('app/SET_MODAL', 'purchase-modal')
-      this.$store.commit('app/SET_VIEW_DATA', {
-        type: 'Course',
-        title: 'How to Build Multiple Sources of Income',
-        desc: `Learn how to build and manage multiple sources of 
-          income that leads to sustainable wealth`,
-        price: 2500,
-      })
     },
   },
 }

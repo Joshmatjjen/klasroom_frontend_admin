@@ -40,14 +40,14 @@
                       <p class="text-sm text-gray-700">{{ user.email }}</p>
                     </div>
                   </div>
-                  <div class="grid grid-cols-12">
+                  <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">Gender</p>
                       <p class="text-sm text-gray-700">{{ user.gender }}</p>
                     </div>
                   </div>
                   <hr class="mt-4 mb-6" />
-                  <div class="grid grid-cols-12">
+                  <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">
                         Twitter
@@ -55,7 +55,7 @@
                       <p class="text-sm text-gray-700">{{ '@omotobi' }}</p>
                     </div>
                   </div>
-                  <div class="grid grid-cols-12">
+                  <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">
                         Website
@@ -63,7 +63,7 @@
                       <p class="text-sm text-gray-700">{{ '@omotobi' }}</p>
                     </div>
                   </div>
-                  <div class="grid grid-cols-12">
+                  <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">
                         Linkedin
@@ -102,6 +102,30 @@
                     <!-- <div class="col-span-5 text-right">
                       <button class="btn btn-light btn-sm">Change</button>
                     </div> -->
+                  </div>
+                  <div class="mb-5" v-if="type === 'tutors'">
+                    <div class="">
+                      <p class="text-sm font-bold text-gray-700 mb-3">
+                        Signature
+                      </p>
+                      <p class="text-sm text-gray-700">
+                        Please upload an image of your signature to be attached
+                        to student certificates. Please ensure the image has a
+                        plain white background
+                      </p>
+                    </div>
+                    <div
+                      class="relative flex p-6 justify-center w-full align-middle items-center mt-10 rounded-xl border border-orange-500"
+                    >
+                      <img
+                        class="absolute left-0 ml-6"
+                        src="/mySignature.png"
+                        alt=""
+                      />
+                      <p class="text-sm font-normal text-gray-700 text-center">
+                        mySignature.png
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -171,6 +195,9 @@ const webinars = require('@/static/json/webinars.json')
 
 export default {
   middleware: ['check-auth', 'auth'],
+  props: {
+    type: { type: String, required: false },
+  },
   fetch({ store }) {
     store.commit('app/SET_TITLE', 'Account')
   },

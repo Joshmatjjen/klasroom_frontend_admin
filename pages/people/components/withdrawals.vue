@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
+    <!-- Activity Log -->
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
-              :columns="prevWebinarsColumns"
-              :rows="prevWebinarsRows"
+              :columns="withdrawalsColumns"
+              :rows="withdrawalsRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const prevWebinars = require('@/static/json/previous-webinars.json')
+const withdrawals = require('@/static/json/withdrawals.json')
 
 export default {
   // components: { tester },
@@ -43,30 +43,10 @@ export default {
       students: false,
       draft: false,
     },
-    prevWebinarsColumns: [
+    withdrawalsColumns: [
       {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Attendance',
-        field: 'attendance',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
+        label: 'Name',
+        field: 'name',
       },
       {
         label: 'Date',
@@ -75,27 +55,24 @@ export default {
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
       },
-    ],
-    prevWebinarsRows: _.take(prevWebinars, 10),
-
-    columnsStudents: [
       {
-        label: 'Name',
-        field: 'name',
+        label: 'Time',
+        field: 'time',
       },
       {
-        label: 'Payment date',
-        field: 'paymentDate',
+        label: 'Amount',
+        field: 'amount',
       },
       {
-        label: 'Last Active',
-        field: 'lastActive',
+        label: 'Status',
+        field: 'status',
       },
       {
-        label: 'Course progress',
-        field: 'progress',
+        label: 'New balance',
+        field: 'newBalance',
       },
     ],
+    withdrawalsRows: _.take(withdrawals, 10),
   }),
   computed: {
     ...mapState({
