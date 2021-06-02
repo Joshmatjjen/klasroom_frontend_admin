@@ -1,5 +1,12 @@
 [
   {
+    "name": "account",
+    "path": "/account",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/account/index.vue",
+    "chunkName": "pages/account/index",
+    "_name": "_7a6ea3f8"
+  },
+  {
     "name": "chat",
     "path": "/chat",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/chat/index.vue",
