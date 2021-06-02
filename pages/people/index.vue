@@ -123,6 +123,7 @@
                 :rows="studentRows"
                 type="Admins"
                 :total="124322"
+                route="/people/admins/"
               />
             </div>
           </div>

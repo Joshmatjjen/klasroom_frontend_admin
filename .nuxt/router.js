@@ -30,6 +30,7 @@ const _99cfc132 = () => interopDefault(import('../pages/people/components/sales.
 const _12da8ffa = () => interopDefault(import('../pages/people/components/upcomingWebinars.vue' /* webpackChunkName: "pages/people/components/upcomingWebinars" */))
 const _30634d0e = () => interopDefault(import('../pages/people/components/withdrawals.vue' /* webpackChunkName: "pages/people/components/withdrawals" */))
 const _51b2cc1a = () => interopDefault(import('../pages/courses/view/_slug.vue' /* webpackChunkName: "pages/courses/view/_slug" */))
+const _62437b53 = () => interopDefault(import('../pages/people/admins/_slug.vue' /* webpackChunkName: "pages/people/admins/_slug" */))
 const _68d1c1e7 = () => interopDefault(import('../pages/people/students/_slug.vue' /* webpackChunkName: "pages/people/students/_slug" */))
 const _0adb7de8 = () => interopDefault(import('../pages/people/tutors/_slug.vue' /* webpackChunkName: "pages/people/tutors/_slug" */))
 const _2302c5d9 = () => interopDefault(import('../pages/webinars/preview/_slug.vue' /* webpackChunkName: "pages/webinars/preview/_slug" */))
@@ -156,6 +157,10 @@ export const routerOptions = {
     path: "/courses/view/:slug?",
     component: _51b2cc1a,
     name: "courses-view-slug"
+  }, {
+    path: "/people/admins/:slug?",
+    component: _62437b53,
+    name: "people-admins-slug"
   }, {
     path: "/people/students/:slug?",
     component: _68d1c1e7,
