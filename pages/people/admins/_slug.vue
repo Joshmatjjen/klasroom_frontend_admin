@@ -1,5 +1,10 @@
 <template>
   <div class="min-h-screen mb-24">
+    <div class="bg-red-200 border rounded-2xl px-5 py-5 mb-5">
+      <p class="text-gray-700 font-normal text-left text-sm">
+        This account is suspended. Click “Actions” to reactivate this account.
+      </p>
+    </div>
     <section class="flex flex-row justify-between items-center">
       <div class="flex flex-row mb-8">
         <div
@@ -17,16 +22,23 @@
           />
         </div>
         <div class="flex flex-col justify-end">
-          <span class="text-gray-700 font-semibold text-left text-md">{{
-            'Chidimma Ugwu'
-          }}</span
-          ><span class="text-gray-700 font-normal text-left text-xs">{{
+          <div>
+            <span class="text-gray-700 font-semibold text-left text-md">{{
+              'Chidimma Ugwu'
+            }}</span>
+            <!-- <span
+              class="text-white bg-green-600 rounded-full font-normal text-center text-sm py-1 px-2"
+              >{{ 'Active' }}</span
+            > -->
+          </div>
+          <span class="text-gray-700 font-normal text-left text-xs">{{
             'chidimmaugwu@gmail.com'
           }}</span>
         </div>
       </div>
+      <!-- <div> -->
       <div
-        class="btn btn-primary h-12 flex flex-row align-middle rlative"
+        class="btn btn-primary h-12 flex flex-row align-middle relative"
         @click="toggleActionOpt"
       >
         <p class="text-center pr-3">Action</p>
@@ -40,52 +52,31 @@
           @click.capture.stop="texting"
         >
           <p
-            class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+            class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
           >
             Suspend account
           </p>
+          <!-- <p
+            class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          >
+            Unsuspend account
+          </p> -->
         </div>
       </div>
+      <!-- </div> -->
     </section>
     <section-switcher
       v-model="tabs"
-      :tabs="[
-        `${2} Current Courses`,
-        `${4} Completed Courses`,
-        `${6} Upcoming Webinars`,
-        `${6} Prev. Webinars`,
-        `Active log`,
-        `Account summary`,
-      ]"
+      :tabs="[`Active log`, `Account summary`]"
     />
-    <!-- Current Courses -->
+    <!-- Activity Logs -->
     <section v-if="tabs === 0">
-      <current-courses :tabs="tabs" />
-    </section>
-
-    <!-- Completed Courses -->
-    <section v-if="tabs === 1">
-      <completed-courses :tabs="tabs" />
-    </section>
-
-    <!-- Upcomming Webinars -->
-    <section v-if="tabs === 2">
-      <upcoming-webinars :tabs="tabs" />
-    </section>
-
-    <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
-      <previous-webinars :tabs="tabs" />
-    </section>
-
-    <!-- Activity Log -->
-    <section v-if="tabs === 4">
       <activity-log :tabs="tabs" />
     </section>
 
-    <!-- Account Summary -->
-    <section v-if="tabs === 5">
-      <account-summary :tabs="tabs" />
+    <!-- Account Summary  -->
+    <section v-if="tabs === 1">
+      <account-summary :tabs="tabs" type="admins" />
     </section>
   </div>
 </template>
@@ -98,6 +89,8 @@ import upcomingWebinars from '../components/upcomingWebinars.vue'
 import previousWebinars from '../components/previousWebinars.vue'
 import activityLog from '../components/activityLog.vue'
 import accountSummary from '../components/accountSummary.vue'
+import sales from '../components/sales.vue'
+import withdrawals from '../components/withdrawals.vue'
 
 export default {
   components: {
@@ -107,11 +100,13 @@ export default {
     previousWebinars,
     activityLog,
     accountSummary,
+    sales,
+    withdrawals,
   },
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
-    store.commit('app/SET_TITLE', 'Students')
+    store.commit('app/SET_TITLE', 'Admins')
   },
   data: () => ({
     home: 'home',
@@ -157,8 +152,8 @@ export default {
 <style scoped>
 .pop-up {
   min-width: 9rem;
-  top: 12.5rem;
-  right: 2rem;
+  top: 3.5rem;
+  right: 0.5rem;
 }
 .profile-img {
   height: 70px;

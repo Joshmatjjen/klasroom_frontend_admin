@@ -39,7 +39,8 @@
             </div>
 
             <simple-pop-up
-              :createOpt="createOpt"
+              :mainOpt="createOpt"
+              :action="toggleCreate"
               :styles="
                 'top-0 ml-5' && $device.isMobile
                   ? 'mt-16'
@@ -74,7 +75,7 @@
             </li>
             <li class="nav-item relative">
               <router-link
-                :to="{ name: 'people' }"
+                :to="{ name: 'people', params: { tab: 0 } }"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
@@ -93,8 +94,10 @@
                 @click.prevent="togglePeople"
               />
               <simple-pop-up
-                v-if="!$device.isMobile"
-                :createOpt="peopleOpt"
+                v-if="!$device.isMobile && peopleOpt"
+                type="route"
+                :mainOpt="peopleOpt"
+                :action="togglePeople"
                 :styles="
                   'top-0 ml-5' && $device.isMobile
                     ? 'mt-16'
@@ -102,16 +105,23 @@
                 "
                 :options="[
                   {
-                    name: 'Admins',
+                    name: 'Students',
                     type: 'props',
-                    props: 'admin',
+                    props: 'students',
+                    tab: 0,
                   },
                   {
                     name: 'Tutors',
                     type: 'props',
                     props: 'tutors',
+                    tab: 1,
                   },
-                  { name: 'Students', type: 'props', props: 'students' },
+                  {
+                    name: 'Admins',
+                    type: 'props',
+                    props: 'admin',
+                    tab: 2,
+                  },
                 ]"
               />
             </li>
@@ -254,6 +264,7 @@ export default {
       // this.togglePeople(false)
     },
     toggleCreate(value) {
+      // console.log('Toggleing Create', value)
       // if (value) {
       //   this.createOpt = value
       // } else {
@@ -262,12 +273,17 @@ export default {
       // }
       // if (this.peopleOpt === true) this.peopleOpt = false
     },
-    togglePeople(value) {
+    togglePeople(data) {
+      // console.log('Toggleing People', data)
       this.peopleOpt = !this.peopleOpt
       if (this.peopleOpt) this.createOpt = false
       // if (this.createOpt === true) this.createOpt = false
     },
-    toggleModals() {
+    toggleModals(value) {
+      // if (value === 'remove') {
+      //   this.createOpt = false
+      //   this.peopleOpt = false
+      // }
       if (this.createOpt) this.createOpt = false
       if (this.peopleOpt) this.peopleOpt = false
     },

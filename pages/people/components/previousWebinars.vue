@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Current Courses -->
-    <section v-if="tabs === 1">
+    <!-- Previous Webinars -->
+    <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
-              :columns="completedCoursesColumns"
-              :rows="completedCoursesRows"
+              :columns="prevWebinarsColumns"
+              :rows="prevWebinarsRows"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 
-const completedCourses = require('@/static/json/completed-courses.json')
+const prevWebinars = require('@/static/json/previous-webinars.json')
 
 export default {
   // components: { tester },
@@ -38,7 +38,12 @@ export default {
   data: () => ({
     home: 'home',
     actionOpt: false,
-    completedCoursesColumns: [
+    isCourses: {
+      preview: true,
+      students: false,
+      draft: false,
+    },
+    prevWebinarsColumns: [
       {
         label: 'Course title',
         field: 'courseTitle',
@@ -56,22 +61,41 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Comp',
-        field: 'comp',
+        label: 'Attendance',
+        field: 'attendance',
       },
       {
         label: 'Rating',
         field: 'rating',
       },
       {
-        label: 'Date completed',
-        field: 'dateCompleted',
+        label: 'Date',
+        field: 'date',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    completedCoursesRows: _.take(completedCourses, 10),
+    prevWebinarsRows: _.take(prevWebinars, 10),
+
+    columnsStudents: [
+      {
+        label: 'Name',
+        field: 'name',
+      },
+      {
+        label: 'Payment date',
+        field: 'paymentDate',
+      },
+      {
+        label: 'Last Active',
+        field: 'lastActive',
+      },
+      {
+        label: 'Course progress',
+        field: 'progress',
+      },
+    ],
   }),
   computed: {
     ...mapState({
@@ -87,19 +111,6 @@ export default {
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
-    },
-    texting() {
-      console.log('Testing!!!!!')
-    },
-    purchaseCourse() {
-      this.$store.commit('app/SET_MODAL', 'purchase-modal')
-      this.$store.commit('app/SET_VIEW_DATA', {
-        type: 'Course',
-        title: 'How to Build Multiple Sources of Income',
-        desc: `Learn how to build and manage multiple sources of 
-          income that leads to sustainable wealth`,
-        price: 2500,
-      })
     },
   },
 }

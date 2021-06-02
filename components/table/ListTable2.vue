@@ -12,14 +12,14 @@
       }"
       @click="toggleMenu"
     ></div>
-    <div class="flex flex-row justify-between px-5 my-5">
-      <p class="text-sm font-semibold">
-        {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
-      </p>
-      <div class="flex flex-row gap-5">
+    <div class="flex flex-row justify-between px-5">
+      <section-switcher v-model="tab" :tabs="[`All`, `Courses`, `Webinars`]" />
+      <div
+        class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"
+      >
         <p class="text-xs font-medium">Export CSV</p>
-        <div class="vl"></div>
-        <div class="flex flex-row">
+        <div class="vl -py-5"></div>
+        <div class="flex flex-row items-center">
           <p class="text-xs font-medium pr-3">Filter</p>
           <svg
             width="16"
@@ -59,8 +59,7 @@
           >
             <span
               v-if="
-                (props.column.field == 'name' &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
+                props.column.field == 'name' ||
                 props.column.field == 'webinarTitle' ||
                 props.column.field == 'courseTitle'
               "
@@ -110,17 +109,6 @@
 
               <!-- Draft for webinar End -->
             </span>
-            <div
-              class="flex flex-col"
-              v-else-if="
-                props.column.field == 'name' &&
-                checkKeyPresenceInArray(rows, 'time') === true
-              "
-            >
-              <span class="text-gray-700 font-semibold text-left text-md">{{
-                props.row.name
-              }}</span>
-            </div>
             <span v-else-if="props.column.field == 'price'">
               <span class="text-gray-700 font-semibold"
                 >₦{{ props.row.price }}</span
@@ -132,7 +120,7 @@
               >
             </span>
             <span v-else-if="props.column.field == 'newBalance'">
-              <span class="text-gray-700 font-medium"
+              <span class="text-gray-700 font-semibold"
                 >₦{{ props.row.newBalance }}</span
               >
             </span>
@@ -289,6 +277,7 @@ export default {
   },
   name: 'list-table1',
   data: () => ({
+    tab: 0,
     opt: false,
     optId: null,
   }),
@@ -297,14 +286,14 @@ export default {
       this.opt = !this.opt
       if (optId) this.optId = optId
     },
-    checkKeyPresenceInArray(arr, key) {
-      return arr.some((obj) => Object.keys(obj).includes(key))
-    },
   },
 }
 </script>
 
 <style scoped>
+.top-right {
+  height: 80%;
+}
 .dot {
   top: 0.3rem;
   left: -0.8rem;
