@@ -112,9 +112,9 @@
             </span>
             <div
               class="flex flex-col"
-              v-if="
+              v-else-if="
                 props.column.field == 'name' &&
-                rows.some((obj) => Object.keys(obj).includes('time'))
+                checkKeyPresenceInArray(rows, 'time') === true
               "
             >
               <span class="text-gray-700 font-semibold text-left text-md">{{
@@ -296,6 +296,9 @@ export default {
     toggleMenu(optId) {
       this.opt = !this.opt
       if (optId) this.optId = optId
+    },
+    checkKeyPresenceInArray(arr, key) {
+      return arr.some((obj) => Object.keys(obj).includes(key))
     },
   },
 }
