@@ -12,14 +12,14 @@
       }"
       @click="toggleMenu"
     ></div>
-    <div class="flex flex-row justify-between px-5 my-5">
-      <p class="text-sm font-semibold">
-        {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
-      </p>
-      <div class="flex flex-row gap-5">
+    <div class="flex flex-row justify-between px-5">
+      <section-switcher v-model="tab" :tabs="[`All`, `Courses`, `Webinars`]" />
+      <div
+        class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"
+      >
         <p class="text-xs font-medium">Export CSV</p>
-        <div class="vl"></div>
-        <div class="flex flex-row">
+        <div class="vl -py-5"></div>
+        <div class="flex flex-row items-center">
           <p class="text-xs font-medium pr-3">Filter</p>
           <svg
             width="16"
@@ -114,6 +114,16 @@
                 >₦{{ props.row.price }}</span
               >
             </span>
+            <span v-else-if="props.column.field == 'amount'">
+              <span class="text-gray-700 font-semibold"
+                >₦{{ props.row.amount }}</span
+              >
+            </span>
+            <span v-else-if="props.column.field == 'newBalance'">
+              <span class="text-gray-700 font-semibold"
+                >₦{{ props.row.newBalance }}</span
+              >
+            </span>
             <span v-else-if="props.column.field == 'attendance'">
               <span class="text-gray-700 font-normal">{{
                 props.row.attendance
@@ -142,6 +152,8 @@
                     ? 'bg-green-500'
                     : props.row.status === 'Upcoming'
                     ? 'bg-gray-500'
+                    : props.row.status === 'Success'
+                    ? ''
                     : 'bg-gray-500'
                 "
               ></span>
@@ -177,7 +189,8 @@
                 (props.column.field === 'status' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
+                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
@@ -264,6 +277,7 @@ export default {
   },
   name: 'list-table1',
   data: () => ({
+    tab: 0,
     opt: false,
     optId: null,
   }),
@@ -277,6 +291,9 @@ export default {
 </script>
 
 <style scoped>
+.top-right {
+  height: 80%;
+}
 .dot {
   top: 0.3rem;
   left: -0.8rem;

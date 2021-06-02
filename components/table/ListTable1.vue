@@ -59,7 +59,8 @@
           >
             <span
               v-if="
-                props.column.field == 'name' ||
+                (props.column.field == 'name' &&
+                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field == 'webinarTitle' ||
                 props.column.field == 'courseTitle'
               "
@@ -109,9 +110,30 @@
 
               <!-- Draft for webinar End -->
             </span>
+            <div
+              class="flex flex-col"
+              v-if="
+                props.column.field == 'name' &&
+                rows.some((obj) => Object.keys(obj).includes('time'))
+              "
+            >
+              <span class="text-gray-700 font-semibold text-left text-md">{{
+                props.row.name
+              }}</span>
+            </div>
             <span v-else-if="props.column.field == 'price'">
               <span class="text-gray-700 font-semibold"
                 >₦{{ props.row.price }}</span
+              >
+            </span>
+            <span v-else-if="props.column.field == 'amount'">
+              <span class="text-gray-700 font-semibold"
+                >₦{{ props.row.amount }}</span
+              >
+            </span>
+            <span v-else-if="props.column.field == 'newBalance'">
+              <span class="text-gray-700 font-medium"
+                >₦{{ props.row.newBalance }}</span
               >
             </span>
             <span v-else-if="props.column.field == 'attendance'">
@@ -142,6 +164,8 @@
                     ? 'bg-green-500'
                     : props.row.status === 'Upcoming'
                     ? 'bg-gray-500'
+                    : props.row.status === 'Success'
+                    ? ''
                     : 'bg-gray-500'
                 "
               ></span>
@@ -177,7 +201,8 @@
                 (props.column.field === 'status' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
+                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&

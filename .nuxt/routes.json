@@ -154,11 +154,25 @@
     "_name": "_543e5d56"
   },
   {
+    "name": "people-components-sales",
+    "path": "/people/components/sales",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/sales.vue",
+    "chunkName": "pages/people/components/sales",
+    "_name": "_99cfc132"
+  },
+  {
     "name": "people-components-upcomingWebinars",
     "path": "/people/components/upcomingWebinars",
     "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/upcomingWebinars.vue",
     "chunkName": "pages/people/components/upcomingWebinars",
     "_name": "_12da8ffa"
+  },
+  {
+    "name": "people-components-withdrawals",
+    "path": "/people/components/withdrawals",
+    "component": "/home/joshmat/My_Projects/Klasroom/klasroom_admin_ui/pages/people/components/withdrawals.vue",
+    "chunkName": "pages/people/components/withdrawals",
+    "_name": "_30634d0e"
   },
   {
     "name": "courses-view-slug",
