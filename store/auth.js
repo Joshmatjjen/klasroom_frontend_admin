@@ -7,6 +7,8 @@ export const state = () => ({
   token: null,
   expirationDate: null,
   bank: null,
+  profileImage: null,
+  settings: null,
 })
 
 // getters
@@ -17,12 +19,22 @@ export const getters = {
   expirationDate: (state) => state.expirationDate,
   bank: (state) => state.bank,
   isAuthenticated: (state) => state.token !== null,
+  profileImage: (state) => state.profileImage,
+  settings: (state) => state.settings,
 }
 
 // mutations
 export const mutations = {
   SET_TOKEN(state, token) {
     state.token = token
+  },
+
+  SET_PROFILE_IMAGE(state, profileImage) {
+    state.profileImage = profileImage
+  },
+
+  SET_PROFILE_SETTINGS(state, settings) {
+    state.settings = settings
   },
 
   SET_EXPIRATION_DATE(state, expirationDate) {
@@ -43,6 +55,7 @@ export const mutations = {
     state.user = null
     state.expirationDate = null
     state.token = null
+    state.profileImage = null
   },
 
   UPDATE_BANK(state, bank) {
@@ -111,7 +124,6 @@ export const actions = {
         password: userData.password,
         token: userData.token,
       })
-      // console.log("data: ", data)
       return { data, message }
     } catch (e) {
       // console.log("error validation: ", e)
@@ -127,8 +139,6 @@ export const actions = {
           password: userData.password,
           userType: 'student',
         })
-
-        // console.log('fetch old user success: ', data)
 
         const { data: newData, message } = await this.$axios.$post(
           '/users/tutor',
@@ -158,20 +168,33 @@ export const actions = {
   async loginUser(vuexContext, userData) {
     try {
       const { data } = await this.$axios.$post('/login', userData)
+
       if (data.accessToken) {
-        // console.log('fetch user success: ', data)
-        const expirationDate = new Date().getTime() + 86400 * 1000 // 24 hrs duration
+        console.log(data.accessToken)
         vuexContext.commit('SET_TOKEN', data.accessToken)
-        vuexContext.commit('FETCH_USER_SUCCESS', data)
-        vuexContext.commit('SET_EXPIRATION_DATE', expirationDate)
+        const settingsResult = await this.$axios.$get('/users/settings')
+        const { settings } = settingsResult.data
+        console.log('fetch user settings: ', settings)
+        if (settings) {
+          const expirationDate = new Date().getTime() + 86400 * 1000 // 24 hrs duration
+          vuexContext.commit('SET_TOKEN', data.accessToken)
+          vuexContext.commit('FETCH_USER_SUCCESS', data)
+          vuexContext.commit('SET_EXPIRATION_DATE', expirationDate)
+          vuexContext.commit('SET_PROFILE_IMAGE', data.image)
+          vuexContext.commit('SET_PROFILE_SETTINGS', settings)
 
-        localStorage.setItem('token', data.accessToken)
-        localStorage.setItem('tokenExpiration', expirationDate)
-        localStorage.setItem('user', JSON.stringify(data))
+          localStorage.setItem('token', data.accessToken)
+          localStorage.setItem('tokenExpiration', expirationDate)
+          localStorage.setItem('user', JSON.stringify(data))
+          localStorage.setItem('profileImage', data.image)
+          localStorage.setItem('settings', JSON.stringify(settings))
 
-        Cookie.set('jwt', data.accessToken)
-        Cookie.set('expirationDate', expirationDate)
-        Cookie.set('user', JSON.stringify(data))
+          Cookie.set('jwt', data.accessToken)
+          Cookie.set('expirationDate', expirationDate)
+          Cookie.set('user', JSON.stringify(data))
+          Cookie.set('profileImage', data.image)
+          Cookie.set('settings', JSON.stringify(settings))
+        }
 
         return data
       }
@@ -247,6 +270,78 @@ export const actions = {
     }
   },
 
+  async changeProfileImage(vuexContext, imageData) {
+    console.log('Data >>', imageData)
+    const formData = new FormData()
+    formData.append('image', imageData, '.png')
+    try {
+      console.log(formData)
+      const { data } = await this.$axios.$post('/uploads', formData)
+      if (data) {
+        console.log('profile-image changed success: ', data)
+        vuexContext.commit('SET_PROFILE_IMAGE', data.image)
+        localStorage.setItem('profileImage', data.image)
+        Cookie.set('profileImage', data.image)
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+  async deleteProfile(vuexContext, userId) {
+    try {
+      console.log(userId)
+      const { data } = await this.$axios.$delete('/users/' + userId)
+      if (data) {
+        console.log('profile deleted successfully: ', data)
+        // vuexContext.commit('SET_PROFILE_IMAGE', data.image)
+        // localStorage.setItem('user', JSON.stringify(data))
+        // Cookie.set('user', JSON.stringify(data))
+        // const expirationDate = new Date().getTime() + 86400 * 1000 // 24 hrs duration
+        // vuexContext.commit('SET_TOKEN', data.accessToken)
+        // vuexContext.commit('FETCH_USER_SUCCESS', data)
+        // vuexContext.commit('SET_EXPIRATION_DATE', expirationDate)
+
+        // localStorage.setItem('token', data.accessToken)
+        // localStorage.setItem('tokenExpiration', expirationDate)
+        // localStorage.setItem('user', JSON.stringify(data))
+
+        // Cookie.set('jwt', data.accessToken)
+        // Cookie.set('expirationDate', expirationDate)
+        // Cookie.set('user', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async changeSettings(vuexContext, settingsData) {
+    try {
+      console.log(settingsData)
+      const { data } = await this.$axios.$post('/users/settings', settingsData)
+      if (data) {
+        console.log('settings successfully changed: ', data)
+
+        vuexContext.commit('SET_PROFILE_SETTINGS', data)
+        localStorage.setItem('settings', JSON.stringify(data))
+        Cookie.set('settings', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
   async fetchBank({ commit, state }) {
     try {
       const uid = state.user.id
@@ -279,6 +374,8 @@ export const actions = {
     let token
     let expirationDate
     let user
+    let profileImage
+    let settings
     if (req) {
       if (!req.headers.cookie) {
         return
@@ -290,10 +387,15 @@ export const actions = {
       }
       expirationDate = cookieFromRequest(req, 'expirationDate')
       user = cookieFromRequest(req, 'user')
+      expirationDate = cookieFromRequest(req, 'tokenExpiration')
+      profileImage = cookieFromRequest(req, 'profileImage')
+      settings = cookieFromRequest(req, 'settings')
     } else {
       token = localStorage.getItem('token')
       user = localStorage.getItem('user')
       expirationDate = localStorage.getItem('tokenExpiration')
+      profileImage = localStorage.getItem('profileImage')
+      settings = localStorage.getItem('settings')
     }
     if (new Date().getTime() > +expirationDate || !token) {
       console.log('No token or invalid token')
@@ -304,5 +406,7 @@ export const actions = {
     vuexContext.commit('SET_TOKEN', token)
     vuexContext.commit('FETCH_USER_SUCCESS', JSON.parse(user))
     vuexContext.commit('SET_EXPIRATION_DATE', expirationDate)
+    vuexContext.commit('SET_PROFILE_IMAGE', profileImage)
+    vuexContext.commit('SET_PROFILE_SETTINGS', JSON.parse(settings))
   },
 }
