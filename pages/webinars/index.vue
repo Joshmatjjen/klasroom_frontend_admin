@@ -69,7 +69,7 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsUpcoming" :rows="rowsUpcoming" />
+            <simple-table :columns="columnsUpcoming" :rows="rowsUpcoming" type="Upcoming webinars" />
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsRecorded" :rows="rowsRecorded" />
+            <simple-table :columns="columnPrevious" :rows="rowsUpcoming" type="Previous Webinars"/>
           </div>
         </div>
       </div>
@@ -117,9 +117,9 @@
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <simple-table
-              :columns="columnsDraft"
-              :rows="rowsDraft"
-              :onDraft="true"
+              :columns="columnPrevious"
+              :rows="rowsUpcoming"
+              type="Archived Webinars"
             />
           </div>
         </div>
@@ -131,7 +131,7 @@
 <script>
 const courses = require('@/static/json/courses.json')
 const webinars = require('@/static/json/webinars.json')
-const webinarCourse = require('@/static/json/webinar-course.json')
+const webinarUpcoming = require('@/static/json/upcoming-webinars.json')
 const webinarRecorded = require('@/static/json/webinar-recorded.json')
 const webinarDraft = require('@/static/json/webinar-draft.json')
 
@@ -151,6 +151,10 @@ export default {
         field: 'webinarTitle',
       },
       {
+        label: 'owner',
+        field: 'owner',
+      },
+      {
         label: 'Price',
         field: 'price',
       },
@@ -159,7 +163,7 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Webinar Type',
+        label: 'Type',
         field: 'webinarType',
       },
       {
@@ -170,12 +174,16 @@ export default {
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    rowsUpcoming: _.take(webinarCourse, 4),
+    rowsUpcoming: _.take(webinarUpcoming, 4),
     // Recorded
-    columnsRecorded: [
+    columnPrevious: [
       {
         label: 'Webinar title',
         field: 'webinarTitle',
+      },
+      {
+        label: 'Owner',
+        field: 'owner',
       },
       {
         label: 'Price',
@@ -186,16 +194,16 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Attendees',
-        field: 'attendees',
+        label: 'Type',
+        field: 'webinarType',
       },
       {
         label: 'Rating',
         field: 'rating',
       },
       {
-        label: 'Held On',
-        field: 'heldOn',
+        label: 'Date',
+        field: 'date',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
