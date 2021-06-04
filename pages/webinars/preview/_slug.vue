@@ -29,10 +29,12 @@
               <p class="text-xs text-gray-700">Ratings and Reviews</p>
             </button>
           </div>
-          <edit-chip
-            desc='This is a preview of your webinar. To make changes, please click "Edit Webinar"'
-            name="Edit Webinar"
-          />
+          <div class="mt-6">
+            <edit-chip
+              desc='This is a preview of your webinar. To make changes, please click "Take action"'
+              name="Take action"
+            />
+          </div>
         </section>
 
         <!-- Webinar Preview Tab -->
@@ -180,6 +182,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_DARK_MENU', true)
+    store.commit('app/SET_TITLE', 'Webinars')
   },
   data: () => ({
     home: 'home',

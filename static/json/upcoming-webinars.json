@@ -7,6 +7,8 @@
     "price": 25000,
     "sales": 3622,
     "attendance": "",
+    "owner": "Sarah Drasner",
+    "webinarType": "Free",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -19,6 +21,8 @@
     "price": 25000,
     "sales": 400,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -31,6 +35,8 @@
     "price": 25000,
     "sales": 2345,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -43,6 +49,8 @@
     "price": 25000,
     "sales": 235,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -55,6 +63,8 @@
     "price": 25000,
     "sales": 235,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -67,6 +77,8 @@
     "price": 25000,
     "sales": 235,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   },
@@ -79,6 +91,8 @@
     "price": 25000,
     "sales": 235,
     "attendance": "",
+    "webinarType": "Free",
+    "owner": "Sarah Drasner",
     "rating": "",
     "date": "2020-10-31"
   }
