@@ -28,8 +28,8 @@
         </button>
       </div>
     </section>
-      <div v-if="isCourses.preview" class="container mt-10 mx-auto mb-10 px-4 lg:px-0">
-        <div class="container mx-auto mb-10 px-4 lg:px-0">
+      <div v-if="isCourses.preview" class="container mt-6 mx-auto mb-10 px-4 lg:px-0">
+        <div class="container mx-auto mb-4 px-4 lg:px-0">
         <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
           <course-metrics
             :title="0"
@@ -49,6 +49,10 @@
           />
         </div>
       </div>
+      <edit-chip
+          desc='This course has not been approved and is not live for purchase. Click “Take action” to publish.'
+          name="Take action"
+            />
         <div class="grid grid-cols-12 gap-5">
           <div
             v-if="!$device.isMobile"
