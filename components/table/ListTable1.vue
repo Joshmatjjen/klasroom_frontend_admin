@@ -68,7 +68,7 @@
             >
               <div class="flex flex-row items-center">
                 <img
-                  v-if="!onDraft"
+                  v-if="!onDraft && props.row.imageUrl"
                   :src="props.row.imageUrl"
                   alt="My profile"
                   class="course-image mr-3 rounded-lg"
@@ -82,7 +82,7 @@
                     justifyContent: 'center',
                   }"
                 >
-                  <img src="/icon/empty-pics-icon.svg" alt="My profile" />
+                  <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
                 <div class="flex flex-col" v-if="props.row.name">
                   <span class="text-gray-700 font-semibold text-left text-md">{{

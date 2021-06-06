@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen mb-24">
     <section-switcher v-model="tab" :tabs="[`Students`, `Tutors`, `Admins`]" />
-
     <!-- Students Section -->
     <section v-if="tab === 0">
       <section class="bg-orange-100">
@@ -43,6 +42,7 @@
           </div>
         </div>
       </section>
+      <!-- <section></section> -->
     </section>
 
     <!-- Tutors Section -->
@@ -129,6 +129,23 @@
           </div>
         </div>
       </section>
+      <section>
+        <!-- <vue-tailwind-pagination
+          :current="current"
+          :total="total"
+          :per-page="perPage"
+          @page-changed="current = $event"
+        /> -->
+        <!-- <VueTailwindPagination
+          :current="current"
+          :total="total"
+          :per-page="perPage"
+          @page-changed="current = $event"
+          text-before-input="Перейти к странице"
+          text-after-input="Вперед"
+        /> -->
+        <tiny-pagination :total="currentTotal" @tiny:change-page="changePage" />
+      </section>
     </section>
   </div>
 </template>
@@ -137,16 +154,26 @@
 const courses = require('@/static/json/courses.json')
 const webinarCourse = require('@/static/json/live-courses.json')
 const studentsData = require('@/static/json/people-student.json')
+import VueTailwindPagination from '@ocrv/vue-tailwind-pagination'
 
 export default {
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_TITLE', 'People')
   },
+  components: {
+    VueTailwindPagination,
+  },
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
     tab: 0,
+    current: 1,
+    perPage: 2,
+    total: 20,
+    currentTotal: 20,
+    currentPage: 1,
+
     // tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
     studentColumns: [
       {
@@ -201,6 +228,9 @@ export default {
     }
   },
   methods: {
+    changePage(pagination) {
+      this.currentPage = pagination.page
+    },
     isEmptyObject(value) {
       return (
         value && Object.keys(value).length === 0 && value.constructor === Object
