@@ -68,13 +68,13 @@
             >
               <div class="flex flex-row items-center">
                 <img
-                  v-if="!onDraft"
-                  :src="props.row.imageUrl"
+                  v-if="!onDraft && props.row.image"
+                  :src="props.row.image"
                   alt="My profile"
                   class="course-image mr-3 rounded-lg"
                 />
                 <div
-                  v-if="!props.row.imageUrl"
+                  v-if="!props.row.image"
                   class="course-image mr-3"
                   :style="{
                     display: 'flex',
@@ -82,7 +82,7 @@
                     justifyContent: 'center',
                   }"
                 >
-                  <img src="/icon/empty-pics-icon.svg" alt="My profile" />
+                  <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
                 <div class="flex flex-col" v-if="props.row.name">
                   <span class="text-gray-700 font-semibold text-left text-md">{{
@@ -136,6 +136,11 @@
                 >₦{{ props.row.newBalance }}</span
               >
             </span>
+            <span v-else-if="props.column.field == 'createdAt'">
+              <span class="text-gray-700 font-normal">{{
+                props.row.createdAt.substring(0, 12)
+              }}</span>
+            </span>
             <span v-else-if="props.column.field == 'attendance'">
               <span class="text-gray-700 font-normal">{{
                 props.row.attendance
@@ -174,6 +179,18 @@
               }}</span>
             </span>
             <span
+              class="items-center relative"
+              v-else-if="props.column.field === 'isActive'"
+            >
+              <span
+                class="dot absolute rounded-full"
+                :class="props.row.isActive ? 'bg-green-500' : 'bg-gray-500'"
+              ></span>
+              <span class="text-gray-700 text-center">{{
+                props.row.isActive ? 'Active' : 'Deactive'
+              }}</span>
+            </span>
+            <span
               v-else-if="props.column.field == 'progress'"
               class="flex flex-row"
             >
@@ -187,6 +204,8 @@
               v-if="
                 (props.column.field === 'lastActive' &&
                   !rows.some((obj) => Object.keys(obj).includes('status')) &&
+                  !rows.some((obj) => Object.keys(obj).includes('isActive'))) ||
+                (!rows.some((obj) => Object.keys(obj).includes('isActive')) &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateStarted')
                   )) ||
@@ -198,7 +217,17 @@
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateCompleted')
                   )) ||
+                (props.column.field === 'isActive' &&
+                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
+                  !rows.some((obj) =>
+                    Object.keys(obj).includes('dateStarted')
+                  ) &&
+                  !rows.some((obj) =>
+                    Object.keys(obj).includes('dateCompleted')
+                  )) ||
                 (props.column.field === 'status' &&
+                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                (props.column.field === 'isActive' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 (props.column.field === 'date' &&
                   !rows.some((obj) => Object.keys(obj).includes('action')) &&
