@@ -33,7 +33,7 @@
             <div class="col-span-12">
               <list-table-1
                 :columns="studentColumns"
-                :rows="studentRows"
+                :rows="students ? students.data : []"
                 type="Students"
                 :total="124322"
                 route="/people/students/"
@@ -42,13 +42,12 @@
           </div>
         </div>
       </section>
-      <!-- <section></section> -->
     </section>
 
     <!-- Tutors Section -->
     <section v-if="tab === 1">
       <section class="bg-orange-100">
-        <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0">
+        <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0 place-self-end">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
             <dash-item-metrics
               :title="(15000).toLocaleString()"
@@ -129,40 +128,30 @@
           </div>
         </div>
       </section>
-      <section>
-        <!-- <vue-tailwind-pagination
-          :current="current"
-          :total="total"
-          :per-page="perPage"
-          @page-changed="current = $event"
-        /> -->
-        <!-- <VueTailwindPagination
-          :current="current"
-          :total="total"
-          :per-page="perPage"
-          @page-changed="current = $event"
-          text-before-input="Перейти к странице"
-          text-after-input="Вперед"
-        /> -->
-        <tiny-pagination :total="currentTotal" @tiny:change-page="changePage" />
-      </section>
+    </section>
+    <section v-if="students">
+      <t-pagination
+        :total-items="students.pagination.count"
+        :per-page="students.pagination.limit"
+        :limit="4"
+        :variant="'roundedSmall'"
+        :value="students.pagination.currentPage"
+        @change="changePage"
+      />
     </section>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 const courses = require('@/static/json/courses.json')
 const webinarCourse = require('@/static/json/live-courses.json')
 const studentsData = require('@/static/json/people-student.json')
-import VueTailwindPagination from '@ocrv/vue-tailwind-pagination'
 
 export default {
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
     store.commit('app/SET_TITLE', 'People')
-  },
-  components: {
-    VueTailwindPagination,
   },
   data: () => ({
     courses: _.take(courses, 4),
@@ -173,6 +162,7 @@ export default {
     total: 20,
     currentTotal: 20,
     currentPage: 1,
+    limit: 4,
 
     // tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
     studentColumns: [
@@ -211,7 +201,25 @@ export default {
     studentRows: _.take(studentsData, 10),
   }),
 
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      students: (state) => state.people.students,
+    }),
+  },
+
   created() {
+    this.$store
+      .dispatch('people/getStudents')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
     if (
       this.$route.params &&
       Object.keys(this.$route.params).length !== 0 &&
@@ -223,13 +231,25 @@ export default {
   },
 
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
-    }
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
   },
   methods: {
     changePage(pagination) {
-      this.currentPage = pagination.page
+      console.log(pagination)
+      this.$store
+        .dispatch('people/getStudents', pagination)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+      // this.currentPage = pagination.page
     },
     isEmptyObject(value) {
       return (

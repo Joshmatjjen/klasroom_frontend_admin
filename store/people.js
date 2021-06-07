@@ -24,9 +24,11 @@ export const mutations = {
 
 // actions
 export const actions = {
-  async getStudents(vuexContext, userData) {
+  async getStudents(vuexContext, page) {
     try {
-      const data = await this.$axios.$get('/users/students')
+      const data = await this.$axios.$get(
+        page ? `/users/students?page=${page}` : '/users/students'
+      )
 
       if (data) {
         console.log('Student Data', data)

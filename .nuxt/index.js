@@ -30,7 +30,7 @@ import nuxt_plugin_vue2filters_021c5ff1 from 'nuxt_plugin_vue2filters_021c5ff1' 
 import nuxt_plugin_webrtcadaptor_51a88cdc from 'nuxt_plugin_webrtcadaptor_51a88cdc' // Source: ../plugins/webrtc-adaptor (mode: 'all')
 import nuxt_plugin_vueadvancedcropper_188974c0 from 'nuxt_plugin_vueadvancedcropper_188974c0' // Source: ../plugins/vue-advanced-cropper (mode: 'all')
 import nuxt_plugin_vuetinypagination_27867109 from 'nuxt_plugin_vuetinypagination_27867109' // Source: ../plugins/vue-tiny-pagination (mode: 'all')
-import nuxt_plugin_vuetailwind_38882bd4 from 'nuxt_plugin_vuetailwind_38882bd4' // Source: ../plugins/vue-tailwind (mode: 'all')
+import nuxt_plugin_vuetailwind_38882bd4 from 'nuxt_plugin_vuetailwind_38882bd4' // Source: ../plugins/vue-tailwind (mode: 'client')
 import nuxt_plugin_validate_c1ca0c26 from 'nuxt_plugin_validate_c1ca0c26' // Source: ../plugins/validate (mode: 'client')
 import nuxt_plugin_vuetailwindpagination_e542a09e from 'nuxt_plugin_vuetailwindpagination_e542a09e' // Source: ../plugins/vue-tailwind-pagination (mode: 'client')
 import nuxt_plugin_datepicker_d123f65a from 'nuxt_plugin_datepicker_d123f65a' // Source: ../plugins/datepicker (mode: 'client')
@@ -293,7 +293,7 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_vuetinypagination_27867109(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_vuetailwind_38882bd4 === 'function') {
+  if (process.client && typeof nuxt_plugin_vuetailwind_38882bd4 === 'function') {
     await nuxt_plugin_vuetailwind_38882bd4(app.context, inject)
   }
 

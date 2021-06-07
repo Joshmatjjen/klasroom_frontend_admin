@@ -645,6 +645,21 @@ const settings = {
             'border border-gray-200 hover:bg-blue-100 hover:border-blue-100 rounded-full w-full h-full transition duration-100 ease-in-out focus:ring-2 focus:ring-blue-500 focus:outline-none focus:ring-opacity-50',
           ellipsis: '',
         },
+        roundedSmall: {
+          wrapper:
+            'transparent mx-auto text-center flex flex-row justify-end pr-6 ',
+          element: 'w-6 h-6 rounded-lg',
+          activeElement: 'w-6 h-6 rounded-lg',
+          disabledElement: 'w-6 h-6 rounded-lg',
+          ellipsisElement: 'w-6 h-6 rounded-lg hidden md:inline',
+          activeButton:
+            'border border-orange-500 bg-orange-500 w-full h-full rounded-lg text-white text-sm hover:bg-orange-600 transition duration-100 ease-in-out focus:ring-2 focus:ring-orange-500 focus:outline-none focus:ring-opacity-50',
+          disabledButton:
+            'border border-gray-200 text-sm opacity-25 w-full h-full rounded-lg cursor-not-allowed transition duration-100 ease-in-out',
+          button:
+            'border border-gray-200 text-sm hover:bg-orange-200 hover:border-orange-200 rounded-lg w-full h-full transition duration-100 ease-in-out focus:ring-2 focus:ring-orange-500 focus:outline-none focus:ring-opacity-50',
+          ellipsis: '',
+        },
       },
     },
   },
