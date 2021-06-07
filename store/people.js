@@ -4,11 +4,13 @@ import { cookieFromRequest, getAccessTokenHeader, getAuthHeader } from '~/utils'
 // state
 export const state = () => ({
   students: null,
+  studentsSummary: null,
 })
 
 // getters
 export const getters = {
   students: (state) => state.students,
+  studentsSummary: (state) => state.studentsSummary,
 }
 
 // mutations
@@ -19,6 +21,14 @@ export const mutations = {
 
   FETCH_STUDENTS_FAILURE(state) {
     state.students = null
+  },
+
+  FETCH_STUDENTS_SUMMARY_SUCCESS(state, students) {
+    state.studentsSummary = students
+  },
+
+  FETCH_STUDENTS_SUMMARY_FAILURE(state) {
+    state.studentsSummary = null
   },
 }
 
@@ -37,6 +47,27 @@ export const actions = {
         localStorage.setItem('students', JSON.stringify(data))
 
         Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getStudentsSummary(vuexContext) {
+    try {
+      const { data } = await this.$axios.$get('/users/students/summary')
+
+      if (data) {
+        console.log('Student Summary', data)
+        vuexContext.commit('FETCH_STUDENTS_SUMMARY_SUCCESS', data)
+
+        localStorage.setItem('studentsSummary', JSON.stringify(data))
+
+        Cookie.set('studentsSummary', JSON.stringify(data))
 
         return data
       }

@@ -3,23 +3,23 @@
     <section-switcher v-model="tab" :tabs="[`Students`, `Tutors`, `Admins`]" />
     <!-- Students Section -->
     <section v-if="tab === 0">
-      <section class="bg-orange-100">
+      <section class="bg-orange-100" v-if="studentsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
             <dash-item-metrics
-              :title="(16000).toLocaleString()"
+              :title="studentsSummary.activeStudentsNo.toLocaleString()"
               label="Active Student"
               link="/courses"
               type="filter"
             />
             <dash-item-metrics
-              :title="(600).toLocaleString()"
+              :title="studentsSummary.dormantStudentsNo.toLocaleString()"
               label="Dormant Students"
               link="/webinars"
               type="filter"
             />
             <dash-item-metrics
-              :title="(5400).toLocaleString()"
+              :title="studentsSummary.suspendedStudentsNo.toLocaleString()"
               label="Suspended Students"
               link="/courses"
               type="filter"
@@ -35,12 +35,22 @@
                 :columns="studentColumns"
                 :rows="students ? students.data : []"
                 type="Students"
-                :total="124322"
+                :total="students ? students.pagination.count : 0"
                 route="/people/students/"
               />
             </div>
           </div>
         </div>
+      </section>
+      <section>
+        <t-pagination
+          :total-items="students.pagination.count"
+          :per-page="students.pagination.limit"
+          :limit="4"
+          :variant="'roundedSmall'"
+          :value="students.pagination.currentPage"
+          @change="changePage"
+        />
       </section>
     </section>
 
@@ -129,16 +139,6 @@
         </div>
       </section>
     </section>
-    <section v-if="students">
-      <t-pagination
-        :total-items="students.pagination.count"
-        :per-page="students.pagination.limit"
-        :limit="4"
-        :variant="'roundedSmall'"
-        :value="students.pagination.currentPage"
-        @change="changePage"
-      />
-    </section>
   </div>
 </template>
 
@@ -188,14 +188,11 @@ export default {
       },
       {
         label: 'Member since',
-        field: 'memberSince',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
+        field: 'createdAt',
       },
       {
         label: 'Status',
-        field: 'status',
+        field: 'isActive',
       },
     ],
     studentRows: _.take(studentsData, 10),
@@ -205,10 +202,23 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       students: (state) => state.people.students,
+      studentsSummary: (state) => state.people.studentsSummary,
     }),
   },
 
   created() {
+    this.$store
+      .dispatch('people/getStudentsSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+
     this.$store
       .dispatch('people/getStudents')
       .then((res) => {
