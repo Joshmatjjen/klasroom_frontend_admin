@@ -10,11 +10,11 @@
           />
           <dash-item-metrics
             title="34,600"
-            label="Webinar sales"
+            label="Archived"
             link="/student/webinars"
           />
-          <dash-item-metrics title="3,540" label="Attendants" />
-          <dash-item-metrics title="20 webinars" label="Attended" />
+          <dash-item-metrics title="3,540" label="webinar sales" />
+          <dash-item-metrics title="20 webinars" label="Attendees" />
         </div>
       </div>
     </section>
@@ -31,18 +31,32 @@
           <p class="text-xs text-gray-700">My upcoming webinars</p>
         </button>
         <button
-          v-on:click="switcher('recorded')"
-          v-bind:class="{ active: isWebinars.recorded }"
+          v-on:click="switcher('previous')"
+          v-bind:class="{ active: isWebinars.previous }"
           class="menu-btn"
         >
-          <p class="text-xs text-gray-700">My recorded webinars</p>
+          <p class="text-xs text-gray-700">Previous webinars</p>
         </button>
         <button
-          v-on:click="switcher('draft')"
-          v-bind:class="{ active: isWebinars.draft }"
+          v-on:click="switcher('klasroomUpcom')"
+          v-bind:class="{ active: isWebinars.klasroomUpcom }"
           class="menu-btn"
         >
-          <p class="text-xs text-gray-700">My draft</p>
+          <p class="text-xs text-gray-700">Klasroom upcoming webinars</p>
+        </button>
+        <button
+          v-on:click="switcher('klasroomPrev')"
+          v-bind:class="{ active: isWebinars.klasroomPrev }"
+          class="menu-btn"
+        >
+          <p class="text-xs text-gray-700">Klasroom previous webinars</p>
+        </button>
+        <button
+          v-on:click="switcher('archived')"
+          v-bind:class="{ active: isWebinars.archived }"
+          class="menu-btn"
+        >
+          <p class="text-xs text-gray-700">Archived webinars</p>
         </button>
       </div>
     </section>
@@ -55,25 +69,25 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsUpcoming" :rows="rowsUpcoming" />
+            <simple-table :columns="columnsUpcoming" :rows="rowsUpcoming" type="Upcoming webinars" />
           </div>
         </div>
       </div>
 
-      <!-- Recorded -->
+      <!-- previous -->
       <div
-        v-if="isWebinars.recorded"
+        v-if="isWebinars.previous"
         class="container mx-auto my-10 px-2 lg:px-0"
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table :columns="columnsRecorded" :rows="rowsRecorded" />
+            <simple-table :columns="columnPrevious" :rows="rowsUpcoming" type="Previous Webinars"/>
           </div>
         </div>
       </div>
 
-      <!-- Draft -->
-      <div v-if="isWebinars.draft" class="container mx-auto my-10 px-2 lg:px-0">
+      <!-- klasroom upcoming -->
+      <div v-if="isWebinars.klasroomUpcom" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <simple-table
@@ -84,47 +98,29 @@
           </div>
         </div>
       </div>
-    </section>
 
-    <section>
-      <div class="container mx-auto my-10 px-2 lg:px-0">
+      <!-- klasroom previous -->
+      <div v-if="isWebinars.klasroomPrev" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <dash-items-section-group
-              title="Upcoming Websinars"
-              link="/student/my-webinars"
-            >
-              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                <webinar-item
-                  v-for="(webinar, key) in webinars"
-                  :key="key"
-                  :webinar="webinar"
-                  :session="true"
-                  userType="tutor"
-                />
-              </div>
-            </dash-items-section-group>
+            <simple-table
+              :columns="columnsDraft"
+              :rows="rowsDraft"
+              :onDraft="true"
+            />
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="bg-orange-100">
-      <div class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="md:grid grid-cols-3 gap-5 space-y-4 md:space-y-0">
-          <dash-webinars-calendar class="col-span-2" />
-          <dash-pre-recorded-webinars :items="undoneTasks" />
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container mx-auto my-10 px-2 lg:px-0">
+      <!-- webimar archived -->
+      <div v-if="isWebinars.archived" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <dash-items-section-group title="Previously Attended Webinars">
-              <dash-previously-attended-webinars />
-            </dash-items-section-group>
+            <simple-table
+              :columns="columnPrevious"
+              :rows="rowsUpcoming"
+              type="Archived Webinars"
+            />
           </div>
         </div>
       </div>
@@ -135,7 +131,7 @@
 <script>
 const courses = require('@/static/json/courses.json')
 const webinars = require('@/static/json/webinars.json')
-const webinarCourse = require('@/static/json/webinar-course.json')
+const webinarUpcoming = require('@/static/json/upcoming-webinars.json')
 const webinarRecorded = require('@/static/json/webinar-recorded.json')
 const webinarDraft = require('@/static/json/webinar-draft.json')
 
@@ -155,6 +151,10 @@ export default {
         field: 'webinarTitle',
       },
       {
+        label: 'owner',
+        field: 'owner',
+      },
+      {
         label: 'Price',
         field: 'price',
       },
@@ -163,7 +163,7 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Webinar Type',
+        label: 'Type',
         field: 'webinarType',
       },
       {
@@ -174,12 +174,16 @@ export default {
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    rowsUpcoming: _.take(webinarCourse, 4),
+    rowsUpcoming: _.take(webinarUpcoming, 4),
     // Recorded
-    columnsRecorded: [
+    columnPrevious: [
       {
         label: 'Webinar title',
         field: 'webinarTitle',
+      },
+      {
+        label: 'Owner',
+        field: 'owner',
       },
       {
         label: 'Price',
@@ -190,16 +194,16 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Attendees',
-        field: 'attendees',
+        label: 'Type',
+        field: 'webinarType',
       },
       {
         label: 'Rating',
         field: 'rating',
       },
       {
-        label: 'Held On',
-        field: 'heldOn',
+        label: 'Date',
+        field: 'date',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
@@ -216,8 +220,10 @@ export default {
 
     isWebinars: {
       upcoming: true,
-      recorded: false,
-      draft: false,
+      previous: false,
+      klasroomUpcom: false,
+      klasroomPrev: false,
+      archived: false,
     },
   }),
   methods: {
@@ -225,23 +231,45 @@ export default {
       switch (value) {
         case 'upcoming':
           this.isWebinars.upcoming = true
-          this.isWebinars.recorded = false
-          this.isWebinars.draft = false
+          this.isWebinars.previous = false
+          this.isWebinars.klasroomUpcom = false
+          this.isWebinars.klasroomPrev = false
+          this.isWebinars.archived = false
           break
-        case 'recorded':
+        case 'previous':
           this.isWebinars.upcoming = false
-          this.isWebinars.recorded = true
-          this.isWebinars.draft = false
+          this.isWebinars.previous = true
+          this.isWebinars.klasroomUpcom = false
+          this.isWebinars.klasroomPrev = false
+          this.isWebinars.archived = false
           break
-        case 'draft':
+        case 'klasroomUpcom':
           this.isWebinars.upcoming = false
-          this.isWebinars.recorded = false
-          this.isWebinars.draft = true
+          this.isWebinars.previous = false
+          this.isWebinars.klasroomUpcom = true
+          this.isWebinars.klasroomPrev = false
+          this.isWebinars.archived = false
+          break
+        case 'klasroomPrev':
+          this.isWebinars.upcoming = false
+          this.isWebinars.previous = false
+          this.isWebinars.klasroomUpcom = false
+          this.isWebinars.klasroomPrev = true
+          this.isWebinars.archived = false
+          break
+        case 'archived':
+          this.isWebinars.upcoming = false
+          this.isWebinars.previous = false
+          this.isWebinars.klasroomUpcom = false
+          this.isWebinars.klasroomPrev = false
+          this.isWebinars.archived = true
           break
         default:
           this.isWebinars.upcoming = true
-          this.isWebinars.recorded = false
-          this.isWebinars.draft = false
+          this.isWebinars.previous = false
+          this.isWebinars.klasroomUpcom = false
+          this.isWebinars.klasroomPrev = false
+          this.isWebinars.archived = false
       }
       // some code to filter users
     },
