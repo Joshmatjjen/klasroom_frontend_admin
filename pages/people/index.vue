@@ -27,7 +27,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section v-if="students">
         <div class="container mx-auto my-10 px-2 lg:px-0">
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
@@ -42,7 +42,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section v-if="students">
         <t-pagination
           :total-items="students.pagination.count"
           :per-page="students.pagination.limit"
@@ -56,23 +56,23 @@
 
     <!-- Tutors Section -->
     <section v-if="tab === 1">
-      <section class="bg-orange-100">
+      <section class="bg-orange-100" v-if="tutorsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0 place-self-end">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
             <dash-item-metrics
-              :title="(15000).toLocaleString()"
+              :title="tutorsSummary.activeTutorsNo.toLocaleString()"
               label="Active Tutor"
               link="/courses"
               type="filter"
             />
             <dash-item-metrics
-              :title="(600).toLocaleString()"
+              :title="tutorsSummary.dormantTutorsNo.toLocaleString()"
               label="Dormant Tutors"
               link="/webinars"
               type="filter"
             />
             <dash-item-metrics
-              :title="(5400).toLocaleString()"
+              :title="tutorsSummary.suspendedTutorsNo.toLocaleString()"
               label="Suspended Tutors"
               link="/courses"
               type="filter"
@@ -80,42 +80,52 @@
           </div>
         </div>
       </section>
-      <section>
+      <section v-if="admins">
         <div class="container mx-auto my-10 px-2 lg:px-0">
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
               <list-table-1
                 :columns="studentColumns"
-                :rows="studentRows"
+                :rows="tutors ? tutors.data : []"
                 type="Tutors"
-                :total="124322"
+                :total="tutors ? tutors.pagination.count : 0"
                 route="/people/tutors/"
               />
             </div>
           </div>
         </div>
       </section>
+      <section v-if="tutors">
+        <t-pagination
+          :total-items="tutors.pagination.count"
+          :per-page="tutors.pagination.limit"
+          :limit="4"
+          :variant="'roundedSmall'"
+          :value="tutors.pagination.currentPage"
+          @change="changePage"
+        />
+      </section>
     </section>
 
     <!-- Admins Section -->
     <section v-if="tab === 2">
-      <section class="bg-orange-100">
+      <section class="bg-orange-100" v-if="adminsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
             <dash-item-metrics
-              :title="(14).toLocaleString()"
+              :title="adminsSummary.activeAdminsNo.toLocaleString()"
               label="Active Admin"
               link="/courses"
               type="filter"
             />
             <dash-item-metrics
-              :title="(6).toLocaleString()"
+              :title="adminsSummary.dormantAdminsNo.toLocaleString()"
               label="Dormant Admins"
               link="/webinars"
               type="filter"
             />
             <dash-item-metrics
-              :title="(5).toLocaleString()"
+              :title="adminsSummary.suspendedAdminsNo.toLocaleString()"
               label="Suspended Admins"
               link="/courses"
               type="filter"
@@ -123,20 +133,30 @@
           </div>
         </div>
       </section>
-      <section>
+      <section v-if="admins">
         <div class="container mx-auto my-10 px-2 lg:px-0">
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
               <list-table-1
                 :columns="studentColumns"
-                :rows="studentRows"
+                :rows="admins ? admins.data : []"
                 type="Admins"
-                :total="124322"
+                :total="admins ? admins.pagination.count : 0"
                 route="/people/admins/"
               />
             </div>
           </div>
         </div>
+      </section>
+      <section v-if="admins">
+        <t-pagination
+          :total-items="admins.pagination.count"
+          :per-page="admins.pagination.limit"
+          :limit="4"
+          :variant="'roundedSmall'"
+          :value="admins.pagination.currentPage"
+          @change="changePage"
+        />
       </section>
     </section>
   </div>
@@ -203,6 +223,10 @@ export default {
       user: (state) => state.auth.user,
       students: (state) => state.people.students,
       studentsSummary: (state) => state.people.studentsSummary,
+      tutors: (state) => state.people.tutors,
+      tutorsSummary: (state) => state.people.tutorsSummary,
+      admins: (state) => state.people.admins,
+      adminsSummary: (state) => state.people.adminsSummary,
     }),
   },
 
@@ -230,6 +254,58 @@ export default {
         }
       })
       .catch((e) => console.log('e: ', e))
+
+    //Tutors
+    this.$store
+      .dispatch('people/getTutors')
+      .then((res) => {
+        console.log(res)
+        // this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('people/getTutorsSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+
+    // Admins
+
+    this.$store
+      .dispatch('people/getAdmins')
+      .then((res) => {
+        console.log(res)
+        // this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('people/getAdminsSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+
     if (
       this.$route.params &&
       Object.keys(this.$route.params).length !== 0 &&
@@ -240,6 +316,87 @@ export default {
     } else this.tab = 0
   },
 
+  watch: {
+    tab: {
+      handler(newValue, oldValue) {
+        console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
+        if (newValue === 0) {
+          this.$store
+            .dispatch('people/getStudents')
+            .then((res) => {
+              console.log(res)
+              // this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+
+          this.$store
+            .dispatch('people/getStudentsSummary')
+            .then((res) => {
+              console.log(res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 1) {
+          this.$store
+            .dispatch('people/getTutors')
+            .then((res) => {
+              console.log(res)
+              // this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+
+          this.$store
+            .dispatch('people/getTutorsSummary')
+            .then((res) => {
+              console.log(res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 2) {
+          this.$store
+            .dispatch('people/getAdmins')
+            .then((res) => {
+              console.log(res)
+              // this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+
+          this.$store
+            .dispatch('people/getAdminsSummary')
+            .then((res) => {
+              console.log(res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        }
+      },
+    },
+  },
+
   mounted() {
     // if (this.$device.isMobile) {
     //   this.tabs.unshift('Home')
@@ -248,18 +405,45 @@ export default {
   methods: {
     changePage(pagination) {
       console.log(pagination)
-      this.$store
-        .dispatch('people/getStudents', pagination)
-        .then((res) => {
-          console.log(res)
-          this.loading = false
-          // this.settings = res
-          if (res) {
-            // this.showSuccess(res)
-          }
-        })
-        .catch((e) => console.log('e: ', e))
-      // this.currentPage = pagination.page
+      if (this.tab === 0) {
+        this.$store
+          .dispatch('people/getStudents', pagination)
+          .then((res) => {
+            console.log(res)
+            this.loading = false
+            // this.settings = res
+            if (res) {
+              // this.showSuccess(res)
+            }
+          })
+          .catch((e) => console.log('e: ', e))
+      } else if (this.tab === 1) {
+        this.$store
+          .dispatch('people/getTutors', pagination)
+          .then((res) => {
+            console.log(res)
+            this.loading = false
+            // this.settings = res
+            if (res) {
+              // this.showSuccess(res)
+            }
+          })
+          .catch((e) => console.log('e: ', e))
+        // this.currentPage = pagination.page
+      } else if (this.tab === 2) {
+        this.$store
+          .dispatch('people/getAdmins', pagination)
+          .then((res) => {
+            console.log(res)
+            this.loading = false
+            // this.settings = res
+            if (res) {
+              // this.showSuccess(res)
+            }
+          })
+          .catch((e) => console.log('e: ', e))
+        // this.currentPage = pagination.page
+      }
     },
     isEmptyObject(value) {
       return (

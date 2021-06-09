@@ -10,10 +10,7 @@
         </div>
         <div v-if="link" class="text-right pl-5">
           <!-- <span class="text-xs text-gray-700">Due 12th Oct. 2020</span> -->
-          <nuxt-link
-            to="/courses"
-            class="text-gray-700 inline-block my-3"
-          >
+          <nuxt-link to="/courses" class="text-gray-700 inline-block my-3">
             <span class="text-sm">{{
               type ? (type === 'link' ? 'See link' : 'Filter') : 'See link'
             }}</span>
@@ -27,7 +24,7 @@
 <script>
 export default {
   props: {
-    title: { type: Number, required: true },
+    title: { type: String, required: true },
     label: { type: String, required: true },
     link: { type: String, default: null },
     type: { type: String, default: null },
