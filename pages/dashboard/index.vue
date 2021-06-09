@@ -6,6 +6,7 @@
           <dash-wallet-status
             amount="12,330,055.24"
             :items="courses"
+            title="Sales"
             weekSales="32,420"
             totalSales="32,420"
             planSales="82,000"
@@ -16,17 +17,14 @@
             title="Courses"
             :items="courses"
             :sold="314 + ' courses sold'"
-            :published="102 + ' courses published this week'"
-            :total="12420 + ' total courses'"
+            :published="102 + ' courses published'"
             link="/courses"
           />
           <dash-items-status
             title="Webinars"
             :items="courses"
-            weekSales="+28 sales this week"
-            :sold="314 + ' courses sold'"
-            :published="102 + ' courses published this week'"
-            :total="12420 + ' total webinars'"
+            :sold="314 + ' webinar sold'"
+            :published="102 + ' webinar published'"
             link="/webinars"
           />
         </div>
