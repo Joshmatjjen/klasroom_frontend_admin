@@ -15,6 +15,7 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  //STUDENTS
   FETCH_STUDENTS_SUCCESS(state, students) {
     state.students = students
   },
@@ -29,6 +30,42 @@ export const mutations = {
 
   FETCH_STUDENTS_SUMMARY_FAILURE(state) {
     state.studentsSummary = null
+  },
+
+  //TUTORS
+
+  FETCH_TUTORS_SUCCESS(state, tutors) {
+    state.tutors = tutors
+  },
+
+  FETCH_TUTORS_FAILURE(state) {
+    state.tutors = null
+  },
+
+  FETCH_TUTORS_SUMMARY_SUCCESS(state, tutors) {
+    state.tutorsSummary = tutors
+  },
+
+  FETCH_TUTORS_SUMMARY_FAILURE(state) {
+    state.tutorsSummary = null
+  },
+
+  //ADMINS
+
+  FETCH_ADMINS_SUCCESS(state, admins) {
+    state.admins = admins
+  },
+
+  FETCH_ADMINS_FAILURE(state) {
+    state.admins = null
+  },
+
+  FETCH_ADMINS_SUMMARY_SUCCESS(state, admins) {
+    state.adminsSummary = admins
+  },
+
+  FETCH_ADMINS_SUMMARY_FAILURE(state) {
+    state.adminsSummary = null
   },
 }
 
@@ -68,6 +105,96 @@ export const actions = {
         localStorage.setItem('studentsSummary', JSON.stringify(data))
 
         Cookie.set('studentsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  // TUTORS
+  async getTutors(vuexContext, page) {
+    try {
+      const data = await this.$axios.$get(
+        page ? `/users/tutors?page=${page}` : '/users/tutors'
+      )
+
+      if (data) {
+        console.log('Tutors Data', data)
+        vuexContext.commit('FETCH_TUTORS_SUCCESS', data)
+
+        localStorage.setItem('tutors', JSON.stringify(data))
+
+        Cookie.set('tutors', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorsSummary(vuexContext) {
+    try {
+      const { data } = await this.$axios.$get('/users/tutors/summary')
+
+      if (data) {
+        console.log('Student Summary', data)
+        vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
+
+        localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  // ADMINS
+  async getAdmins(vuexContext, page) {
+    try {
+      const data = await this.$axios.$get(
+        page ? `/users/admins?page=${page}` : '/users/admins'
+      )
+
+      if (data) {
+        console.log('Student Data', data)
+        vuexContext.commit('FETCH_ADMINS_SUCCESS', data)
+
+        localStorage.setItem('admins', JSON.stringify(data))
+
+        Cookie.set('admins', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getAdminsSummary(vuexContext) {
+    try {
+      const { data } = await this.$axios.$get('/users/admins/summary')
+
+      if (data) {
+        console.log('Student Summary', data)
+        vuexContext.commit('FETCH_ADMINS_SUMMARY_SUCCESS', data)
+
+        localStorage.setItem('adminsSummary', JSON.stringify(data))
+
+        Cookie.set('adminsSummary', JSON.stringify(data))
 
         return data
       }
