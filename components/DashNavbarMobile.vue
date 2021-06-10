@@ -51,7 +51,7 @@
               >
                 <span class="text-sm">Settings</span>
               </nuxt-link>
-              <a @click="logout" class="text-gray-700 block py-2">
+              <a :to="`/`" @click="logout" class="text-gray-700 block py-2">
                 <span class="text-sm">Sign out</span>
               </a>
             </div>

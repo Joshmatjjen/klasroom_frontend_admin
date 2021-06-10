@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie'
 import { cookieFromRequest, getAccessTokenHeader, getAuthHeader } from '~/utils'
+import Swal from 'sweetalert2'
 
 // state
 export const state = () => ({
@@ -83,7 +84,30 @@ export const actions = {
 
         localStorage.setItem('students', JSON.stringify(data))
 
-        Cookie.set('students', JSON.stringify(data))
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getStudents(vuexContext, page) {
+    try {
+      const data = await this.$axios.$get(
+        page ? `/users/students?page=${page}` : '/users/students'
+      )
+
+      if (data) {
+        console.log('Student Data', data)
+        vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
+
+        localStorage.setItem('students', JSON.stringify(data))
+
+        // Cookie.set('students', JSON.stringify(data))
 
         return data
       }
@@ -104,7 +128,54 @@ export const actions = {
 
         localStorage.setItem('studentsSummary', JSON.stringify(data))
 
-        Cookie.set('studentsSummary', JSON.stringify(data))
+        // Cookie.set('studentsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async exportCsvData(vuexContext, type) {
+    console.log('Type >>', type)
+    try {
+      const { data, message } = await this.$axios.$get(
+        (type === 'Students' && '/users/students?export=true') ||
+          (type === 'Tutors' && '/users/tutors?export=true') ||
+          (type === 'Admins' && '/users/admins?export=true')
+      )
+
+      if (data && message) {
+        console.log('Student Data', data)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Successfully generated excel template url !!!',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+
+        this.$axios
+          .$get(data.templateUrl, { responseType: 'blob' })
+          .then((response) => {
+            const blob = new Blob([response.data], {
+              type: 'application/xlsx',
+            })
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(blob)
+            link.download = label
+            link.click()
+            URL.revokeObjectURL(link.href)
+          })
+          .catch(console.error)
 
         return data
       }
@@ -128,7 +199,7 @@ export const actions = {
 
         localStorage.setItem('tutors', JSON.stringify(data))
 
-        Cookie.set('tutors', JSON.stringify(data))
+        // Cookie.set('tutors', JSON.stringify(data))
 
         return data
       }
@@ -149,7 +220,7 @@ export const actions = {
 
         localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
-        Cookie.set('tutorsSummary', JSON.stringify(data))
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
 
         return data
       }
@@ -173,7 +244,7 @@ export const actions = {
 
         localStorage.setItem('admins', JSON.stringify(data))
 
-        Cookie.set('admins', JSON.stringify(data))
+        // Cookie.set('admins', JSON.stringify(data))
 
         return data
       }
@@ -194,7 +265,7 @@ export const actions = {
 
         localStorage.setItem('adminsSummary', JSON.stringify(data))
 
-        Cookie.set('adminsSummary', JSON.stringify(data))
+        // Cookie.set('adminsSummary', JSON.stringify(data))
 
         return data
       }

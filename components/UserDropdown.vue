@@ -44,7 +44,7 @@
         </nuxt-link>
 
         <a
-          href="#"
+          href="/"
           @click.prevent="logout"
           class="user-menu-drop-item text-gray-700 block py-3 px-4 md:px-5 lg:px-6 hover:bg-gray-200"
         >
