@@ -37,7 +37,7 @@
                 type="Students"
                 :total="students ? students.pagination.count : 0"
                 route="/people/students/"
-                :exportCSV="exportCSV('students')"
+                :exportCSV="exportCSV"
               />
             </div>
           </div>

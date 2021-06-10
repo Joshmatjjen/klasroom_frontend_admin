@@ -140,11 +140,12 @@ export const actions = {
   },
 
   async exportCsvData(vuexContext, type) {
+    console.log('Type >>', type)
     try {
       const { data, message } = await this.$axios.$get(
-        (type === 'students' && '/users/students?export=true') ||
-          (type === 'tutors' && '/users/tutors?export=true') ||
-          (type === 'admins' && '/users/admins?export=true')
+        (type === 'Students' && '/users/students?export=true') ||
+          (type === 'Tutors' && '/users/tutors?export=true') ||
+          (type === 'Admins' && '/users/admins?export=true')
       )
 
       if (data && message) {

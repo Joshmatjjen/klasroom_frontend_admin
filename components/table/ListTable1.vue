@@ -17,7 +17,7 @@
         {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
       </p>
       <div class="flex flex-row gap-5">
-        <p @click="exportCSV" class="text-xs font-medium cursor-pointer">
+        <p @click="exportCSV(type)" class="text-xs font-medium cursor-pointer">
           Export CSV
         </p>
         <div class="vl"></div>
