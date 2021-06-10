@@ -17,7 +17,9 @@
         {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
       </p>
       <div class="flex flex-row gap-5">
-        <p class="text-xs font-medium">Export CSV</p>
+        <p @click="exportCSV" class="text-xs font-medium cursor-pointer">
+          Export CSV
+        </p>
         <div class="vl"></div>
         <div class="flex flex-row">
           <p class="text-xs font-medium pr-3">Filter</p>
@@ -314,6 +316,7 @@ export default {
     total: { type: Number, required: false },
     onDraft: { type: Boolean, required: false },
     route: { type: String, required: false },
+    exportCSV: { type: Function, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',

@@ -37,6 +37,7 @@
                 type="Students"
                 :total="students ? students.pagination.count : 0"
                 route="/people/students/"
+                :exportCSV="exportCSV('students')"
               />
             </div>
           </div>
@@ -80,7 +81,7 @@
           </div>
         </div>
       </section>
-      <section v-if="admins">
+      <section v-if="tutors">
         <div class="container mx-auto my-10 px-2 lg:px-0">
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
@@ -163,10 +164,9 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { mapState } from 'vuex'
 const courses = require('@/static/json/courses.json')
-const webinarCourse = require('@/static/json/live-courses.json')
-const studentsData = require('@/static/json/people-student.json')
 
 export default {
   middleware: ['check-auth', 'auth'],
@@ -174,7 +174,6 @@ export default {
     store.commit('app/SET_TITLE', 'People')
   },
   data: () => ({
-    courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
     tab: 0,
     current: 1,
@@ -215,7 +214,6 @@ export default {
         field: 'isActive',
       },
     ],
-    studentRows: _.take(studentsData, 10),
   }),
 
   computed: {
@@ -404,7 +402,7 @@ export default {
   },
   methods: {
     changePage(pagination) {
-      console.log(pagination)
+      console.log(pagination, 'tab -> ', this.tab)
       if (this.tab === 0) {
         this.$store
           .dispatch('people/getStudents', pagination)
@@ -417,7 +415,9 @@ export default {
             }
           })
           .catch((e) => console.log('e: ', e))
-      } else if (this.tab === 1) {
+      }
+      if (this.tab === 1) {
+        console.log('this is tab 1', this.tab)
         this.$store
           .dispatch('people/getTutors', pagination)
           .then((res) => {
@@ -430,7 +430,8 @@ export default {
           })
           .catch((e) => console.log('e: ', e))
         // this.currentPage = pagination.page
-      } else if (this.tab === 2) {
+      }
+      if (this.tab === 2) {
         this.$store
           .dispatch('people/getAdmins', pagination)
           .then((res) => {
@@ -444,6 +445,16 @@ export default {
           .catch((e) => console.log('e: ', e))
         // this.currentPage = pagination.page
       }
+    },
+    exportCSV(type) {
+      this.$store
+        .dispatch('people/exportCsvData', type)
+        .then((res) => {
+          console.log('downloaded')
+          // if (res) {
+          // }
+        })
+        .catch((e) => console.log('e: ', e))
     },
     isEmptyObject(value) {
       return (
