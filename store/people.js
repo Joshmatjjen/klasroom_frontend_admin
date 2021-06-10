@@ -167,7 +167,7 @@ export const actions = {
           .$get(data.templateUrl, { responseType: 'blob' })
           .then((response) => {
             const blob = new Blob([response.data], {
-              type: 'application/pdf',
+              type: 'application/xlsx',
             })
             const link = document.createElement('a')
             link.href = URL.createObjectURL(blob)

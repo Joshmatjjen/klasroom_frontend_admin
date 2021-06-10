@@ -145,6 +145,7 @@
                 type="Admins"
                 :total="admins ? admins.pagination.count : 0"
                 route="/people/admins/"
+                :exportCSV="exportCSV"
               />
             </div>
           </div>
