@@ -91,6 +91,7 @@
                 type="Tutors"
                 :total="tutors ? tutors.pagination.count : 0"
                 route="/people/tutors/"
+                :exportCSV="exportCSV"
               />
             </div>
           </div>
