@@ -54,9 +54,14 @@
       >
         <template slot="table-row" slot-scope="props">
           <nuxt-link
-            :to="
-              props.row.name ? route + props.row.name : route + props.row.title
-            "
+            :to="{
+              path: `${
+                props.row.name
+                  ? route + props.row.name
+                  : route + props.row.title
+              }`,
+              params: { data: props.row, id: props.row.userId },
+            }"
             class="relative"
           >
             <span

@@ -133,6 +133,20 @@ export default {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
     }
+    console.log('Just opened students', this.$route.params)
+    if (this.$route.params) {
+      this.$store
+        .dispatch('people/getStudentCurrentCourses', this.$route.params.id)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    }
   },
   methods: {
     toggleActionOpt() {

@@ -6,6 +6,14 @@ import Swal from 'sweetalert2'
 export const state = () => ({
   students: null,
   studentsSummary: null,
+  singleStudent: {
+    studentId: null,
+    currentCourses: null,
+    completedCourses: null,
+    upcomingWebinars: null,
+    prevWebinars: null,
+    activeLog: null,
+  },
 })
 
 // getters
@@ -31,6 +39,11 @@ export const mutations = {
 
   FETCH_STUDENTS_SUMMARY_FAILURE(state) {
     state.studentsSummary = null
+  },
+
+  // Single Student
+  FETCH_STUDENT_CURRENT_COURSES_SUCCESS(state, students) {
+    state.singleStudent.currentCourses = students
   },
 
   //TUTORS
@@ -95,17 +108,17 @@ export const actions = {
     }
   },
 
-  async getStudents(vuexContext, page) {
+  async getStudentCurrentCourses(vuexContext, id) {
     try {
       const data = await this.$axios.$get(
-        page ? `/users/students?page=${page}` : '/users/students'
+        '/courses/students/' + id + '?status=current'
       )
 
       if (data) {
         console.log('Student Data', data)
-        vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
+        vuexContext.commit('FETCH_STUDENT_CURRENT_COURSES_SUCCESS', data)
 
-        localStorage.setItem('students', JSON.stringify(data))
+        // localStorage.setItem('students', JSON.stringify(data))
 
         // Cookie.set('students', JSON.stringify(data))
 
