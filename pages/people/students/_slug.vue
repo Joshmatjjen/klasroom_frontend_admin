@@ -53,10 +53,16 @@
       </div>
     </section>
     <section-switcher
-      v-model="tabs"
+      v-model="tab"
       :tabs="[
-        `${2} Current Courses`,
-        `${4} Completed Courses`,
+        `${
+          singleUser.currentCourses ? singleUser.currentCourses.data.length : 0
+        } Current Courses`,
+        `${
+          singleUser.completedCourses
+            ? singleUser.completedCourses.data.length
+            : 0
+        } Completed Courses`,
         `${6} Upcoming Webinars`,
         `${6} Prev. Webinars`,
         `Active log`,
@@ -64,33 +70,33 @@
       ]"
     />
     <!-- Current Courses -->
-    <section v-if="tabs === 0 && singleUser.currentCourses">
-      <current-courses :tabs="tabs" :data="singleUser.currentCourses" />
+    <section v-if="tab === 0 && singleUser.currentCourses">
+      <current-courses :tabs="tab" :data="singleUser.currentCourses" />
     </section>
 
     <!-- Completed Courses -->
-    <section v-if="tabs === 1">
-      <completed-courses :tabs="tabs" />
+    <section v-if="tab === 1 && singleUser.completedCourses">
+      <completed-courses :tabs="tab" :data="singleUser.completedCourses" />
     </section>
 
     <!-- Upcomming Webinars -->
-    <section v-if="tabs === 2">
-      <upcoming-webinars :tabs="tabs" />
+    <section v-if="tab === 2">
+      <upcoming-webinars :tabs="tab" />
     </section>
 
     <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
-      <previous-webinars :tabs="tabs" />
+    <section v-if="tab === 3">
+      <previous-webinars :tabs="tab" />
     </section>
 
     <!-- Activity Log -->
-    <section v-if="tabs === 4">
-      <activity-log :tabs="tabs" />
+    <section v-if="tab === 4">
+      <activity-log :tabs="tab" />
     </section>
 
     <!-- Account Summary -->
-    <section v-if="tabs === 5">
-      <account-summary :tabs="tabs" />
+    <section v-if="tab === 5 && singleUser.user">
+      <account-summary :tabs="tab" :data="singleUser.user" />
     </section>
   </div>
 </template>
@@ -120,7 +126,7 @@ export default {
   },
   data: () => ({
     home: 'home',
-    tabs: 0,
+    tab: 0,
     actionOpt: false,
     isCourses: {
       preview: true,
@@ -134,12 +140,14 @@ export default {
       singleUser: (state) => state.people.singleUser,
     }),
   },
+
   mounted() {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
     }
     console.log('Just opened students', this.$route.params)
     if (this.$route.params) {
+      // getUser
       this.$store
         .dispatch('people/getUser', this.$route.params.slug)
         .then((res) => {
@@ -152,6 +160,7 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
+      // CurrentCourses
       this.$store
         .dispatch('people/getStudentCurrentCourses', this.$route.params.slug)
         .then((res) => {
@@ -164,11 +173,72 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
-      // console.log(
-      //   this.singleUser.user.userId === parseInt(this.$route.params.slug)
-      // )
+      // CompletedCourses
+      this.$store
+        .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
+
+  watch: {
+    tab: {
+      handler(newValue, oldValue) {
+        console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
+        if (newValue === 0) {
+          this.$store
+            .dispatch(
+              'people/getStudentCurrentCourses',
+              this.$route.params.slug
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 1) {
+          this.$store
+            .dispatch(
+              'people/getStudentCompletedCourses',
+              this.$route.params.slug
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 5) {
+          this.$store
+            .dispatch('people/getUser', this.$route.params.slug)
+            .then((res) => {
+              console.log('User Data', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        }
+      },
+    },
+  },
+
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt

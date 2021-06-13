@@ -53,6 +53,10 @@ export const mutations = {
     state.singleUser.currentCourses = data
   },
 
+  FETCH_STUDENT_COMPLETED_COURSES_SUCCESS(state, data) {
+    state.singleUser.completedCourses = data
+  },
+
   //TUTORS
 
   FETCH_TUTORS_SUCCESS(state, tutors) {
@@ -146,6 +150,29 @@ export const actions = {
       if (data) {
         console.log('Student Data', data)
         vuexContext.commit('FETCH_STUDENT_CURRENT_COURSES_SUCCESS', data)
+
+        // localStorage.setItem('students', JSON.stringify(data))
+
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getStudentCompletedCourses(vuexContext, id) {
+    try {
+      const data = await this.$axios.$get(
+        '/courses/students/' + id + '?status=completed'
+      )
+
+      if (data) {
+        console.log('Completed Course Data', data)
+        vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
 
         // localStorage.setItem('students', JSON.stringify(data))
 

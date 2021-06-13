@@ -7,9 +7,9 @@
           <div class="col-span-12">
             <courses-table
               :columns="completedCoursesColumns"
-              :rows="completedCoursesRows"
+              :rows="data.data"
               type="Students"
-              :total="124322"
+              :total="data.data.length"
               route="/people/students/"
             />
           </div>
@@ -29,6 +29,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   props: {
     tabs: { type: Number, required: false },
+    data: { type: Array, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {

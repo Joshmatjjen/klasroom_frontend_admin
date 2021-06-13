@@ -180,8 +180,9 @@
               <span
                 class="dot absolute rounded-full"
                 :class="
-                  props.row.status === 'Active' ||
-                  props.row.status === 'Completed'
+                  props.row.status === 'active' ||
+                  props.row.status === 'completed' ||
+                  props.row.status === true
                     ? 'bg-green-500'
                     : props.row.status === 'Upcoming'
                     ? 'bg-gray-500'
@@ -218,10 +219,19 @@
               v-else-if="
                 props.column.field == 'dateStarted' && props.row.course
               "
-              class="flex flex-row"
+              class="flex flex-row justify-center"
             >
               <span class="text-center">{{
                 props.row.course.createdAt.slice(0, -8)
+              }}</span>
+            </span>
+
+            <span
+              v-else-if="props.column.field == 'dateCompleted'"
+              class="flex flex-row justify-center"
+            >
+              <span class="text-center">{{
+                props.row.completedDate.slice(0, -8)
               }}</span>
             </span>
             <span v-else>
