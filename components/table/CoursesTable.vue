@@ -59,7 +59,6 @@
                 ? route + props.row.userId
                 : route + props.row.title
             "
-            class="relative"
           >
             <span
               v-if="
@@ -91,7 +90,7 @@
                   <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
                 <div
-                  class="flex flex-col"
+                  class="title-box flex flex-col"
                   v-if="props.row.name || props.row.course"
                 >
                   <span class="text-gray-700 font-semibold text-left text-md">{{
@@ -234,15 +233,23 @@
                 props.column.field === 'dateCompleted'
               "
             >
-              <div class="absolute right-0 -mr-4">
+              <div class="relative">
                 <span
-                  v-on:click.prevent="toggleMenu(props.row.id)"
+                  v-on:click.prevent="
+                    toggleMenu(props.row.id || props.row.course.id)
+                  "
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
                   >&#xFE19;</span
                 >
                 <div
                   :class="{
-                    hidden: opt && props.row.id === optId ? false : true,
+                    hidden:
+                      (opt &&
+                        props.row.course &&
+                        props.row.course.id === optId) ||
+                      (opt && props.row && props.row.id === optId)
+                        ? false
+                        : true,
                   }"
                   class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
                   :style="{ zIndex: 100 }"
@@ -325,6 +332,10 @@ export default {
 </script>
 
 <style scoped>
+.title-box {
+  min-width: 20rem;
+}
+
 .dot {
   top: 0.3rem;
   left: -0.8rem;
