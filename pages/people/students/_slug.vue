@@ -1,5 +1,10 @@
 <template>
-  <div class="min-h-screen mb-24">
+  <div
+    class="min-h-screen mb-24"
+    v-if="
+      singleUser.user && singleUser.user.userId === parseInt($route.params.slug)
+    "
+  >
     <section class="flex flex-row justify-between items-center">
       <div class="flex flex-row mb-8">
         <div
@@ -12,16 +17,16 @@
         >
           <img
             class="profile-img rounded-xl"
-            src="/profile.jpg"
+            :src="singleUser.user.image"
             alt="My profile"
           />
         </div>
         <div class="flex flex-col justify-end">
           <span class="text-gray-700 font-semibold text-left text-md">{{
-            'Chidimma Ugwu'
+            singleUser.user.name
           }}</span
           ><span class="text-gray-700 font-normal text-left text-xs">{{
-            'chidimmaugwu@gmail.com'
+            singleUser.user.email
           }}</span>
         </div>
       </div>
@@ -59,8 +64,8 @@
       ]"
     />
     <!-- Current Courses -->
-    <section v-if="tabs === 0">
-      <current-courses :tabs="tabs" />
+    <section v-if="tabs === 0 && singleUser.currentCourses">
+      <current-courses :tabs="tabs" :data="singleUser.currentCourses" />
     </section>
 
     <!-- Completed Courses -->
@@ -126,7 +131,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
-      profileImage: (state) => state.auth.profileImage,
+      singleUser: (state) => state.people.singleUser,
     }),
   },
   mounted() {
@@ -136,7 +141,19 @@ export default {
     console.log('Just opened students', this.$route.params)
     if (this.$route.params) {
       this.$store
-        .dispatch('people/getStudentCurrentCourses', this.$route.params.id)
+        .dispatch('people/getUser', this.$route.params.slug)
+        .then((res) => {
+          console.log('User Data', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      this.$store
+        .dispatch('people/getStudentCurrentCourses', this.$route.params.slug)
         .then((res) => {
           console.log('DAta In Slug', res)
           this.loading = false
@@ -146,6 +163,10 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // console.log(
+      //   this.singleUser.user.userId === parseInt(this.$route.params.slug)
+      // )
     }
   },
   methods: {

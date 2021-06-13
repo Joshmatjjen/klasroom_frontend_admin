@@ -6,8 +6,12 @@ import Swal from 'sweetalert2'
 export const state = () => ({
   students: null,
   studentsSummary: null,
-  singleStudent: {
-    studentId: null,
+  tutors: null,
+  tutorsSummary: null,
+  admins: null,
+  adminsSummary: null,
+  singleUser: {
+    user: null,
     currentCourses: null,
     completedCourses: null,
     upcomingWebinars: null,
@@ -42,8 +46,11 @@ export const mutations = {
   },
 
   // Single Student
-  FETCH_STUDENT_CURRENT_COURSES_SUCCESS(state, students) {
-    state.singleStudent.currentCourses = students
+  FETCH_USER_SUCCESS(state, user) {
+    state.singleUser.user = user
+  },
+  FETCH_STUDENT_CURRENT_COURSES_SUCCESS(state, data) {
+    state.singleUser.currentCourses = data
   },
 
   //TUTORS
@@ -85,6 +92,7 @@ export const mutations = {
 
 // actions
 export const actions = {
+  // List of Student
   async getStudents(vuexContext, page) {
     try {
       const data = await this.$axios.$get(
@@ -96,6 +104,27 @@ export const actions = {
         vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
 
         localStorage.setItem('students', JSON.stringify(data))
+
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getUser(vuexContext, id) {
+    try {
+      const { data } = await this.$axios.$get(`/users/${id}`)
+
+      if (data) {
+        console.log('User Data', data)
+        vuexContext.commit('FETCH_USER_SUCCESS', data)
+
+        // localStorage.setItem('students', JSON.stringify(data))
 
         // Cookie.set('students', JSON.stringify(data))
 
@@ -142,53 +171,6 @@ export const actions = {
         localStorage.setItem('studentsSummary', JSON.stringify(data))
 
         // Cookie.set('studentsSummary', JSON.stringify(data))
-
-        return data
-      }
-      return false
-    } catch (e) {
-      // console.log('fetch user failed: ', e)
-      return false
-    }
-  },
-
-  async exportCsvData(vuexContext, type) {
-    console.log('Type >>', type)
-    try {
-      const { data, message } = await this.$axios.$get(
-        (type === 'Students' && '/users/students?export=true') ||
-          (type === 'Tutors' && '/users/tutors?export=true') ||
-          (type === 'Admins' && '/users/admins?export=true')
-      )
-
-      if (data && message) {
-        console.log('Student Data', data)
-        Swal.fire({
-          position: 'top-end',
-          width: '350px',
-          text: message
-            ? message
-            : 'Successfully generated excel template url !!!',
-          backdrop: false,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          showCloseButton: true,
-          timer: 10000,
-        })
-
-        this.$axios
-          .$get(data.templateUrl, { responseType: 'blob' })
-          .then((response) => {
-            const blob = new Blob([response.data], {
-              type: 'application/xlsx',
-            })
-            const link = document.createElement('a')
-            link.href = URL.createObjectURL(blob)
-            link.download = label
-            link.click()
-            URL.revokeObjectURL(link.href)
-          })
-          .catch(console.error)
 
         return data
       }
@@ -279,6 +261,54 @@ export const actions = {
         localStorage.setItem('adminsSummary', JSON.stringify(data))
 
         // Cookie.set('adminsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  // Export CSV / XSL
+  async exportCsvData(vuexContext, type) {
+    console.log('Type >>', type)
+    try {
+      const { data, message } = await this.$axios.$get(
+        (type === 'Students' && '/users/students?export=true') ||
+          (type === 'Tutors' && '/users/tutors?export=true') ||
+          (type === 'Admins' && '/users/admins?export=true')
+      )
+
+      if (data && message) {
+        console.log('Student Data', data)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Successfully generated excel template url !!!',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+
+        this.$axios
+          .$get(data.templateUrl, { responseType: 'blob' })
+          .then((response) => {
+            const blob = new Blob([response.data], {
+              type: 'application/xlsx',
+            })
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(blob)
+            link.download = label
+            link.click()
+            URL.revokeObjectURL(link.href)
+          })
+          .catch(console.error)
 
         return data
       }

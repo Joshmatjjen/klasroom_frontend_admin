@@ -73,7 +73,9 @@
               <div class="flex flex-row items-center">
                 <img
                   v-if="!onDraft && props.row.image"
-                  :src="props.row.image"
+                  :src="
+                    props.row.course ? props.row.course.image : props.row.image
+                  "
                   alt="My profile"
                   class="course-image mr-3 rounded-lg"
                 />
@@ -88,9 +90,12 @@
                 >
                   <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
-                <div class="flex flex-col" v-if="props.row.name">
+                <div
+                  class="flex flex-col"
+                  v-if="props.row.name || props.row.course"
+                >
                   <span class="text-gray-700 font-semibold text-left text-md">{{
-                    props.row.name
+                    props.row.course ? props.row.course.title : props.row.name
                   }}</span>
                 </div>
                 <div class="flex flex-col" v-else>
@@ -153,13 +158,21 @@
               }}</span>
             </span>
             <span
+              v-else-if="props.column.field == 'comp'"
+              class="flex flex-row"
+            >
+              <span class="pl-2">{{ props.row.completed }}</span>
+            </span>
+            <span
               v-else-if="
                 props.column.field == 'rating' && props.row.rating !== ''
               "
               class="flex flex-row"
             >
               <rating :grade="props.row.rating" :viewOnly="true" />
-              <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
+              <span class="pl-2">{{
+                ' ' + props.row.rating ? props.row.rating : 0 + ' stars'
+              }}</span>
             </span>
             <span
               class="items-center relative"
@@ -201,51 +214,24 @@
               <progress-bar :percentage="props.row.progress" />
               <span class="pl-2">{{ ' ' + props.row.progress + '%' }}</span>
             </span>
+
+            <span
+              v-else-if="
+                props.column.field == 'dateStarted' && props.row.course
+              "
+              class="flex flex-row"
+            >
+              <span class="text-center">{{
+                props.row.course.createdAt.slice(0, -8)
+              }}</span>
+            </span>
             <span v-else>
               {{ props.formattedRow[props.column.field] }}
             </span>
             <span
               v-if="
-                (props.column.field === 'lastActive' &&
-                  !rows.some((obj) => Object.keys(obj).includes('status')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('isActive'))) ||
-                (!rows.some((obj) => Object.keys(obj).includes('isActive')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  )) ||
-                (props.column.field === 'status' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  )) ||
-                (props.column.field === 'isActive' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  )) ||
-                (props.column.field === 'status' &&
-                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'isActive' &&
-                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
-                props.column.field === 'dateCompleted' ||
-                (props.column.field == 'rating' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  ))
+                props.column.field === 'dateCompleted'
               "
             >
               <div class="absolute right-0 -mr-4">
@@ -369,6 +355,9 @@ export default {
 .vgt-left-align > span {
   /* pr-10 */
   @apply text-gray-700 font-normal text-left text-xs pr-5;
+}
+.vgt-right-align {
+  text-align: left !important;
 }
 .vgt-right-align > span {
   /* pr-10 */
