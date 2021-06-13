@@ -55,8 +55,14 @@
     <section-switcher
       v-model="tab"
       :tabs="[
-        `${2} Current Courses`,
-        `${4} Completed Courses`,
+        `${
+          singleUser.currentCourses ? singleUser.currentCourses.data.length : 0
+        } Current Courses`,
+        `${
+          singleUser.completedCourses
+            ? singleUser.completedCourses.data.length
+            : 0
+        } Completed Courses`,
         `${6} Upcoming Webinars`,
         `${6} Prev. Webinars`,
         `Active log`,
@@ -89,8 +95,8 @@
     </section>
 
     <!-- Account Summary -->
-    <section v-if="tab === 5">
-      <account-summary :tabs="tab" />
+    <section v-if="tab === 5 && singleUser.user">
+      <account-summary :tabs="tab" :data="singleUser.user" />
     </section>
   </div>
 </template>
@@ -141,6 +147,7 @@ export default {
     }
     console.log('Just opened students', this.$route.params)
     if (this.$route.params) {
+      // getUser
       this.$store
         .dispatch('people/getUser', this.$route.params.slug)
         .then((res) => {
@@ -153,6 +160,7 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
+      // CurrentCourses
       this.$store
         .dispatch('people/getStudentCurrentCourses', this.$route.params.slug)
         .then((res) => {
@@ -165,9 +173,18 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
-      // console.log(
-      //   this.singleUser.user.userId === parseInt(this.$route.params.slug)
-      // )
+      // CompletedCourses
+      this.$store
+        .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
 
@@ -198,6 +215,18 @@ export default {
             )
             .then((res) => {
               console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 5) {
+          this.$store
+            .dispatch('people/getUser', this.$route.params.slug)
+            .then((res) => {
+              console.log('User Data', res)
               this.loading = false
               // this.settings = res
               if (res) {

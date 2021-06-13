@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen mb-12 mt-8">
-    <section class="bg-orange-100">
+    <section class="bg-orange-100" v-if="data">
       <div class="container mx-auto px-4 lg:px-0">
         <div class="grid grid-cols-12 gap-5">
           <div class="col-span-full lg:col-span-7 xl:col-span-8">
@@ -18,7 +18,7 @@
                   <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">Name</p>
-                      <p class="text-sm text-gray-700">{{ user.name }}</p>
+                      <p class="text-sm text-gray-700">{{ data.name }}</p>
                     </div>
                     <!-- <div class="col-span-5 text-right">
                       <button
@@ -32,19 +32,19 @@
                   <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">Phone</p>
-                      <p class="text-sm text-gray-700">{{ user.phone }}</p>
+                      <p class="text-sm text-gray-700">{{ data.phone }}</p>
                     </div>
                   </div>
                   <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">Email</p>
-                      <p class="text-sm text-gray-700">{{ user.email }}</p>
+                      <p class="text-sm text-gray-700">{{ data.email }}</p>
                     </div>
                   </div>
                   <div class="grid grid-cols-12 mb-5">
                     <div class="col-span-7">
                       <p class="text-sm font-bold text-gray-700 mb-3">Gender</p>
-                      <p class="text-sm text-gray-700">{{ user.gender }}</p>
+                      <p class="text-sm text-gray-700">{{ data.gender }}</p>
                     </div>
                   </div>
                   <hr class="mt-4 mb-6" />
@@ -237,7 +237,9 @@
               class="bg-white rounded-xl border border-gray-300 shadow-hover relative min-h-full"
             >
               <div class="block mb-2">
-                <div class="big-avatar relative rounded-xl overflow-hidden">
+                <div class="big-avatar relative rounded-xl overflow-hidden" v-bind:style="{
+                    backgroundImage: 'url(' + data.image + ')',
+                  }">
                   <div
                     class="grid grid-cols-12 place-items-center py-32 md:py-32 lg:py-40 xl:py-48"
                   >
@@ -316,6 +318,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   props: {
     type: { type: String, required: false },
+    data: { type: Object, required: false },
   },
   fetch({ store }) {
     store.commit('app/SET_TITLE', 'Account')

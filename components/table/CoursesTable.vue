@@ -180,8 +180,9 @@
               <span
                 class="dot absolute rounded-full"
                 :class="
-                  props.row.status === 'Active' ||
-                  props.row.status === 'Completed'
+                  props.row.status === 'active' ||
+                  props.row.status === 'completed' ||
+                  props.row.status === true
                     ? 'bg-green-500'
                     : props.row.status === 'Upcoming'
                     ? 'bg-gray-500'
