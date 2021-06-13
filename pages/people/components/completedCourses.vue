@@ -5,7 +5,7 @@
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <list-table-1
+            <courses-table
               :columns="completedCoursesColumns"
               :rows="completedCoursesRows"
               type="Students"

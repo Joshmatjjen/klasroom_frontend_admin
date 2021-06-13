@@ -59,7 +59,6 @@
                 ? route + props.row.userId
                 : route + props.row.title
             "
-            class="relative"
           >
             <span
               v-if="
@@ -73,7 +72,9 @@
               <div class="flex flex-row items-center">
                 <img
                   v-if="!onDraft && props.row.image"
-                  :src="props.row.image"
+                  :src="
+                    props.row.course ? props.row.course.image : props.row.image
+                  "
                   alt="My profile"
                   class="course-image mr-3 rounded-lg"
                 />
@@ -88,9 +89,12 @@
                 >
                   <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
-                <div class="flex flex-col" v-if="props.row.name">
+                <div
+                  class="title-box flex flex-col"
+                  v-if="props.row.name || props.row.course"
+                >
                   <span class="text-gray-700 font-semibold text-left text-md">{{
-                    props.row.name
+                    props.row.course ? props.row.course.title : props.row.name
                   }}</span>
                 </div>
                 <div class="flex flex-col" v-else>
@@ -153,13 +157,21 @@
               }}</span>
             </span>
             <span
+              v-else-if="props.column.field == 'comp'"
+              class="flex flex-row"
+            >
+              <span class="pl-2">{{ props.row.completed }}</span>
+            </span>
+            <span
               v-else-if="
                 props.column.field == 'rating' && props.row.rating !== ''
               "
               class="flex flex-row"
             >
               <rating :grade="props.row.rating" :viewOnly="true" />
-              <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
+              <span class="pl-2">{{
+                ' ' + props.row.rating ? props.row.rating : 0 + ' stars'
+              }}</span>
             </span>
             <span
               class="items-center relative"
@@ -201,62 +213,43 @@
               <progress-bar :percentage="props.row.progress" />
               <span class="pl-2">{{ ' ' + props.row.progress + '%' }}</span>
             </span>
+
+            <span
+              v-else-if="
+                props.column.field == 'dateStarted' && props.row.course
+              "
+              class="flex flex-row"
+            >
+              <span class="text-center">{{
+                props.row.course.createdAt.slice(0, -8)
+              }}</span>
+            </span>
             <span v-else>
               {{ props.formattedRow[props.column.field] }}
             </span>
             <span
               v-if="
-                (props.column.field === 'lastActive' &&
-                  !rows.some((obj) => Object.keys(obj).includes('status')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('isActive'))) ||
-                (!rows.some((obj) => Object.keys(obj).includes('isActive')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  )) ||
-                (props.column.field === 'status' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  )) ||
-                (props.column.field === 'isActive' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  )) ||
-                (props.column.field === 'status' &&
-                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'isActive' &&
-                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
-                props.column.field === 'dateCompleted' ||
-                (props.column.field == 'rating' &&
-                  !rows.some((obj) => Object.keys(obj).includes('date')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  ) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateCompleted')
-                  ))
+                props.column.field === 'dateCompleted'
               "
             >
-              <div class="absolute right-0 -mr-4">
+              <div class="relative">
                 <span
-                  v-on:click.prevent="toggleMenu(props.row.id)"
+                  v-on:click.prevent="
+                    toggleMenu(props.row.id || props.row.course.id)
+                  "
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
                   >&#xFE19;</span
                 >
                 <div
                   :class="{
-                    hidden: opt && props.row.id === optId ? false : true,
+                    hidden:
+                      (opt &&
+                        props.row.course &&
+                        props.row.course.id === optId) ||
+                      (opt && props.row && props.row.id === optId)
+                        ? false
+                        : true,
                   }"
                   class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
                   :style="{ zIndex: 100 }"
@@ -339,6 +332,10 @@ export default {
 </script>
 
 <style scoped>
+.title-box {
+  min-width: 20rem;
+}
+
 .dot {
   top: 0.3rem;
   left: -0.8rem;
@@ -369,6 +366,9 @@ export default {
 .vgt-left-align > span {
   /* pr-10 */
   @apply text-gray-700 font-normal text-left text-xs pr-5;
+}
+.vgt-right-align {
+  text-align: left !important;
 }
 .vgt-right-align > span {
   /* pr-10 */

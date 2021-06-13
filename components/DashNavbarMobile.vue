@@ -33,22 +33,13 @@
             :class="{ hidden: !userMenu }"
           >
             <div class="px-4 md:px-5 lg:px-6 py-3">
-              <nuxt-link
-                :to="`/${userDash}/dashboard`"
-                class="text-gray-700 block py-2"
-              >
+              <nuxt-link :to="`/dashboard`" class="text-gray-700 block py-2">
                 <span class="text-sm">Dashboard</span>
               </nuxt-link>
-              <nuxt-link
-                :to="`/${userDash}/account`"
-                class="text-gray-700 block py-2"
-              >
+              <nuxt-link :to="`/account`" class="text-gray-700 block py-2">
                 <span class="text-sm">Account</span>
               </nuxt-link>
-              <nuxt-link
-                :to="`/${userDash}/settings`"
-                class="text-gray-700 block py-2"
-              >
+              <nuxt-link :to="`/settings`" class="text-gray-700 block py-2">
                 <span class="text-sm">Settings</span>
               </nuxt-link>
               <a :to="`/`" @click="logout" class="text-gray-700 block py-2">
