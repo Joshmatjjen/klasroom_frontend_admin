@@ -218,10 +218,19 @@
               v-else-if="
                 props.column.field == 'dateStarted' && props.row.course
               "
-              class="flex flex-row"
+              class="flex flex-row justify-center"
             >
               <span class="text-center">{{
                 props.row.course.createdAt.slice(0, -8)
+              }}</span>
+            </span>
+
+            <span
+              v-else-if="props.column.field == 'dateCompleted'"
+              class="flex flex-row justify-center"
+            >
+              <span class="text-center">{{
+                props.row.completedDate.slice(0, -8)
               }}</span>
             </span>
             <span v-else>
