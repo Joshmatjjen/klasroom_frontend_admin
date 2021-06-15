@@ -142,9 +142,9 @@ export default {
   },
 
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
-    }
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
     console.log('Just opened students', this.$route.params)
     if (this.$route.params) {
       // getUser
