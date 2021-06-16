@@ -380,6 +380,37 @@ export const actions = {
     }
   },
 
+  async accountActions(vuexContext, props) {
+    // /users/students/suspend/{userId}
+    console.log('Type >>', props)
+    const { actionType, type, userId } = props
+    try {
+      const { data, message } = await this.$axios.$get(
+        `/users/${type}/${actionType}/${userId}`
+      )
+
+      if (data && message) {
+        console.log('Student Data', data)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message ? message : `Successfully ${actionType} account`,
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
   // initStudentsData(vuexContext, req) {
   //   let token
   //   let expirationDate

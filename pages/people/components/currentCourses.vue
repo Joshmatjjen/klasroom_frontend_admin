@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Current Courses -->
-    <section>
+    <section v-if="data">
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <courses-table
               :columns="currentCoursesColumns"
               :rows="data.data"
-              type="Students"
+              type="Courses"
               :total="data.data.length"
               route="/people/students/"
             />

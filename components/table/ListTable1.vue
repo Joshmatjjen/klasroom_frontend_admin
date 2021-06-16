@@ -53,12 +53,23 @@
         styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
+          <!-- <nuxt-link
             :to="
               props.row.userId
                 ? route + props.row.userId
                 : route + props.row.title
             "
+            class="relative"
+          > -->
+          <nuxt-link
+            :to="{
+              name: route,
+              params: {
+                slug: props.row.userId ? props.row.userId : props.row.title,
+                userData: props.row,
+                type: type.toLowerCase(),
+              },
+            }"
             class="relative"
           >
             <span

@@ -8,7 +8,7 @@
             <courses-table
               :columns="completedCoursesColumns"
               :rows="data.data"
-              type="Students"
+              type="Courses"
               :total="data.data.length"
               route="/people/students/"
             />

@@ -43,7 +43,7 @@
                 :rows="students ? students.data : []"
                 type="Students"
                 :total="students ? students.pagination.count : 0"
-                route="/people/students/"
+                route="people-students-slug"
                 :exportCSV="exportCSV"
               />
             </div>
@@ -103,7 +103,7 @@
                 :rows="tutors ? tutors.data : []"
                 type="Tutors"
                 :total="tutors ? tutors.pagination.count : 0"
-                route="/people/tutors/"
+                route="people-tutors-slug"
                 :exportCSV="exportCSV"
               />
             </div>
@@ -163,7 +163,7 @@
                 :rows="admins ? admins.data : []"
                 type="Admins"
                 :total="admins ? admins.pagination.count : 0"
-                route="/people/admins/"
+                route="people-admins-slug"
                 :exportCSV="exportCSV"
               />
             </div>
