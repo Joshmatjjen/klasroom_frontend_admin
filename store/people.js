@@ -385,8 +385,11 @@ export const actions = {
     console.log('Type >>', props)
     const { actionType, type, userId } = props
     try {
-      const { data, message } = await this.$axios.$get(
-        `/users/${type}/${actionType}/${userId}`
+      const { data, message } = await this.$axios.$post(
+        `/users/${type}/${actionType}/${userId}`,
+        actionType === 'suspend' && {
+          reasonForDeactivation: 'Because he is stubborn',
+        }
       )
 
       if (data && message) {
