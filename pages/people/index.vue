@@ -21,7 +21,7 @@
               type="filter"
               tableType="Students"
               :filterData="filterData"
-              filterType="inactive"
+              filterType="dormant"
             />
             <dash-item-metrics
               :title="studentsSummary.suspendedStudentsNo.toLocaleString()"
@@ -29,7 +29,7 @@
               type="filter"
               tableType="Students"
               :filterData="filterData"
-              filterType="inactive"
+              filterType="suspend"
             />
           </div>
         </div>
@@ -45,6 +45,10 @@
                 :total="students ? students.pagination.count : 0"
                 route="people-students-slug"
                 :exportCSV="exportCSV"
+                :popUpProps="[
+                  { name: 'Preview', action: null },
+                  { name: 'Action', action: null },
+                ]"
               />
             </div>
           </div>
@@ -81,7 +85,7 @@
               type="filter"
               tableType="Tutors"
               :filterData="filterData"
-              filterType="inactive"
+              filterType="dormant"
             />
             <dash-item-metrics
               :title="tutorsSummary.suspendedTutorsNo.toLocaleString()"
@@ -89,7 +93,7 @@
               type="filter"
               tableType="Tutors"
               :filterData="filterData"
-              filterType="inactive"
+              filterType="suspend"
             />
           </div>
         </div>
@@ -232,7 +236,7 @@ export default {
       },
       {
         label: 'Status',
-        field: 'isActive',
+        field: 'status',
       },
     ],
   }),

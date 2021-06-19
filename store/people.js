@@ -326,6 +326,7 @@ export const actions = {
         this.$axios
           .$get(data.templateUrl, { responseType: 'blob' })
           .then((response) => {
+            console.log('How fr---', response)
             const blob = new Blob([response.data], {
               type: 'application/xlsx',
             })
