@@ -42,12 +42,29 @@
           }"
           class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
           :style="{ zIndex: 100 }"
-          @click.capture.stop="texting"
+          @click.capture.stop="accountAction('suspend')"
+          v-if="singleUser.user.isActive"
         >
           <p
             class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
           >
             Suspend account
+          </p>
+        </div>
+
+        <div
+          :class="{
+            hidden: actionOpt ? false : true,
+          }"
+          class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+          :style="{ zIndex: 100 }"
+          @click.capture.stop="accountAction('unsuspend')"
+          v-if="!singleUser.user.isActive"
+        >
+          <p
+            class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          >
+            Unsuspend account
           </p>
         </div>
       </div>
@@ -142,9 +159,9 @@ export default {
   },
 
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
-    }
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
     console.log('Just opened students', this.$route.params)
     if (this.$route.params) {
       // getUser
@@ -245,6 +262,24 @@ export default {
     },
     texting() {
       console.log('Testing!!!!!')
+    },
+    accountAction(actionType) {
+      console.log('Hello', this.$route, 'Type-->', this.$route.params.type)
+      this.$store
+        .dispatch('people/accountActions', {
+          actionType,
+          type: this.$route.params.type,
+          userId: this.$route.params.slug,
+        })
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

@@ -9,20 +9,27 @@
             <dash-item-metrics
               :title="studentsSummary.activeStudentsNo.toLocaleString()"
               label="Active Student"
-              link="/courses"
               type="filter"
+              tableType="Students"
+              :filterData="filterData"
+              filterType="active"
             />
             <dash-item-metrics
               :title="studentsSummary.dormantStudentsNo.toLocaleString()"
               label="Dormant Students"
               link="/webinars"
               type="filter"
+              tableType="Students"
+              :filterData="filterData"
+              filterType="dormant"
             />
             <dash-item-metrics
               :title="studentsSummary.suspendedStudentsNo.toLocaleString()"
               label="Suspended Students"
-              link="/courses"
               type="filter"
+              tableType="Students"
+              :filterData="filterData"
+              filterType="suspend"
             />
           </div>
         </div>
@@ -36,8 +43,12 @@
                 :rows="students ? students.data : []"
                 type="Students"
                 :total="students ? students.pagination.count : 0"
-                route="/people/students/"
+                route="people-students-slug"
                 :exportCSV="exportCSV"
+                :popUpProps="[
+                  { name: 'Preview', action: null },
+                  { name: 'Action', action: null },
+                ]"
               />
             </div>
           </div>
@@ -63,20 +74,26 @@
             <dash-item-metrics
               :title="tutorsSummary.activeTutorsNo.toLocaleString()"
               label="Active Tutor"
-              link="/courses"
               type="filter"
+              tableType="Tutors"
+              :filterData="filterData"
+              filterType="active"
             />
             <dash-item-metrics
               :title="tutorsSummary.dormantTutorsNo.toLocaleString()"
               label="Dormant Tutors"
-              link="/webinars"
               type="filter"
+              tableType="Tutors"
+              :filterData="filterData"
+              filterType="dormant"
             />
             <dash-item-metrics
               :title="tutorsSummary.suspendedTutorsNo.toLocaleString()"
               label="Suspended Tutors"
-              link="/courses"
               type="filter"
+              tableType="Tutors"
+              :filterData="filterData"
+              filterType="suspend"
             />
           </div>
         </div>
@@ -90,7 +107,7 @@
                 :rows="tutors ? tutors.data : []"
                 type="Tutors"
                 :total="tutors ? tutors.pagination.count : 0"
-                route="/people/tutors/"
+                route="people-tutors-slug"
                 :exportCSV="exportCSV"
               />
             </div>
@@ -117,20 +134,26 @@
             <dash-item-metrics
               :title="adminsSummary.activeAdminsNo.toLocaleString()"
               label="Active Admin"
-              link="/courses"
               type="filter"
+              tableType="Admins"
+              :filterData="filterData"
+              filterType="active"
             />
             <dash-item-metrics
               :title="adminsSummary.dormantAdminsNo.toLocaleString()"
               label="Dormant Admins"
-              link="/webinars"
               type="filter"
+              tableType="Admins"
+              :filterData="filterData"
+              filterType="inactive"
             />
             <dash-item-metrics
               :title="adminsSummary.suspendedAdminsNo.toLocaleString()"
               label="Suspended Admins"
-              link="/courses"
               type="filter"
+              tableType="Admins"
+              :filterData="filterData"
+              filterType="inactive"
             />
           </div>
         </div>
@@ -144,7 +167,7 @@
                 :rows="admins ? admins.data : []"
                 type="Admins"
                 :total="admins ? admins.pagination.count : 0"
-                route="/people/admins/"
+                route="people-admins-slug"
                 :exportCSV="exportCSV"
               />
             </div>
@@ -213,7 +236,7 @@ export default {
       },
       {
         label: 'Status',
-        field: 'isActive',
+        field: 'status',
       },
     ],
   }),
@@ -231,6 +254,8 @@ export default {
   },
 
   created() {
+    console.log('Checking Created')
+
     this.$store
       .dispatch('people/getStudentsSummary')
       .then((res) => {
@@ -447,6 +472,20 @@ export default {
           .catch((e) => console.log('e: ', e))
         // this.currentPage = pagination.page
       }
+    },
+    async filterData(type, tableType) {
+      console.log(type)
+      this.$store
+        .dispatch('people/filterPeople', { type, tableType })
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
     exportCSV(type) {
       this.$store

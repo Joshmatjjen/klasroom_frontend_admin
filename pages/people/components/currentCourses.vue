@@ -7,9 +7,9 @@
           <div class="col-span-12">
             <courses-table
               :columns="currentCoursesColumns"
-              :rows="data.data"
-              type="Students"
-              :total="data.data.length"
+              :rows="data ? data.data : []"
+              type="Courses"
+              :total="data ? data.data.length : 0"
               route="/people/students/"
             />
           </div>

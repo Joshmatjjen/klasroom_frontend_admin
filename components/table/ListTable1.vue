@@ -53,12 +53,23 @@
         styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
+          <!-- <nuxt-link
             :to="
               props.row.userId
                 ? route + props.row.userId
                 : route + props.row.title
             "
+            class="relative"
+          > -->
+          <nuxt-link
+            :to="{
+              name: route,
+              params: {
+                slug: props.row.userId ? props.row.userId : props.row.title,
+                userData: props.row,
+                type: type.toLowerCase(),
+              },
+            }"
             class="relative"
           >
             <span
@@ -168,18 +179,21 @@
               <span
                 class="dot absolute rounded-full"
                 :class="
-                  props.row.status === 'Active' ||
-                  props.row.status === 'Completed'
+                  props.row.status === 'active' ||
+                  props.row.status === 'completed'
                     ? 'bg-green-500'
-                    : props.row.status === 'Upcoming'
+                    : props.row.status === 'upcoming'
                     ? 'bg-gray-500'
-                    : props.row.status === 'Success'
+                    : props.row.status === 'suspended'
+                    ? 'bg-red-500'
+                    : props.row.status === 'success'
                     ? ''
                     : 'bg-gray-500'
                 "
               ></span>
               <span class="text-gray-700 text-center">{{
-                props.row.status
+                props.row.status.charAt(0).toUpperCase() +
+                props.row.status.slice(1)
               }}</span>
             </span>
             <span
@@ -250,41 +264,60 @@
             >
               <div class="absolute right-0 -mr-4">
                 <span
-                  v-on:click.prevent="toggleMenu(props.row.id)"
+                  v-on:click.prevent="
+                    toggleMenu(props.row.id ? props.row.id : props.row.userId)
+                  "
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
                   >&#xFE19;</span
                 >
                 <div
                   :class="{
-                    hidden: opt && props.row.id === optId ? false : true,
+                    hidden:
+                      opt && props.row.id
+                        ? props.row.id === optId
+                          ? false
+                          : true
+                        : opt && props.row.userId && props.row.userId === optId
+                        ? false
+                        : true,
+                    'bottom-0': props.index > 5 ? true : false,
+                    'top-0': props.index <= 5 ? true : false,
+                    'mt-2': props.index <= 5 ? true : false,
+                    'mb-5': props.index > 5 ? true : false,
                   }"
-                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
+                  class="pop-up flex flex-col items-start px-2 absolute pt-2 right-1/2 border-gray-500 bg-white rounded-lg min-h-100 w-32 shadow-lg"
                   :style="{ zIndex: 100 }"
                 >
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                  <div
+                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-2"
+                    v-for="({ name }, key) in popUpProps"
+                    :key="key"
                   >
-                    <p>Edit webinar</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Delete</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Share</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Preview</p>
-                  </a>
+                    <p v-if="name === 'Action'">
+                      {{
+                        name === 'Action'
+                          ? props.row.status && props.row.status === 'suspended'
+                            ? 'Unsuspend'
+                            : 'Suspend'
+                          : name
+                      }}
+                    </p>
+                    <nuxt-link
+                      v-if="name === 'Preview'"
+                      :to="{
+                        name: route,
+                        params: {
+                          slug: props.row.userId
+                            ? props.row.userId
+                            : props.row.title,
+                          userData: props.row,
+                          type: type.toLowerCase(),
+                        },
+                      }"
+                      class="relative"
+                      >Preview</nuxt-link
+                    >
+                  </div>
                 </div>
               </div>
             </span>
@@ -319,6 +352,7 @@ export default {
     onDraft: { type: Boolean, required: false },
     route: { type: String, required: false },
     exportCSV: { type: Function, required: false },
+    popUpProps: { type: Array, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',
@@ -328,6 +362,7 @@ export default {
   }),
   methods: {
     toggleMenu(optId) {
+      console.log('Toggleing', optId)
       this.opt = !this.opt
       if (optId) this.optId = optId
     },

@@ -326,6 +326,7 @@ export const actions = {
         this.$axios
           .$get(data.templateUrl, { responseType: 'blob' })
           .then((response) => {
+            console.log('How fr---', response)
             const blob = new Blob([response.data], {
               type: 'application/xlsx',
             })
@@ -336,6 +337,74 @@ export const actions = {
             URL.revokeObjectURL(link.href)
           })
           .catch(console.error)
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async filterPeople(vuexContext, item) {
+    try {
+      const data = await this.$axios.$get(
+        (item.tableType === 'Students' &&
+          `/users/students?status=${item.type}`) ||
+          (item.tableType === 'Tutors' &&
+            `/users/tutors?status=${item.type}`) ||
+          (item.tableType === 'Admins' && `/users/admins?status=${item.type}`)
+      )
+
+      if (data) {
+        console.log('Filtered Student Data', data)
+        if (item.tableType === 'Students') {
+          vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
+          localStorage.setItem('students', JSON.stringify(data))
+        } else if (item.tableType === 'Tutors') {
+          vuexContext.commit('FETCH_TUTORS_SUCCESS', data)
+          localStorage.setItem('tutors', JSON.stringify(data))
+        } else if (item.tableType === 'Admins') {
+          vuexContext.commit('FETCH_ADMINS_SUCCESS', data)
+          localStorage.setItem('admins', JSON.stringify(data))
+        }
+
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async accountActions(vuexContext, props) {
+    // /users/students/suspend/{userId}
+    console.log('Type >>', props)
+    const { actionType, type, userId } = props
+    try {
+      const { data, message } = await this.$axios.$post(
+        `/users/${type}/${actionType}/${userId}`,
+        actionType === 'suspend' && {
+          reasonForDeactivation: 'Because he is stubborn',
+        }
+      )
+
+      if (data && message) {
+        console.log('Student Data', data)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message ? message : `Successfully ${actionType} account`,
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
 
         return data
       }
