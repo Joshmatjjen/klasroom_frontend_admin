@@ -22,6 +22,7 @@ export const state = () => ({
   banks: [],
   userDetails: null,
   accounts: null,
+  actionModal: null,
   editProfileModal: null,
   changePasswordModal: null,
   editImageModal: null,
@@ -44,6 +45,9 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  ACTION_MODAL(state, actionData) {
+    state.actionModal = actionData
+  },
   SET_REDIRECT(state, url) {
     state.redirect_url = url
   },

@@ -47,7 +47,7 @@
                 :exportCSV="exportCSV"
                 :popUpProps="[
                   { name: 'Preview', action: null },
-                  { name: 'Action', action: null },
+                  { name: 'Action', action: toggleAcctAction },
                 ]"
               />
             </div>
@@ -496,6 +496,15 @@ export default {
           // }
         })
         .catch((e) => console.log('e: ', e))
+    },
+    toggleAcctAction(name, type) {
+      console.log(name, 'toggleAcctAction', type)
+      this.$store.commit('app/ACTION_MODAL', {
+        status: true,
+        title: 'Suspend Account',
+        desc: `Are you sure you want to suspend ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: 'Suspend',
+      })
     },
     isEmptyObject(value) {
       return (

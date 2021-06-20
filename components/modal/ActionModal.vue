@@ -3,7 +3,7 @@
     Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
     Read the documentation to get started: https://tailwindui.com/documentation
   -->
-  <div v-if="null" class="fixed z-10 inset-0 overflow-y-auto">
+  <div v-if="actionModal" class="fixed z-10 inset-0 overflow-y-auto">
     <div
       class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     >
@@ -66,14 +66,25 @@
                 id="modal-headline"
                 class="text-lg leading-6 font-medium text-gray-900"
               >
-                Deactivate account
+                {{ actionModal.title }}
               </h3>
               <div class="mt-2">
                 <p class="text-sm leading-5 text-gray-500">
-                  Are you sure you want to deactivate your account? All of your
-                  data will be permanently removed. This action cannot be
-                  undone.
+                  {{ actionModal.desc }}
                 </p>
+              </div>
+              <div class="form-group mt-5">
+                <!-- <label for="input-password">Reason for suspension</label> -->
+                <div>
+                  <input
+                    id="comment"
+                    type="text"
+                    multiple
+                    class="form-input"
+                    placeholder="Type your reason for this suspension"
+                    v-model="comment"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -82,16 +93,21 @@
           <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
             <button
               type="button"
-              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium text-white shadow-sm sm:text-sm sm:leading-5"
+              :class="
+                comment.length > 5
+                  ? 'bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150'
+                  : 'bg-red-300'
+              "
             >
-              Deactivate
+              {{ actionModal.actionName }}
             </button>
           </span>
           <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
             <button
               type="button"
               class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-              @click="$store.commit('app/LOGIN_MODAL', false)"
+              @click="$store.commit('app/ACTION_MODAL', null)"
             >
               Cancel
             </button>
@@ -106,9 +122,12 @@
 import { mapState } from 'vuex'
 
 export default {
+  data: () => ({
+    comment: '',
+  }),
   computed: {
     ...mapState({
-      showLogin: (state) => state.app.loginModal,
+      actionModal: (state) => state.app.actionModal,
     }),
   },
 }

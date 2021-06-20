@@ -290,10 +290,25 @@
                 >
                   <div
                     class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-2"
-                    v-for="({ name }, key) in popUpProps"
+                    v-for="({ name, action }, key) in popUpProps"
                     :key="key"
                   >
-                    <p v-if="name === 'Action'">
+                    <p
+                      v-if="name === 'Action'"
+                      v-on:click.prevent="
+                        () => {
+                          action(
+                            props.row.name,
+                            props.row.status && props.row.status === 'suspended'
+                              ? 'Unsuspend'
+                              : 'Suspend'
+                          )
+                          toggleMenu(
+                            props.row.id ? props.row.id : props.row.userId
+                          )
+                        }
+                      "
+                    >
                       {{
                         name === 'Action'
                           ? props.row.status && props.row.status === 'suspended'
