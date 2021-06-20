@@ -1,5 +1,10 @@
 <template>
-  <div class="min-h-screen mb-24">
+  <div
+    class="min-h-screen mb-24"
+    v-if="
+      singleUser.user && singleUser.user.userId === parseInt($route.params.slug)
+    "
+  >
     <section class="flex flex-row justify-between items-center">
       <div class="flex flex-row mb-8">
         <div
@@ -12,16 +17,16 @@
         >
           <img
             class="profile-img rounded-xl"
-            src="/profile.jpg"
+            :src="singleUser.user.image"
             alt="My profile"
           />
         </div>
         <div class="flex flex-col justify-end">
           <span class="text-gray-700 font-semibold text-left text-md">{{
-            'Chidimma Ugwu'
+            singleUser.user.name
           }}</span
           ><span class="text-gray-700 font-normal text-left text-xs">{{
-            'chidimmaugwu@gmail.com'
+            singleUser.user.email
           }}</span>
         </div>
       </div>
@@ -37,7 +42,8 @@
           }"
           class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
           :style="{ zIndex: 100 }"
-          @click.capture.stop="texting"
+          @click.capture.stop="accountAction('suspend')"
+          v-if="singleUser.user.isActive"
         >
           <p
             class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
@@ -45,13 +51,35 @@
             Suspend account
           </p>
         </div>
+
+        <div
+          :class="{
+            hidden: actionOpt ? false : true,
+          }"
+          class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+          :style="{ zIndex: 100 }"
+          @click.capture.stop="accountAction('unsuspend')"
+          v-if="!singleUser.user.isActive"
+        >
+          <p
+            class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          >
+            Unsuspend account
+          </p>
+        </div>
       </div>
     </section>
     <section-switcher
-      v-model="tabs"
+      v-model="tab"
       :tabs="[
-        `${2} Current Courses`,
-        `${4} Completed Courses`,
+        `${
+          singleUser.currentCourses ? singleUser.currentCourses.data.length : 0
+        } Current Courses`,
+        `${
+          singleUser.completedCourses
+            ? singleUser.completedCourses.data.length
+            : 0
+        } Completed Courses`,
         `${6} Upcoming Webinars`,
         `${6} Prev. Webinars`,
         `Active log`,
@@ -59,33 +87,33 @@
       ]"
     />
     <!-- Current Courses -->
-    <section v-if="tabs === 0">
-      <current-courses :tabs="tabs" />
+    <section v-if="tab === 0 && singleUser.currentCourses">
+      <current-courses :tabs="tab" :data="singleUser.currentCourses" />
     </section>
 
     <!-- Completed Courses -->
-    <section v-if="tabs === 1">
-      <completed-courses :tabs="tabs" />
+    <section v-if="tab === 1 && singleUser.completedCourses">
+      <completed-courses :tabs="tab" :data="singleUser.completedCourses" />
     </section>
 
     <!-- Upcomming Webinars -->
-    <section v-if="tabs === 2">
-      <upcoming-webinars :tabs="tabs" />
+    <section v-if="tab === 2">
+      <upcoming-webinars :tabs="tab" />
     </section>
 
     <!-- Previous Webinars -->
-    <section v-if="tabs === 3">
-      <previous-webinars :tabs="tabs" />
+    <section v-if="tab === 3">
+      <previous-webinars :tabs="tab" />
     </section>
 
     <!-- Activity Log -->
-    <section v-if="tabs === 4">
-      <activity-log :tabs="tabs" />
+    <section v-if="tab === 4">
+      <activity-log :tabs="tab" />
     </section>
 
     <!-- Account Summary -->
-    <section v-if="tabs === 5">
-      <account-summary :tabs="tabs" />
+    <section v-if="tab === 5 && singleUser.user">
+      <account-summary :tabs="tab" :data="singleUser.user" />
     </section>
   </div>
 </template>
@@ -115,7 +143,7 @@ export default {
   },
   data: () => ({
     home: 'home',
-    tabs: 0,
+    tab: 0,
     actionOpt: false,
     isCourses: {
       preview: true,
@@ -126,20 +154,132 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
-      profileImage: (state) => state.auth.profileImage,
+      singleUser: (state) => state.people.singleUser,
     }),
   },
+
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
+    console.log('Just opened students', this.$route.params)
+    if (this.$route.params) {
+      // getUser
+      this.$store
+        .dispatch('people/getUser', this.$route.params.slug)
+        .then((res) => {
+          console.log('User Data', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // CurrentCourses
+      this.$store
+        .dispatch('people/getStudentCurrentCourses', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // CompletedCourses
+      this.$store
+        .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
+
+  watch: {
+    tab: {
+      handler(newValue, oldValue) {
+        console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
+        if (newValue === 0) {
+          this.$store
+            .dispatch(
+              'people/getStudentCurrentCourses',
+              this.$route.params.slug
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 1) {
+          this.$store
+            .dispatch(
+              'people/getStudentCompletedCourses',
+              this.$route.params.slug
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 5) {
+          this.$store
+            .dispatch('people/getUser', this.$route.params.slug)
+            .then((res) => {
+              console.log('User Data', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        }
+      },
+    },
+  },
+
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
     },
     texting() {
       console.log('Testing!!!!!')
+    },
+    accountAction(actionType) {
+      console.log('Hello', this.$route, 'Type-->', this.$route.params.type)
+      this.$store
+        .dispatch('people/accountActions', {
+          actionType,
+          type: this.$route.params.type,
+          userId: this.$route.params.slug,
+        })
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

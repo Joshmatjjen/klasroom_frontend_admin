@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
     <div class="p-4 md:p-5 lg:p-6 pb-16 md:pb-18 lg:pb-20">
-      <h4 class="text-gray-700 font-extrabold leading-snug mt-0 md:mt-5 mb-4">
+      <h4 class="text-gray-700 font-extrabold leading-snug mt-0 md:mt-6 mb-4">
         {{ title }}
       </h4>
       <div class="block">

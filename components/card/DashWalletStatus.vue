@@ -48,9 +48,12 @@
         </div>
       </div>
 
+      <h4 class="text-gray-700 font-extrabold leading-snug mt-0 md:mt-3 mb-3">
+        {{ title }}
+      </h4>
       <div class="grid grid-cols-2 items-end">
         <h4
-          class="text-left text-gray-700 font-extrabold leading-snug mt-0 md:mt-5 mb-4"
+          class="text-left text-gray-700 font-extrabold leading-snug mt-0  mb-4"
         >
           ₦{{ amount }}
         </h4>
@@ -86,6 +89,7 @@
 <script>
 export default {
   props: {
+    title: { type: String, required: false },
     amount: { type: String, required: true },
     items: { type: Array, required: true },
     weekSales: { type: String, required: true },
