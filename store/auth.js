@@ -355,6 +355,7 @@ export const actions = {
     // try {
     //   await this.$axios.get('/logout')
     // } catch (e) {}
+    this.$router.push('/')
 
     Cookie.remove('jwt')
     Cookie.remove('expirationDate')
@@ -365,7 +366,6 @@ export const actions = {
     localStorage.removeItem('tokenExpiration')
 
     vuexContext.commit('LOGOUT')
-    this.$router.push('/')
 
     return true
   },

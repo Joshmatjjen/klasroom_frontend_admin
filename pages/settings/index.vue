@@ -162,6 +162,19 @@ export default {
       user: (state) => state.auth.user,
     }),
   },
+  created() {
+    this.$store
+      .dispatch('people/getStudents')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+        // this.settings = res
+        if (res) {
+          // this.showSuccess(res)
+        }
+      })
+      .catch((e) => console.log('e: ', e))
+  },
   watch: {
     allSettings: {
       handler(newValue, oldValue) {

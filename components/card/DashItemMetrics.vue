@@ -8,16 +8,23 @@
           </h5>
           <p class="text-sm text-gray-600">{{ label }}</p>
         </div>
-        <div v-if="link" class="text-right pl-5">
+        <div class="text-right pl-5">
           <!-- <span class="text-xs text-gray-700">Due 12th Oct. 2020</span> -->
           <nuxt-link
             to="/courses"
             class="text-gray-700 inline-block my-3"
+            v-if="type === 'link'"
           >
-            <span class="text-sm">{{
-              type ? (type === 'link' ? 'See link' : 'Filter') : 'See link'
-            }}</span>
+            <span class="text-sm">{{ 'See link' }}</span>
           </nuxt-link>
+
+          <div
+            @click="filterData(filterType, tableType)"
+            class="text-gray-700 inline-block my-3 cursor-pointer"
+            v-if="type !== 'link'"
+          >
+            <span class="text-sm">{{ 'Filter' }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -27,10 +34,13 @@
 <script>
 export default {
   props: {
-    title: { type: Number, required: true },
+    title: { type: String, required: true },
     label: { type: String, required: true },
     link: { type: String, default: null },
     type: { type: String, default: null },
+    tableType: { type: String, default: null },
+    filterData: { type: Function, required: false },
+    filterType: { type: String, default: null },
   },
 }
 </script>
