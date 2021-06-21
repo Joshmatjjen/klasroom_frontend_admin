@@ -10,7 +10,12 @@
         marginTop: '-22rem',
         marginLeft: '-130px',
       }"
-      @click="toggleMenu"
+      @click="
+        () => {
+          toggleMenu()
+          filterOpt && toggleFilter()
+        }
+      "
     ></div>
     <div class="flex flex-row justify-between px-5 my-5">
       <p class="text-sm font-semibold">
@@ -48,30 +53,24 @@
             <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
               Status
             </p>
-            <label
-              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
-            >
-              <span class="text-xs md:text-sm text-gray-600"
-                >Filter by active</span
-              >
-              <t-radio name="options" value="a" checked />
-            </label>
-            <label
-              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-xs md:text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
-            >
-              <span class="text-xs md:text-sm text-gray-600"
-                >Filter by dormant</span
-              >
-              <t-radio name="options" value="b" />
-            </label>
-            <label
-              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-xs md:text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
-            >
-              <span class="text-xs md:text-sm text-gray-600"
-                >Filter by inactive</span
-              >
-              <t-radio name="options" value="c" />
-            </label>
+            <img
+              @click="toggleFilter()"
+              class="absolute top-0 left-0 h-3 mt-3 ml-3 cursor-pointer"
+              src="/close-orange.svg"
+              alt=""
+            />
+            <t-radio-group
+              name="radio"
+              variant="filter1"
+              :options="[
+                { key: 'active', description: 'Filter by active' },
+                { key: 'dormant', description: 'Filter by dormant' },
+                { key: 'inactive', description: 'Filter by inactive' },
+              ]"
+              v-model="filter.status"
+              value-attribute="key"
+              text-attribute="description"
+            ></t-radio-group>
             <hr data-v-56a57272="" class="mt-1 mb-2 w-full" />
             <!-- Date Filter -->
             <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
@@ -104,7 +103,7 @@
                     id="filter-input"
                     type="date"
                     class="form-input"
-                    v-model="filter.from"
+                    v-model="filter.to"
                   />
                 </div>
               </div>
@@ -141,15 +140,21 @@
                   id="filter-input"
                   type="text"
                   class="form-input text-xs md:text-sm"
-                  placeholder="Enter your location"
+                  placeholder="Enter location"
                   v-model="filter.location"
                 />
               </div>
             </div>
-            <div class="flex flex-row w-full justify-center mt-2 mb-4">
+            <div class="flex flex-row w-full justify-center mt-2 mb-4 gap-5">
               <button
-                @click="toggleFilter"
-                class="btn2 btn2-primary text-xs px-12 py-2"
+                @click="clearFilter"
+                class="btn2 btn2-primary text-xs px-10 py-2"
+              >
+                Clear
+              </button>
+              <button
+                @click="sumitFilter"
+                class="btn2 btn2-primary text-xs px-10 py-2"
               >
                 Filter
               </button>
@@ -490,6 +495,7 @@ export default {
     route: { type: String, required: false },
     exportCSV: { type: Function, required: false },
     popUpProps: { type: Array, required: false },
+    filterData: { type: Function, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',
@@ -498,6 +504,7 @@ export default {
     optId: null,
     filterOpt: false,
     filter: {
+      status: '',
       from: '',
       to: '',
       lastActive: '',
@@ -505,15 +512,33 @@ export default {
     },
   }),
   methods: {
+    clearFilter() {
+      this.filter = {
+        status: '',
+        from: '',
+        to: '',
+        lastActive: '',
+        location: '',
+      }
+    },
+    sumitFilter() {
+      const arrFilter = [
+        { name: 'status=', value: this.filter.status },
+        { name: 'from=', value: this.filter.from },
+        { name: 'to=', value: this.filter.to },
+        { name: 'lastActive=', value: this.filter.lastActive },
+        { name: 'location=', value: this.filter.location },
+      ]
+      let newFilter = arrFilter.filter((f) => f.value)
+      this.filterData(newFilter, this.type)
+      this.filterOpt = !this.filterOpt
+    },
     toggleFilter() {
       this.filterOpt = !this.filterOpt
     },
     toggleMenu(optId) {
-      console.log('Toggleing', optId)
       this.opt = !this.opt
       if (optId) this.optId = optId
-
-      console.log('Opt-->', this.opt, 'Opt Id ->', this.optId)
     },
     checkKeyPresenceInArray(arr, key) {
       return arr.some((obj) => Object.keys(obj).includes(key))
