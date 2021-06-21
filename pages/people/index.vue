@@ -29,7 +29,7 @@
               type="filter"
               tableType="Students"
               :filterData="filterData"
-              filterType="suspend"
+              filterType="inactive"
             />
           </div>
         </div>
@@ -497,13 +497,16 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
     },
-    toggleAcctAction(name, type) {
+    toggleAcctAction(name, actionType, type, userId) {
       console.log(name, 'toggleAcctAction', type)
       this.$store.commit('app/ACTION_MODAL', {
         status: true,
-        title: 'Suspend Account',
-        desc: `Are you sure you want to suspend ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
-        actionName: 'Suspend',
+        title: actionType,
+        desc: `Are you sure you want to ${actionType.toLowerCase()} ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: actionType,
+        actionType,
+        type,
+        userId,
       })
     },
     isEmptyObject(value) {

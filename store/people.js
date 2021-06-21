@@ -384,12 +384,12 @@ export const actions = {
   async accountActions(vuexContext, props) {
     // /users/students/suspend/{userId}
     console.log('Type >>', props)
-    const { actionType, type, userId } = props
+    const { actionType, type, userId, comment } = props
     try {
       const { data, message } = await this.$axios.$post(
         `/users/${type}/${actionType}/${userId}`,
         actionType === 'suspend' && {
-          reasonForDeactivation: 'Because he is stubborn',
+          reasonForDeactivation: comment,
         }
       )
 

@@ -21,20 +21,140 @@
           Export CSV
         </p>
         <div class="vl"></div>
-        <div class="flex flex-row">
-          <p class="text-xs font-medium pr-3">Filter</p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div class="flex relative">
+          <div class="flex flex-row cursor-pointer" @click="toggleFilter">
+            <p class="text-xs font-medium pr-3">Filter</p>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
+                fill="#545454"
+              />
+            </svg>
+          </div>
+          <div
+            :class="{
+              hidden: filterOpt ? false : true,
+            }"
+            class="pop-up2 flex flex-col items-start px-3 absolute top-0 mt-8 pt-2 right-0 border-gray-500 bg-white rounded-lg min-h-100 shadow-lg"
+            :style="{ zIndex: 100 }"
           >
-            <path
-              d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
-              fill="#545454"
-            />
-          </svg>
+            <!-- Status Filter -->
+            <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
+              Status
+            </p>
+            <label
+              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
+            >
+              <span class="text-xs md:text-sm text-gray-600"
+                >Filter by active</span
+              >
+              <t-radio name="options" value="a" checked />
+            </label>
+            <label
+              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-xs md:text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
+            >
+              <span class="text-xs md:text-sm text-gray-600"
+                >Filter by dormant</span
+              >
+              <t-radio name="options" value="b" />
+            </label>
+            <label
+              class="pop-up-item flex flex-row justify-between items-center cursor-pointer w-full lg:mr-4 md:text-gray-700 text-xs md:text-sm font-normal hover:text-gray-900 md:bg-transparent mb-2"
+            >
+              <span class="text-xs md:text-sm text-gray-600"
+                >Filter by inactive</span
+              >
+              <t-radio name="options" value="c" />
+            </label>
+            <hr data-v-56a57272="" class="mt-1 mb-2 w-full" />
+            <!-- Date Filter -->
+            <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
+              Date
+            </p>
+            <div class="flex flex-col lg:flex-row gap-3">
+              <div class="form-group mb-5">
+                <span
+                  for="filter-input"
+                  class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                  >From</span
+                >
+                <div>
+                  <input
+                    id="filter-input"
+                    type="date"
+                    class="form-input text-xs md:text-sm w-5"
+                    v-model="filter.from"
+                  />
+                </div>
+              </div>
+              <div class="form-group mb-5">
+                <span
+                  for="filter-input"
+                  class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                  >To</span
+                >
+                <div>
+                  <input
+                    id="filter-input"
+                    type="date"
+                    class="form-input"
+                    v-model="filter.from"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Last Active -->
+            <div class="form-group mb-5">
+              <span
+                for="filter-input"
+                class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                >Last active</span
+              >
+              <div>
+                <input
+                  id="filter-input"
+                  type="date"
+                  class="form-input text-xs md:text-sm"
+                  v-model="filter.lastActive"
+                />
+              </div>
+            </div>
+            <hr data-v-56a57272="" class="mt-1 mb-2 w-full" />
+            <!-- Location -->
+            <p class="text-xs md:text-sm text-gray-800 w-full text-center mb-2">
+              Location
+            </p>
+            <div class="form-group mb-5">
+              <span
+                for="filter-input"
+                class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                >Filter location</span
+              >
+              <div>
+                <input
+                  id="filter-input"
+                  type="text"
+                  class="form-input text-xs md:text-sm"
+                  placeholder="Enter your location"
+                  v-model="filter.location"
+                />
+              </div>
+            </div>
+            <div class="flex flex-row w-full justify-center mt-2 mb-4">
+              <button
+                @click="toggleFilter"
+                class="btn2 btn2-primary text-xs px-12 py-2"
+              >
+                Filter
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -300,8 +420,10 @@
                           action(
                             props.row.name,
                             props.row.status && props.row.status === 'suspended'
-                              ? 'Unsuspend'
-                              : 'Suspend'
+                              ? 'Reactivate'
+                              : 'Suspend',
+                            type,
+                            props.row.userId
                           )
                           toggleMenu(
                             props.row.id ? props.row.id : props.row.userId
@@ -374,12 +496,24 @@ export default {
   data: () => ({
     opt: false,
     optId: null,
+    filterOpt: false,
+    filter: {
+      from: '',
+      to: '',
+      lastActive: '',
+      location: '',
+    },
   }),
   methods: {
+    toggleFilter() {
+      this.filterOpt = !this.filterOpt
+    },
     toggleMenu(optId) {
       console.log('Toggleing', optId)
       this.opt = !this.opt
       if (optId) this.optId = optId
+
+      console.log('Opt-->', this.opt, 'Opt Id ->', this.optId)
     },
     checkKeyPresenceInArray(arr, key) {
       return arr.some((obj) => Object.keys(obj).includes(key))
@@ -389,6 +523,10 @@ export default {
 </script>
 
 <style scoped>
+#filter-input {
+  width: 9.8rem;
+  padding: 8px;
+}
 .dot {
   top: 0.3rem;
   left: -0.8rem;
@@ -406,6 +544,11 @@ export default {
 
 .pop-up {
   border-width: 0.1rem;
+}
+
+.pop-up2 {
+  border-width: 0.1rem;
+  min-width: 17rem;
 }
 .vgt-table > thead > th {
   @apply font-normal text-xs;

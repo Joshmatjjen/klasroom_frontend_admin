@@ -73,8 +73,10 @@
                   {{ actionModal.desc }}
                 </p>
               </div>
-              <div class="form-group mt-5">
-                <!-- <label for="input-password">Reason for suspension</label> -->
+              <div
+                class="form-group mt-5"
+                v-if="actionModal.actionType === 'Suspend'"
+              >
                 <div>
                   <input
                     id="comment"
@@ -92,15 +94,20 @@
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
           <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
             <button
+              @click="
+                comment.length > 5 || actionModal.actionType === 'Reactivate'
+                  ? submit()
+                  : null
+              "
               type="button"
               class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 text-base leading-6 font-medium text-white shadow-sm sm:text-sm sm:leading-5"
               :class="
-                comment.length > 5
+                comment.length > 5 || actionModal.actionType === 'Reactivate'
                   ? 'bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150'
                   : 'bg-red-300'
               "
             >
-              {{ actionModal.actionName }}
+              {{ capitalizeFirstLetter(actionModal.actionName) }}
             </button>
           </span>
           <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
@@ -129,6 +136,29 @@ export default {
     ...mapState({
       actionModal: (state) => state.app.actionModal,
     }),
+  },
+  methods: {
+    submit() {
+      this.$store
+        .dispatch('people/accountActions', {
+          actionType: this.actionModal.actionType.toLowerCase(),
+          type: this.actionModal.type.toLowerCase(),
+          userId: this.actionModal.userId,
+          comment: this.comment,
+        })
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+    },
   },
 }
 </script>

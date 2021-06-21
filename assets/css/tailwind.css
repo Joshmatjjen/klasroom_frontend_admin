@@ -89,7 +89,22 @@ input[type='date'] {
   background: #f5f5f3;
   color: #8a8a8a;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  @apply text-sm py-2 px-4 w-full outline-none;
+  @apply text-xs py-2 px-4 w-full outline-none;
+}
+
+@screen md {
+  select,
+  .cs-select,
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'],
+  input[type='date'] {
+    border-radius: 12px;
+    background: #f5f5f3;
+    color: #8a8a8a;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    @apply text-sm py-2 px-4 w-full outline-none;
+  }
 }
 
 .cs-select {
@@ -371,7 +386,19 @@ label.checkbox input:checked ~ span.checkmark::after {
   border-radius: 12px;
   padding: 8px 14px;
   width: 100%;
-  @apply text-sm outline-none;
+  @apply text-xs outline-none;
+}
+
+@screen md {
+  .form-input {
+    background: #f5f5f3;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    border-radius: 12px;
+    padding: 8px 14px;
+    width: 100%;
+    @apply text-sm outline-none;
+  }
 }
 
 @media (min-width: 640px) {
