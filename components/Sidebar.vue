@@ -41,6 +41,7 @@
             <simple-pop-up
               :mainOpt="createOpt"
               :action="toggleCreate"
+              type="link"
               :styles="
                 'top-0 ml-5' && $device.isMobile
                   ? 'mt-16'

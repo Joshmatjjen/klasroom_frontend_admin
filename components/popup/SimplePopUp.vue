@@ -19,6 +19,16 @@
         <p class="-mb-2">{{ option.name }}</p>
       </nuxt-link>
     </div>
+    <div v-else-if="type === 'link'" class="pr-12">
+      <nuxt-link
+        :to="'/courses/create'"
+        v-for="(option, key) in options"
+        :key="key"
+        class="lg:mr-4 md:text-gray-700 text-sm hover:text-gray-900 md:bg-transparent md:mb-0"
+      >
+        <p class="-mb-2">{{ option.name }}</p>
+      </nuxt-link>
+    </div>
     <div v-else>
       <div
         to="#"
