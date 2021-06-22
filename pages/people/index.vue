@@ -488,7 +488,7 @@ export default {
       }
       console.log(newArr.join(''))
       this.$store
-        .dispatch('people/filterPeople', { params: newArr.join(''), tableType })
+        .dispatch('people/getCourses')
         .then((res) => {
           console.log(res)
           this.loading = false
@@ -498,6 +498,17 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+      // this.$store
+      //   .dispatch('people/filterPeople', { params: newArr.join(''), tableType })
+      //   .then((res) => {
+      //     console.log(res)
+      //     this.loading = false
+      //     // this.settings = res
+      //     if (res) {
+      //       // this.showSuccess(res)
+      //     }
+      //   })
+      //   .catch((e) => console.log('e: ', e))
     },
     exportCSV(type) {
       this.$store

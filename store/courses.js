@@ -414,27 +414,6 @@ export const actions = {
     }
   },
 
-  async getCourses(vuexContext, id) {
-    try {
-      const data = await this.$axios.$get('/courses/categories')
-
-      if (data) {
-        console.log('All Courses Data', data)
-        // vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
-
-        // localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
-        return data
-      }
-      return false
-    } catch (e) {
-      // console.log('fetch user failed: ', e)
-      return false
-    }
-  },
-
   // initStudentsData(vuexContext, req) {
   //   let token
   //   let expirationDate
