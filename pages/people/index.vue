@@ -29,7 +29,7 @@
               type="filter"
               tableType="Students"
               :filterData="filterData"
-              filterType="suspend"
+              filterType="inactive"
             />
           </div>
         </div>
@@ -39,15 +39,16 @@
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
               <list-table-1
-                :columns="studentColumns"
+                :columns="columns"
                 :rows="students ? students.data : []"
                 type="Students"
                 :total="students ? students.pagination.count : 0"
                 route="people-students-slug"
                 :exportCSV="exportCSV"
+                :filterData="filterData"
                 :popUpProps="[
                   { name: 'Preview', action: null },
-                  { name: 'Action', action: null },
+                  { name: 'Action', action: toggleAcctAction },
                 ]"
               />
             </div>
@@ -103,12 +104,13 @@
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
               <list-table-1
-                :columns="studentColumns"
+                :columns="columns"
                 :rows="tutors ? tutors.data : []"
                 type="Tutors"
                 :total="tutors ? tutors.pagination.count : 0"
                 route="people-tutors-slug"
                 :exportCSV="exportCSV"
+                :filterData="filterData"
               />
             </div>
           </div>
@@ -163,12 +165,13 @@
           <div class="grid grid-cols-12 gap-4">
             <div class="col-span-12">
               <list-table-1
-                :columns="studentColumns"
+                :columns="columns"
                 :rows="admins ? admins.data : []"
                 type="Admins"
                 :total="admins ? admins.pagination.count : 0"
                 route="people-admins-slug"
                 :exportCSV="exportCSV"
+                :filterData="filterData"
               />
             </div>
           </div>
@@ -209,7 +212,7 @@ export default {
     limit: 4,
 
     // tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
-    studentColumns: [
+    columns: [
       {
         label: 'Name',
         field: 'name',
@@ -474,9 +477,18 @@ export default {
       }
     },
     async filterData(type, tableType) {
-      console.log(type)
+      console.log('filter-->', type)
+      let newArr = []
+      for (let i = 0; i < type.length; i++) {
+        if (i === 0) {
+          newArr.push('?' + type[i].name + type[i].value)
+        } else {
+          newArr.push(`&${type[i].name}${type[i].value}`)
+        }
+      }
+      console.log(newArr.join(''))
       this.$store
-        .dispatch('people/filterPeople', { type, tableType })
+        .dispatch('people/filterPeople', { params: newArr.join(''), tableType })
         .then((res) => {
           console.log(res)
           this.loading = false
@@ -496,6 +508,18 @@ export default {
           // }
         })
         .catch((e) => console.log('e: ', e))
+    },
+    toggleAcctAction(name, actionType, type, userId) {
+      console.log(name, 'toggleAcctAction', type)
+      this.$store.commit('app/ACTION_MODAL', {
+        status: true,
+        title: actionType,
+        desc: `Are you sure you want to ${actionType.toLowerCase()} ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: actionType,
+        actionType,
+        type,
+        userId,
+      })
     },
     isEmptyObject(value) {
       return (

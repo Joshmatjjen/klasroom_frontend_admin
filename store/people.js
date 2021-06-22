@@ -348,27 +348,26 @@ export const actions = {
   },
 
   async filterPeople(vuexContext, item) {
+    const { params, tableType } = item
     try {
       const data = await this.$axios.$get(
-        (item.tableType === 'Students' &&
-          `/users/students?status=${item.type}`) ||
-          (item.tableType === 'Tutors' &&
-            `/users/tutors?status=${item.type}`) ||
-          (item.tableType === 'Admins' && `/users/admins?status=${item.type}`)
+        `/users/${tableType.toLowerCase()}${params}`
       )
 
       if (data) {
         console.log('Filtered Student Data', data)
-        if (item.tableType === 'Students') {
-          vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
-          localStorage.setItem('students', JSON.stringify(data))
-        } else if (item.tableType === 'Tutors') {
-          vuexContext.commit('FETCH_TUTORS_SUCCESS', data)
-          localStorage.setItem('tutors', JSON.stringify(data))
-        } else if (item.tableType === 'Admins') {
-          vuexContext.commit('FETCH_ADMINS_SUCCESS', data)
-          localStorage.setItem('admins', JSON.stringify(data))
-        }
+        vuexContext.commit(`FETCH_${tableType.toUpperCase()}_SUCCESS`, data)
+        localStorage.setItem(tableType.toLowerCase(), JSON.stringify(data))
+        // if (tableType === 'Students') {
+        //   vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
+        //   localStorage.setItem('students', JSON.stringify(data))
+        // } else if (tableType === 'Tutors') {
+        //   vuexContext.commit('FETCH_TUTORS_SUCCESS', data)
+        //   localStorage.setItem('tutors', JSON.stringify(data))
+        // } else if (tableType === 'Admins') {
+        //   vuexContext.commit('FETCH_ADMINS_SUCCESS', data)
+        //   localStorage.setItem('admins', JSON.stringify(data))
+        // }
 
         // Cookie.set('students', JSON.stringify(data))
 
@@ -384,12 +383,12 @@ export const actions = {
   async accountActions(vuexContext, props) {
     // /users/students/suspend/{userId}
     console.log('Type >>', props)
-    const { actionType, type, userId } = props
+    const { actionType, type, userId, comment } = props
     try {
       const { data, message } = await this.$axios.$post(
         `/users/${type}/${actionType}/${userId}`,
         actionType === 'suspend' && {
-          reasonForDeactivation: 'Because he is stubborn',
+          reasonForDeactivation: comment,
         }
       )
 

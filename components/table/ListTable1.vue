@@ -10,7 +10,12 @@
         marginTop: '-22rem',
         marginLeft: '-130px',
       }"
-      @click="toggleMenu"
+      @click="
+        () => {
+          toggleMenu()
+          filterOpt && toggleFilter()
+        }
+      "
     ></div>
     <div class="flex flex-row justify-between px-5 my-5">
       <p class="text-sm font-semibold">
@@ -21,20 +26,140 @@
           Export CSV
         </p>
         <div class="vl"></div>
-        <div class="flex flex-row">
-          <p class="text-xs font-medium pr-3">Filter</p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div class="flex relative">
+          <div class="flex flex-row cursor-pointer" @click="toggleFilter">
+            <p class="text-xs font-medium pr-3">Filter</p>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
+                fill="#545454"
+              />
+            </svg>
+          </div>
+          <div
+            :class="{
+              hidden: filterOpt ? false : true,
+            }"
+            class="pop-up2 flex flex-col items-start px-3 absolute top-0 mt-8 pt-2 right-0 border-gray-500 bg-white rounded-lg min-h-100 shadow-lg"
+            :style="{ zIndex: 100 }"
           >
-            <path
-              d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
-              fill="#545454"
+            <!-- Status Filter -->
+            <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
+              Status
+            </p>
+            <img
+              @click="toggleFilter()"
+              class="absolute top-0 left-0 h-3 mt-3 ml-3 cursor-pointer"
+              src="/close-orange.svg"
+              alt=""
             />
-          </svg>
+            <t-radio-group
+              name="radio"
+              variant="filter1"
+              :options="[
+                { key: 'active', description: 'Filter by active' },
+                { key: 'dormant', description: 'Filter by dormant' },
+                { key: 'inactive', description: 'Filter by inactive' },
+              ]"
+              v-model="filter.status"
+              value-attribute="key"
+              text-attribute="description"
+            ></t-radio-group>
+            <hr data-v-56a57272="" class="mt-1 mb-2 w-full" />
+            <!-- Date Filter -->
+            <p class="text-xs md:text-sm text-gray-900 w-full text-center mb-2">
+              Date
+            </p>
+            <div class="flex flex-col lg:flex-row gap-3">
+              <div class="form-group mb-5">
+                <span
+                  for="filter-input"
+                  class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                  >From</span
+                >
+                <div>
+                  <input
+                    id="filter-input"
+                    type="date"
+                    class="form-input text-xs md:text-sm w-5"
+                    v-model="filter.from"
+                  />
+                </div>
+              </div>
+              <div class="form-group mb-5">
+                <span
+                  for="filter-input"
+                  class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                  >To</span
+                >
+                <div>
+                  <input
+                    id="filter-input"
+                    type="date"
+                    class="form-input"
+                    v-model="filter.to"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Last Active -->
+            <div class="form-group mb-5">
+              <span
+                for="filter-input"
+                class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                >Last active</span
+              >
+              <div>
+                <input
+                  id="filter-input"
+                  type="date"
+                  class="form-input text-xs md:text-sm"
+                  v-model="filter.lastActive"
+                />
+              </div>
+            </div>
+            <hr data-v-56a57272="" class="mt-1 mb-2 w-full" />
+            <!-- Location -->
+            <p class="text-xs md:text-sm text-gray-800 w-full text-center mb-2">
+              Location
+            </p>
+            <div class="form-group mb-5">
+              <span
+                for="filter-input"
+                class="text-xs md:text-sm mb-2 text-left text-gray-600 lg:text-right"
+                >Filter location</span
+              >
+              <div>
+                <input
+                  id="filter-input"
+                  type="text"
+                  class="form-input text-xs md:text-sm"
+                  placeholder="Enter location"
+                  v-model="filter.location"
+                />
+              </div>
+            </div>
+            <div class="flex flex-row w-full justify-center mt-2 mb-4 gap-5">
+              <button
+                @click="clearFilter"
+                class="btn2 btn2-primary text-xs px-10 py-2"
+              >
+                Clear
+              </button>
+              <button
+                @click="sumitFilter"
+                class="btn2 btn2-primary text-xs px-10 py-2"
+              >
+                Filter
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -290,10 +415,27 @@
                 >
                   <div
                     class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-2"
-                    v-for="({ name }, key) in popUpProps"
+                    v-for="({ name, action }, key) in popUpProps"
                     :key="key"
                   >
-                    <p v-if="name === 'Action'">
+                    <p
+                      v-if="name === 'Action'"
+                      v-on:click.prevent="
+                        () => {
+                          action(
+                            props.row.name,
+                            props.row.status && props.row.status === 'suspended'
+                              ? 'Reactivate'
+                              : 'Suspend',
+                            type,
+                            props.row.userId
+                          )
+                          toggleMenu(
+                            props.row.id ? props.row.id : props.row.userId
+                          )
+                        }
+                      "
+                    >
                       {{
                         name === 'Action'
                           ? props.row.status && props.row.status === 'suspended'
@@ -353,16 +495,48 @@ export default {
     route: { type: String, required: false },
     exportCSV: { type: Function, required: false },
     popUpProps: { type: Array, required: false },
+    filterData: { type: Function, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',
   data: () => ({
     opt: false,
     optId: null,
+    filterOpt: false,
+    filter: {
+      status: '',
+      from: '',
+      to: '',
+      lastActive: '',
+      location: '',
+    },
   }),
   methods: {
+    clearFilter() {
+      this.filter = {
+        status: '',
+        from: '',
+        to: '',
+        lastActive: '',
+        location: '',
+      }
+    },
+    sumitFilter() {
+      const arrFilter = [
+        { name: 'status=', value: this.filter.status },
+        { name: 'from=', value: this.filter.from },
+        { name: 'to=', value: this.filter.to },
+        { name: 'lastActive=', value: this.filter.lastActive },
+        { name: 'location=', value: this.filter.location },
+      ]
+      let newFilter = arrFilter.filter((f) => f.value)
+      this.filterData(newFilter, this.type)
+      this.filterOpt = !this.filterOpt
+    },
+    toggleFilter() {
+      this.filterOpt = !this.filterOpt
+    },
     toggleMenu(optId) {
-      console.log('Toggleing', optId)
       this.opt = !this.opt
       if (optId) this.optId = optId
     },
@@ -374,6 +548,10 @@ export default {
 </script>
 
 <style scoped>
+#filter-input {
+  width: 9.8rem;
+  padding: 8px;
+}
 .dot {
   top: 0.3rem;
   left: -0.8rem;
@@ -391,6 +569,11 @@ export default {
 
 .pop-up {
   border-width: 0.1rem;
+}
+
+.pop-up2 {
+  border-width: 0.1rem;
+  min-width: 17rem;
 }
 .vgt-table > thead > th {
   @apply font-normal text-xs;
