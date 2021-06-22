@@ -19,7 +19,9 @@
           </nuxt-link>
 
           <div
-            @click="filterData(filterType, tableType)"
+            @click="
+              filterData([{ name: 'status=', value: filterType }], tableType)
+            "
             class="text-gray-700 inline-block my-3 cursor-pointer"
             v-if="type !== 'link'"
           >

@@ -17,6 +17,7 @@
     <change-password-modal />
     <edit-image-modal />
     <delete-account-modal />
+    <action-modal />
   </section>
 </template>
 
