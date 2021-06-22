@@ -196,7 +196,7 @@
                 type: type.toLowerCase(),
               },
             }"
-            class="relative"
+            class="relative flex flex-row"
           >
             <span
               v-if="
@@ -299,7 +299,7 @@
               <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
             </span>
             <span
-              class="items-center relative"
+              class="items-center relative last-col"
               v-else-if="props.column.field == 'status'"
             >
               <span
@@ -317,7 +317,7 @@
                     : 'bg-gray-500'
                 "
               ></span>
-              <span class="last-col text-gray-700 text-center">{{
+              <span class="text-gray-700 text-center">{{
                 props.row.status.charAt(0).toUpperCase() +
                 props.row.status.slice(1)
               }}</span>
@@ -388,7 +388,7 @@
                   ))
               "
             >
-              <div class="absolute right-0 -mr-4">
+              <div class="absolute bottom-0 right-0">
                 <span
                   v-on:click.prevent="
                     toggleMenu(props.row.id ? props.row.id : props.row.userId)
@@ -550,7 +550,7 @@ export default {
 
 <style scoped>
 .last-col {
-  min-width: 13rem;
+  min-width: 6rem;
 }
 
 #filter-input {
