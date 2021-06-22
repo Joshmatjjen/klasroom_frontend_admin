@@ -173,219 +173,250 @@
 
             <!-- settings -->
             <section v-if="isCourseSwitch === 2">
-                <dash-items-section-group title="Graduation Criteria" :edit="false">
+              <dash-items-section-group
+                title="Graduation Criteria"
+                :edit="false"
+              >
                 <div
-                    class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full"
+                  class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full"
                 >
-                    <div class="px-4 md:px-5 lg:px-6 py-4">
+                  <div class="px-4 md:px-5 lg:px-6 py-4">
                     <div class="border-b border-gray-300 pb-5 mb-4">
-                    <p class="text-base font-bold text-gray-700 mb-3">Course completion</p>
-                    <div class="grid grid-cols-12 mb-3">
+                      <p class="text-base font-bold text-gray-700 mb-3">
+                        Course completion
+                      </p>
+                      <div class="grid grid-cols-12 mb-3">
                         <div class="col-span-7">
-                            <p class="text-sm text-gray-700">All lessons must be completed</p>
+                          <p class="text-sm text-gray-700">
+                            All lessons must be completed
+                          </p>
                         </div>
                         <div class="col-span-5 text-right">
-                        <input-toggle-switch/>
+                          <input-toggle-switch />
                         </div>
-                    </div>
-                    <div class="grid grid-cols-12">
+                      </div>
+                      <div class="grid grid-cols-12">
                         <div class="col-span-7">
-                        <p class="text-sm text-gray-700">Students must complete at least</p>
+                          <p class="text-sm text-gray-700">
+                            Students must complete at least
+                          </p>
                         </div>
                         <div class="col-span-5 text-right">
-                        <v-select
+                          <v-select
                             class="form-input style-chooser cursor-pointer capitalize"
                             placeholder="70% of lessons"
-                            :options="['60% of lessons', '50% of lessons', '40% of lessons']"
-                        />
+                            :options="[
+                              '60% of lessons',
+                              '50% of lessons',
+                              '40% of lessons',
+                            ]"
+                          />
                         </div>
-                    </div>
+                      </div>
                     </div>
                     <!-- Assignment -->
                     <div class="border-b border-gray-300 pb-5 mb-4">
-                    <p class="text-base font-bold text-gray-700 mb-3">Assignment</p>
-                    <div class="grid grid-cols-12">
+                      <p class="text-base font-bold text-gray-700 mb-3">
+                        Assignment
+                      </p>
+                      <div class="grid grid-cols-12">
                         <div class="col-span-7 my-auto">
-                        <p class="text-sm text-gray-700">
+                          <p class="text-sm text-gray-700">
                             All assignments are compulsory
-                        </p>
+                          </p>
                         </div>
                         <div class="col-span-5 text-right">
-                        <input-toggle-switch/>
+                          <input-toggle-switch />
                         </div>
-                    </div>
-                    <div class="grid grid-cols-12 mt-4">
+                      </div>
+                      <div class="grid grid-cols-12 mt-4">
                         <div class="col-span-7">
-                        <p class="text-sm text-gray-700">Students must submit at least</p>
+                          <p class="text-sm text-gray-700">
+                            Students must submit at least
+                          </p>
                         </div>
                         <div class="col-span-5 text-right">
-                        <v-select
+                          <v-select
                             class="form-input style-chooser cursor-pointer capitalize"
                             placeholder="70% of assignments"
-                            :options="['60% of assignments', '50% of assignments', '40% of assignments']"
-                        />
+                            :options="[
+                              '60% of assignments',
+                              '50% of assignments',
+                              '40% of assignments',
+                            ]"
+                          />
                         </div>
-                    </div>
+                      </div>
                     </div>
                     <!-- Resources -->
                     <div class="border-b border-gray-300 pb-5 mb-4">
-                    <p class="text-base font-bold text-gray-700 mb-3">
+                      <p class="text-base font-bold text-gray-700 mb-3">
                         Resources
-                    </p>
-                    <div class="grid grid-cols-12">
+                      </p>
+                      <div class="grid grid-cols-12">
                         <div class="col-span-7 lg:col-span-8 my-auto">
-                        <p class="text-sm text-gray-700">All resources must be downloaded</p>
+                          <p class="text-sm text-gray-700">
+                            All resources must be downloaded
+                          </p>
                         </div>
                         <div class="col-span-5 lg:col-span-4 text-right">
-                        <input-toggle-switch />
+                          <input-toggle-switch />
                         </div>
-                    </div>
+                      </div>
                     </div>
                     <!-- Certificate -->
                     <div class="border-b border-gray-300 pb-5 mb-4">
-                    <p class="text-base font-bold text-gray-700 mb-3">Certificate</p>
-                    <div class="grid grid-cols-12">
+                      <p class="text-base font-bold text-gray-700 mb-3">
+                        Certificate
+                      </p>
+                      <div class="grid grid-cols-12">
                         <div class="col-span-7 lg:col-span-8 my-auto">
-                        <p class="text-sm text-gray-700">
+                          <p class="text-sm text-gray-700">
                             Automatically generate certificate
-                        </p>
+                          </p>
                         </div>
                         <div class="col-span-5 lg:col-span-4 text-right">
-                        <input-toggle-switch/>
+                          <input-toggle-switch />
                         </div>
+                      </div>
                     </div>
-                    </div>
-                    </div>
+                  </div>
                 </div>
-                </dash-items-section-group>
+              </dash-items-section-group>
 
-                <dash-items-section-group class="mt-8" title="Pricing" :edit="false">
+              <dash-items-section-group
+                class="mt-8"
+                title="Pricing"
+                :edit="false"
+              >
                 <div
-                    class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full"
+                  class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full"
                 >
-                    <div class="px-4 md:px-5 lg:px-6 py-4">
+                  <div class="px-4 md:px-5 lg:px-6 py-4">
                     <div class="border-b border-gray-300 pb-5 mb-4">
-                    <p class="text-base font-bold text-gray-700 mb-3">Enter course price</p>
-                    <div class="grid grid-cols-12 mb-3">
+                      <p class="text-base font-bold text-gray-700 mb-3">
+                        Enter course price
+                      </p>
+                      <div class="grid grid-cols-12 mb-3">
                         <div class="col-span-7">
-                            <p class="text-sm text-gray-700">Price in Nigerian Naira</p>
+                          <p class="text-sm text-gray-700">
+                            Price in Nigerian Naira
+                          </p>
                         </div>
                         <div
-                            class="form-input px-4 currency-box flex flex-row text-center justify-center items-center"
+                          class="form-input px-4 currency-box flex flex-row text-center justify-center items-center"
                         >
-                            <p
+                          <p
                             class="text-sm font-bold text-gray-600 text-center py-1"
-                            >
+                          >
                             ₦
-                            </p>
-                            <input
+                          </p>
+                          <input
                             type="number"
                             class="currency-input"
                             placeholder="price"
                             v-model="price"
-                            />
-                            <p
+                          />
+                          <p
                             class="percentage-chip bg-orange-500 rounded-xl text-sm font-medium text-white text-center"
-                            >
+                          >
                             15% off
-                            </p>
+                          </p>
                         </div>
+                      </div>
                     </div>
-                    </div>
-                    </div>
+                  </div>
                 </div>
-                </dash-items-section-group>
-                <dash-items-section-group class="mt-5" title="Promotion" :edit="false">
+              </dash-items-section-group>
+              <dash-items-section-group
+                class="mt-5"
+                title="Promotion"
+                :edit="false"
+              >
                 <div
-                    class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
+                  class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                 >
-                    <div class="px-4 md:px-5 lg:px-6 py-4">
+                  <div class="px-4 md:px-5 lg:px-6 py-4">
                     <!-- promotion -->
                     <div class="form-group mb-5">
-                        <p
-                        class="text-sm text-left font-bold text-gray-800"
-                        >
+                      <p class="text-sm text-left font-bold text-gray-800">
                         Price off
-                        </p>
-                        <div class="flex flex-row justify-between my-4">
+                      </p>
+                      <div class="flex flex-row justify-between my-4">
                         <div class="col-span-7">
-                            <p class="text-sm text-gray-700">
+                          <p class="text-sm text-gray-700">
                             Run price off promotion
-                            </p>
+                          </p>
                         </div>
                         <div class="col-span-5 text-right">
-                            <input-toggle-switch
-                            v-model="runPricePromotion"
-                            />
+                          <input-toggle-switch v-model="runPricePromotion" />
                         </div>
-                        </div>
-                        <div class="flex flex-row justify-between my-4">
+                      </div>
+                      <div class="flex flex-row justify-between my-4">
                         <div
-                            class="flex col-span-7 items-center justify-center"
+                          class="flex col-span-7 items-center justify-center"
                         >
-                            <p class="text-sm text-gray-700 text-center">
+                          <p class="text-sm text-gray-700 text-center">
                             Reduce price by
-                            </p>
+                          </p>
                         </div>
 
                         <div
-                            class="px-3 currency-box flex flex-row text-center justify-center items-center"
+                          class="px-3 currency-box flex flex-row text-center justify-center items-center"
                         >
-                            <v-select
+                          <v-select
                             class="style-chooser cursor-pointer capitalize"
                             placeholder="15%"
                             :value="promo.percentageOff"
                             :options="['15%', '20%', '40%']"
-                        />
+                          />
                         </div>
-                        </div>
+                      </div>
 
-                        <div class="flex flex-row justify-between my-4">
+                      <div class="flex flex-row justify-between my-4">
                         <div
-                            class="flex col-span-7 items-center justify-center"
+                          class="flex col-span-7 items-center justify-center"
                         >
-                            <p class="text-sm text-gray-700 text-center">
+                          <p class="text-sm text-gray-700 text-center">
                             Starting from
-                            </p>
+                          </p>
                         </div>
 
                         <div
-                            class="form-input currency-box flex flex-row text-center justify-center items-center"
+                          class="form-input currency-box flex flex-row text-center justify-center items-center"
                         >
-                            <input
+                          <input
                             type="date"
                             class="promotion-input"
                             placeholder="date"
                             v-model="promo.startDate"
-                            />
+                          />
                         </div>
-                        </div>
+                      </div>
 
-                        <div class="flex flex-row justify-between my-4">
+                      <div class="flex flex-row justify-between my-4">
                         <div
-                            class="flex col-span-7 items-center justify-center"
+                          class="flex col-span-7 items-center justify-center"
                         >
-                            <p class="text-sm text-gray-700 text-center">
-                            Until
-                            </p>
+                          <p class="text-sm text-gray-700 text-center">Until</p>
                         </div>
 
                         <div
-                            class="form-input currency-box flex flex-row text-center justify-center items-center"
+                          class="form-input currency-box flex flex-row text-center justify-center items-center"
                         >
-                            <input
+                          <input
                             type="date"
                             class="promotion-input"
                             placeholder="date"
                             v-model="promo.endDate"
-                            />
+                          />
                         </div>
-                        </div>
+                      </div>
                     </div>
                     <hr class="mb-5" />
-                    </div>
+                  </div>
                 </div>
-                </dash-items-section-group>
+              </dash-items-section-group>
             </section>
 
             <!-- End for Switchers -->
@@ -415,10 +446,8 @@
               <div class="px-4 md:px-5 lg:px-6 py-4">
                 <ul class="text-gray-700">
                   <li class="text-left">
-                    <h5 class="font-bold mb-2"> Title
-                    </h5>
-                    <p class="text-xs text-gray-700">introduction
-                    </p>
+                    <h5 class="font-bold mb-2">Title</h5>
+                    <p class="text-xs text-gray-700">introduction</p>
                   </li>
                   <li>
                     <hr class="my-5" />
@@ -441,9 +470,7 @@
                     <button
                       class="btn btn-primary mr-5 flex flex-row justify-between align-middle items-center"
                       @click="
-                        $router.push(
-                          `/${userDash}/course/preview/${course.id}`
-                        )
+                        $router.push(`/${userDash}/course/preview/${course.id}`)
                       "
                     >
                       <span class="text-xs">Preview course</span>
@@ -571,9 +598,9 @@ const courses = require('@/static/json/courses.json')
 export default {
   components: { UserChip },
   layout: 'dashboard',
-  middleware: ['check-auth', 'auth', 'isTutor'],
+  middleware: ['check-auth', 'auth'],
   fetch({ store }) {
-    store.commit('app/SET_TITLE', 'Create webinar')
+    store.commit('app/SET_TITLE', 'Create Course')
   },
   data: () => ({
     courses: _.take(courses, 4),
@@ -665,16 +692,16 @@ export default {
     async goNext(isCourseSwitch) {
       switch (isCourseSwitch) {
         case 0:
-            isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
           break
         case 1:
-            isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
           break
         case 2:
-            isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
-        break
+          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          break
         default:
-            break
+          break
       }
     },
     addLink(link) {

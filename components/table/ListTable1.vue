@@ -66,6 +66,7 @@
                 { key: 'active', description: 'Filter by active' },
                 { key: 'dormant', description: 'Filter by dormant' },
                 { key: 'inactive', description: 'Filter by inactive' },
+                { key: 'suspended', description: 'Filter by suspended' },
               ]"
               v-model="filter.status"
               value-attribute="key"
