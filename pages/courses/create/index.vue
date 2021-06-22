@@ -172,7 +172,7 @@
             </section>
 
             <!-- settings -->
-            <section v-if="isCourseSwitch === 2">
+            <section class="mt-5" v-if="isCourseSwitch === 2">
               <dash-items-section-group
                 title="Graduation Criteria"
                 :edit="false"
@@ -537,10 +537,10 @@
                         name="image"
                         accept="image/*"
                         multiple
-                        @change="setWebinarImage"
+                        @change="setcourseImage"
                       />
                       <button
-                        @click.prevent="showFileChooser('webinarImage')"
+                        @click.prevent="showFileChooser('courseImage')"
                         class="focus:outline-none"
                       >
                         Add Picture
@@ -622,11 +622,9 @@ export default {
       title: '',
       subtitle: '',
       introduction: '',
-      date: '',
-      startTime: '',
-      endTime: '',
-      tags: [],
-      image: null,
+      userID: 0,
+      categories: [],
+      image: null
     },
     lesson: [
       {
@@ -692,7 +690,50 @@ export default {
     async goNext(isCourseSwitch) {
       switch (isCourseSwitch) {
         case 0:
-          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          try {
+            this.loading = true
+            const { image } = this.createCourse
+            const resData = {
+              ...this.createCourse,
+              courseImage: image ? image.fileName : '',
+            }
+            console.log('resData: ', resData)
+
+            let newData
+
+            if (this.course) {
+              const { data } = await this.$axios.$put(
+                `https://api.staging.klasroom.com/v1/courses/${
+                  this.course.id
+                }?publish_now=${false}`,
+                resData,
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              newData = data
+            } else {
+              const { data } = await this.$axios.$post(
+                `https://api.staging.klasroom.com/v1/courses?publish_now=${false}`,
+                resData,
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              newData = data
+            }
+
+            console.log('course data: ', newData)
+            this.course = newData
+            this.loading = false
+            this.courseStates.lessons = true
+            isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+            window.scrollTo(0, 0)
+          } catch (e) {
+            console.log(e)
+            this.loading = false
+            return
+          }
           break
         case 1:
           isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
@@ -714,7 +755,7 @@ export default {
       })
     },
     showFileChooser(type) {
-      if (type === 'webinarImage') this.$refs.image.click()
+      if (type === 'courseImage') this.$refs.image.click()
       else this.$refs.input.click()
     },
     checkFormError(type) {
@@ -722,7 +763,7 @@ export default {
       else if (type === 'co_host') this.coHostFormError = false
       else this.moderatorFormError = false
     },
-    async setWebinarImage(e) {
+    async setcourseImage(e) {
       console.log('Uploading__')
       const file = e.target.files[0]
       console.log('file: ', file)
