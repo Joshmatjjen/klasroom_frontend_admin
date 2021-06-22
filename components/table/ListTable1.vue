@@ -317,7 +317,7 @@
                     : 'bg-gray-500'
                 "
               ></span>
-              <span class="text-gray-700 text-center">{{
+              <span class="last-col text-gray-700 text-center">{{
                 props.row.status.charAt(0).toUpperCase() +
                 props.row.status.slice(1)
               }}</span>
@@ -549,6 +549,10 @@ export default {
 </script>
 
 <style scoped>
+.last-col {
+  min-width: 13rem;
+}
+
 #filter-input {
   width: 9.8rem;
   padding: 8px;
