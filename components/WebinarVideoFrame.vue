@@ -3,21 +3,37 @@
     <div
       v-if="status === 'countdown'"
       class="banner-card w-full h-full text-center px-12 pt-40 pb-16"
+      :style="{
+        backgroundImage: image.signedUrl
+          ? `url(${image.signedUrl})`
+          : `url('/webinar-view-bg.jpg')`,
+      }"
     >
-      <div class="mb-8">
+      <div v-if="!isStarted" class="mb-8">
         <p class="font-semibold text-sm text-white">
           This webinar will start in
         </p>
-        <div class="countdown-timer text-white mt-4">
-          <span>2</span>
+        <div v-if="date" class="countdown-timer text-white mt-4">
+          <span>{{ date.days }}</span>
           days
-          <span>14</span>
+          <span>{{ date.hours }}</span>
           hours
-          <span>22</span>
+          <span>{{ date.minutes }}</span>
           minutes
-          <span>16</span>
+          <span>{{ date.seconds }}</span>
           seconds
         </div>
+        <div v-else class="countdown-timer text-white mt-4">
+          <span>Loading...</span>
+        </div>
+      </div>
+
+      <div v-else-if="isStarted && !isPast" class="mb-8">
+        <p class="font-semibold text-sm text-white">This webinar has started</p>
+      </div>
+
+      <div v-else class="mb-8">
+        <p class="font-semibold text-sm text-white">This webinar has past</p>
       </div>
       <!-- <button
         class="btn btn-primary mx-auto my-auto"
@@ -25,26 +41,72 @@
       >
         Add to Calendar
       </button> -->
-      <nuxt-link to="/meeting/13673-13673"
+      <nuxt-link
+        v-if="!isPast && isStarted"
+        :to="roomName ? `/webinars/start/${roomName}` : ``"
         ><button class="btn btn-primary mx-auto my-auto">
-          Start
+          Go to Webinar
         </button></nuxt-link
       >
+      <span v-if="upcoming && !isStarted" @click.prevent="purchaseWebinar"
+        ><button class="btn btn-primary mx-auto my-auto">
+          Reserve Slot Now
+        </button></span
+      >
     </div>
-    <div v-else-if="status === 'paused'"></div>
+    <!-- <div v-else-if="status === 'paused'"></div>
     <div v-else class="video-frame flex w-full h-full">
       <span class="play-btn my-auto mx-auto"></span>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     status: { type: String, default: 'inactive' }, // inactive / countdown / paused
+    startDateTime: { type: String, required: false },
+    endDateTime: { type: String, required: false },
+    image: { type: String, required: false },
+    roomName: { type: String, required: false },
+    upcoming: { type: Boolean, required: false },
+    purchaseWebinar: { type: Function, required: false },
   },
   methods: {
     addToCalendar() {},
+    countdownTimer() {
+      this.timer = setInterval(() => {
+        console.log('countdownTimer')
+        if (this.startDateTime) {
+          this.isPast = moment(this.endDateTime) < moment()
+          this.isStarted = moment(this.startDateTime) < moment()
+          const datetime = moment.duration(
+            moment(this.startDateTime).diff(moment()),
+            'milliseconds'
+          )
+          this.date = {
+            days: datetime.days(),
+            hours: datetime.hours(),
+            minutes: datetime.minutes(),
+            seconds: datetime.seconds(),
+          }
+        }
+      }, 1000)
+    },
+  },
+  data: () => ({
+    date: null,
+    isPast: false,
+    isStarted: false,
+    timer: null,
+  }),
+  mounted() {
+    this.countdownTimer()
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
 }
 </script>

@@ -29,12 +29,12 @@
               <p class="text-xs text-gray-700">Ratings and Reviews</p>
             </button>
           </div>
-          <div class="mt-6">
-            <edit-chip
-              desc='This is a preview of your webinar. To make changes, please click "Take action"'
-              name="Take action"
-            />
-          </div>
+          <edit-chip
+            desc='This is a preview of your webinar. To make changes, please click "Edit Webinar"'
+            name="Edit Webinar"
+            :userDash="userDash"
+            :id="$route.params.slug"
+          />
         </section>
 
         <!-- Webinar Preview Tab -->
@@ -46,7 +46,7 @@
             <div
               class="bg-white rounded-xl border border-gray-300 shadow-hover overflow-hidden relative h-full"
             >
-              <webinar-view-details />
+              <webinar-view-details :webinar="webinar" :upcoming="false" />
             </div>
           </div>
           <div class="col-span-full lg:col-span-4 xl:col-span-4">
@@ -54,61 +54,44 @@
               class="flex flex-col flex-1 bg-white rounded-xl border border-gray-300 min-h-content-screen"
             >
               <tabs-menu v-model="tab" :tabs="tabs" />
-              <div v-if="$device.isMobile && tab === 0 && tabs.length === 5">
-                <webinar-view-details />
+              <div v-if="$device.isMobile && tab === 0 && tabs.length === 4">
+                <webinar-view-details :webinar="webinar" :upcoming="false" />
               </div>
               <div
                 v-if="
-                  (tab === 0 && tabs.length === 4) ||
-                  (tab === 1 && tabs.length === 5)
-                "
-              >
-                <chat-messages no-card />
-              </div>
-              <div
-                v-if="
-                  (tab === 1 && tabs.length === 4) ||
-                  (tab === 2 && tabs.length === 5)
+                  (tab === 0 && tabs.length === 3) ||
+                  (tab === 1 && tabs.length === 4)
                 "
                 class="pl-4 md:pl-5 lg:pl-6 pb-5"
               >
-                <webinar-people />
+                <webinar-people :people="[]" type="webinar" />
               </div>
               <div
                 v-if="
-                  (tab === 2 && tabs.length === 4) ||
-                  (tab === 3 && tabs.length === 5)
+                  (tab === 1 && tabs.length === 3) ||
+                  (tab === 2 && tabs.length === 4)
                 "
                 class="px-4 md:px-5 lg:px-6 py-4 pb-10"
               >
-                <webinar-poll />
+                <webinar-poll
+                  v-for="(item, key) in webinar.polls"
+                  :key="key"
+                  :poll="item"
+                  :length="webinar.polls.length"
+                />
               </div>
               <div
                 v-if="
-                  (tab === 3 && tabs.length === 4) ||
-                  (tab === 4 && tabs.length === 5)
+                  (tab === 2 && tabs.length === 3) ||
+                  (tab === 3 && tabs.length === 4)
                 "
                 class="px-4 md:px-5 lg:px-6 py-4 pb-10"
               >
                 <div class="space-y-4">
                   <resource-list
-                    v-for="(item, key) in [
-                      'Businessstats.com / businessfailurerates',
-                    ]"
+                    v-for="(item, key) in webinar.resources"
                     :key="key"
-                    :name="item"
-                    desc="This will show you stats of business failure across countries of the world. This information will be useful for your assignment"
-                    link="#"
-                  />
-                  <resource-list
-                    v-for="(item, key) in [
-                      'Business finance spreadsheet.xls',
-                      'Business startup checklist.doc',
-                    ]"
-                    :key="key"
-                    :name="item"
-                    link="#"
-                    :download="true"
+                    :resource="item"
                   />
                 </div>
               </div>
@@ -170,9 +153,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import EditChip from '~/components/chip/EditChip.vue'
+import { getAccessTokenHeader } from '~/utils'
 
-const webinars = require('@/static/json/latest-webinars.json')
 const youLearn = require('@/static/json/courses-you-learn.json')
 const students = require('@/static/json/student-signups.json')
 const reviews = require('@/static/json/webinar-reviews.json')
@@ -180,17 +164,31 @@ const reviews = require('@/static/json/webinar-reviews.json')
 export default {
   components: { EditChip },
   middleware: ['check-auth', 'auth'],
-  fetch({ store }) {
-    store.commit('app/SET_DARK_MENU', true)
-    store.commit('app/SET_TITLE', 'Webinars')
+  async fetch() {
+    this.$store.commit('app/SET_DARK_MENU', true)
+    this.$store.commit('app/SET_TITLE', 'Preview Webinar')
+    console.log('$route', this.$route.params)
+    try {
+      const { data } = await this.$axios.$get(
+        `https://streaming.staging.klasroom.com/v1/webinars/${this.$route.params.slug}`,
+        {
+          headers: getAccessTokenHeader(this.token),
+        }
+      )
+      console.log('webinar: ', data)
+
+      this.webinar = data
+    } catch (err) {
+      console.log(err)
+    }
   },
+  fetchOnServer: false,
   data: () => ({
     home: 'home',
-    course: webinars[0],
-    webinars: _.take(webinars, 3),
+    webinar: null,
     youLearn,
     tab: 0,
-    tabs: ['Chat', 'People', 'Poll', 'Resources'],
+    tabs: ['People', 'Poll', 'Resources'],
     isWebinars: {
       preview: true,
       signups: false,
@@ -242,6 +240,15 @@ export default {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
     }
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      token: (state) => state.auth.token,
+    }),
+    userDash() {
+      return this.$route.path.split('/')[1]
+    },
   },
   methods: {
     scrollTo(e, id) {
