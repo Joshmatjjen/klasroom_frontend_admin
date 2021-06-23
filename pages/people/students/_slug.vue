@@ -73,11 +73,13 @@
       v-model="tab"
       :tabs="[
         `${
-          singleUser.currentCourses ? singleUser.currentCourses.data.length : 0
+          singleStudent.currentCourses
+            ? singleStudent.currentCourses.data.length
+            : 0
         } Current Courses`,
         `${
-          singleUser.completedCourses
-            ? singleUser.completedCourses.data.length
+          singleStudent.completedCourses
+            ? singleStudent.completedCourses.data.length
             : 0
         } Completed Courses`,
         `${6} Upcoming Webinars`,
@@ -87,13 +89,13 @@
       ]"
     />
     <!-- Current Courses -->
-    <section v-if="tab === 0 && singleUser.currentCourses">
-      <current-courses :tabs="tab" :data="singleUser.currentCourses" />
+    <section v-if="tab === 0 && singleStudent.currentCourses">
+      <current-courses :tabs="tab" :data="singleStudent.currentCourses" />
     </section>
 
     <!-- Completed Courses -->
-    <section v-if="tab === 1 && singleUser.completedCourses">
-      <completed-courses :tabs="tab" :data="singleUser.completedCourses" />
+    <section v-if="tab === 1 && singleStudent.completedCourses">
+      <completed-courses :tabs="tab" :data="singleStudent.completedCourses" />
     </section>
 
     <!-- Upcomming Webinars -->
@@ -155,6 +157,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       singleUser: (state) => state.people.singleUser,
+      singleStudent: (state) => state.people.singleStudent,
     }),
   },
 
@@ -166,7 +169,10 @@ export default {
     if (this.$route.params) {
       // getUser
       this.$store
-        .dispatch('people/getUser', this.$route.params.slug)
+        .dispatch('people/getUser', {
+          id: this.$route.params.slug,
+          type: this.$route.params.type,
+        })
         .then((res) => {
           console.log('User Data', res)
           this.loading = false
@@ -241,7 +247,10 @@ export default {
             .catch((e) => console.log('e: ', e))
         } else if (newValue === 5) {
           this.$store
-            .dispatch('people/getUser', this.$route.params.slug)
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug,
+              type: this.$route.params.type,
+            })
             .then((res) => {
               console.log('User Data', res)
               this.loading = false

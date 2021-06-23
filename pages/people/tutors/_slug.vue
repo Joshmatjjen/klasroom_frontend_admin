@@ -1,6 +1,14 @@
 <template>
-  <div class="min-h-screen mb-24">
-    <div class="bg-red-200 border rounded-2xl px-5 py-5 mb-5">
+  <div
+    class="min-h-screen mb-24"
+    v-if="
+      singleUser.user && singleUser.user.userId === parseInt($route.params.slug)
+    "
+  >
+    <div
+      v-if="singleUser.user.status === 'suspended'"
+      class="bg-red-200 border rounded-2xl px-5 py-5 mb-5"
+    >
       <p class="text-gray-700 font-normal text-left text-sm">
         This account is suspended. Click “Actions” to reactivate this account.
       </p>
@@ -17,22 +25,35 @@
         >
           <img
             class="profile-img rounded-xl"
-            src="/profile.jpg"
+            :src="
+              singleUser.user.image ? singleUser.user.image : '/profile.jpg'
+            "
             alt="My profile"
           />
         </div>
         <div class="flex flex-col justify-end">
           <div>
             <span class="text-gray-700 font-semibold text-left text-md">{{
-              'Chidimma Ugwu'
+              singleUser.user.name
             }}</span>
             <span
-              class="text-white bg-green-600 rounded-full font-normal text-center text-sm py-1 px-2"
-              >{{ 'Active' }}</span
+              class="text-white rounded-full font-normal text-center text-sm py-1 px-2"
+              :class="
+                singleUser.user.status === 'active'
+                  ? 'bg-green-600'
+                  : singleUser.user.status === 'inactive' ||
+                    singleUser.user.status === 'dormant'
+                  ? 'bg-gray-500'
+                  : 'bg-red-600'
+              "
+              >{{
+                singleUser.user.status.charAt(0).toUpperCase() +
+                singleUser.user.status.slice(1)
+              }}</span
             >
           </div>
           <span class="text-gray-700 font-normal text-left text-xs">{{
-            'chidimmaugwu@gmail.com'
+            singleUser.user.email
           }}</span>
         </div>
       </div>
@@ -78,7 +99,7 @@
     />
     <!-- Courses -->
     <section v-if="tabs === 0">
-      <current-courses :tabs="tabs" />
+      <current-courses :tabs="tabs" :data="singleTutor.courses" />
     </section>
 
     <!-- Webinars -->
@@ -148,12 +169,57 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
-      profileImage: (state) => state.auth.profileImage,
+      singleUser: (state) => state.people.singleUser,
+      singleTutor: (state) => state.people.singleTutor,
     }),
   },
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
+    console.log('Just opened students', this.$route.params)
+    if (this.$route.params) {
+      // getUser
+      this.$store
+        .dispatch('people/getUser', {
+          id: this.$route.params.slug,
+          type: this.$route.params.type,
+        })
+        .then((res) => {
+          console.log('User Data', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // Courses
+      this.$store
+        .dispatch('people/getTutorCourses', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // // CompletedCourses
+      // this.$store
+      //   .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
+      //   .then((res) => {
+      //     console.log('DAta In Slug', res)
+      //     this.loading = false
+      //     // this.settings = res
+      //     if (res) {
+      //       // this.showSuccess(res)
+      //     }
+      //   })
+      //   .catch((e) => console.log('e: ', e))
     }
   },
   methods: {
