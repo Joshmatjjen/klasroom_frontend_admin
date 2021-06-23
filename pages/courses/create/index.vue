@@ -469,9 +469,7 @@
                   <li class="lg:pb-8 flex flex-row justify-between relative">
                     <button
                       class="btn btn-primary mr-5 flex flex-row justify-between align-middle items-center"
-                      @click="
-                        $router.push(`/${userDash}/course/preview/${course.id}`)
-                      "
+                      @click="$router.push(`/course/preview/${course.id}`)"
                     >
                       <span class="text-xs">Preview course</span>
                       <svg
@@ -660,9 +658,6 @@ export default {
       userType: (state) =>
         state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
-    userDash() {
-      return this.$route.path.split('/')[1]
-    },
   },
   watch: {
     async fileResources(value) {

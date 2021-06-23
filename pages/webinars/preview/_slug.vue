@@ -32,7 +32,6 @@
           <edit-chip
             desc='This is a preview of your webinar. To make changes, please click "Edit Webinar"'
             name="Edit Webinar"
-            :userDash="userDash"
             :id="$route.params.slug"
           />
         </section>
@@ -246,9 +245,6 @@ export default {
       user: (state) => state.auth.user,
       token: (state) => state.auth.token,
     }),
-    userDash() {
-      return this.$route.path.split('/')[1]
-    },
   },
   methods: {
     scrollTo(e, id) {
