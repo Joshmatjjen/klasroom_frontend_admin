@@ -2,57 +2,56 @@
   <div class="min-h-screen mb-24">
     <section class="bg-orange-100">
       <section>
-      <div
-        class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
-      >
-        <button
-          v-on:click="switcher('preview')"
-          v-bind:class="{ active: isCourses.preview }"
-          class="menu-btn"
+        <div
+          class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
         >
-          <p class="text-xs text-gray-700"> Course preview</p>
-        </button>
-        <button
-          v-on:click="switcher('students')"
-          v-bind:class="{ active: isCourses.students }"
-          class="menu-btn"
-        >
-          <p class="text-xs text-gray-700">Course students</p>
-        </button>
-        <button
-          v-on:click="switcher('ratings')"
-          v-bind:class="{ active: isCourses.ratings }"
-          class="menu-btn"
-        >
-          <p class="text-xs text-gray-700">Ratings and reviews</p>
-        </button>
-      </div>
-    </section>
-      <div v-if="isCourses.preview" class="container mt-6 mx-auto mb-10 px-4 lg:px-0">
-        <div class="container mx-auto mb-4 px-4 lg:px-0">
-        <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
-          <course-metrics
-            :title="0"
-            label="Course sales"
-            text="Filter"
-          />
-          <course-metrics
-            :title="0"
-            label="Course completions"
-            text="Filter"
-          />
-          <course-metrics
-            :title="0"
-            label="Rating"
-            text="Open reviews"
-            @click="switcher('ratings')"
-          />
+          <button
+            v-on:click="switcher('preview')"
+            v-bind:class="{ active: isCourses.preview }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Course preview</p>
+          </button>
+          <button
+            v-on:click="switcher('students')"
+            v-bind:class="{ active: isCourses.students }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Course students</p>
+          </button>
+          <button
+            v-on:click="switcher('ratings')"
+            v-bind:class="{ active: isCourses.ratings }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Ratings and reviews</p>
+          </button>
         </div>
-      </div>
-      <edit-chip
-          desc='This course has not been approved and is not live for purchase. Click “Take action” to publish.'
-          name="Take action"
+      </section>
+      <div
+        v-if="isCourses.preview"
+        class="container mt-6 mx-auto mb-10 px-4 lg:px-0"
+      >
+        <div class="container mx-auto mb-4 px-4 lg:px-0">
+          <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
+            <course-metrics :title="0" label="Course sales" text="Filter" />
+            <course-metrics
+              :title="0"
+              label="Course completions"
+              text="Filter"
             />
+            <course-metrics
+              :title="0"
+              label="Rating"
+              text="Open reviews"
+              @click="switcher('ratings')"
+            />
+          </div>
+        </div>
+        <edit-chip
+          desc="This course has not been approved and is not live for purchase. Click “Take action” to publish."
+          name="Take action"
+        />
         <div class="grid grid-cols-12 gap-5">
           <div
             v-if="!$device.isMobile"
@@ -71,15 +70,9 @@
                   </div>
                   <div class="space-y-3">
                     <resource-list
-                      v-for="(item, key) in [
-                        'Sample business plan.pdf',
-                        'Business finance spreadsheet.xls',
-                        'Business startup checklist.doc',
-                      ]"
+                      v-for="(item, key) in []"
                       :key="key"
-                      :name="item"
-                      link="#"
-                      :download="true"
+                      :resource="item"
                     />
                   </div>
                 </div>
@@ -275,23 +268,9 @@
               >
                 <div class="space-y-4">
                   <resource-list
-                    v-for="(item, key) in [
-                      'Businessstats.com / businessfailurerates',
-                    ]"
+                    v-for="(item, key) in []"
                     :key="key"
-                    :name="item"
-                    desc="This will show you stats of business failure across countries of the world. This information will be useful for your assignment"
-                    link="#"
-                  />
-                  <resource-list
-                    v-for="(item, key) in [
-                      'Business finance spreadsheet.xls',
-                      'Business startup checklist.doc',
-                    ]"
-                    :key="key"
-                    :name="item"
-                    link="#"
-                    :download="true"
+                    :resource="item"
                   />
                 </div>
               </div>
@@ -299,8 +278,11 @@
           </div>
         </div>
       </div>
-      <div v-if="isCourses.students" class="container mt-5 mx-auto mb-10 px-4 lg:px-0">
-         <section class="grid grid-cols-12 gap-5">
+      <div
+        v-if="isCourses.students"
+        class="container mt-5 mx-auto mb-10 px-4 lg:px-0"
+      >
+        <section class="grid grid-cols-12 gap-5">
           <div class="col-span-full lg:col-span-8 xl:col-span-8">
             <div class="grid grid-cols-12 gap-4">
               <div class="col-span-full">
@@ -321,10 +303,11 @@
               class="bg-white rounded-xl border border-gray-300 shadow-hover relative min-h-full"
             >
               <div class="block mb-2">
-                <div
-                  class="big-avatar relative rounded-xl overflow-hidden"
-                >
-                <img src="https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png" alt="">
+                <div class="big-avatar relative rounded-xl overflow-hidden">
+                  <img
+                    src="https://www.pngkey.com/png/full/115-1150420_avatar-png-pic-male-avatar-icon-png.png"
+                    alt=""
+                  />
                 </div>
               </div>
               <div class="px-4 md:px-5 lg:px-6 py-4">
@@ -353,7 +336,7 @@
                       <span class="checkmark"></span>
                     </label>
                   </li>
-                    <hr class="my-5" />
+                  <hr class="my-5" />
                 </ul>
               </div>
             </div>
@@ -390,7 +373,6 @@ const youLearn = require('@/static/json/courses-you-learn.json')
 const reviews = require('@/static/json/reviews.json')
 const webreviews = require('@/static/json/webinar-reviews.json')
 const students = require('@/static/json/students.json')
-
 
 export default {
   middleware: ['check-auth', 'auth'],
@@ -453,9 +435,8 @@ export default {
     ],
     rowsReviews: _.take(webreviews, 10),
     rowsStudents: _.take(students, 4),
-
   }),
-   computed: {
+  computed: {
     ...mapState({
       user: (state) => state.auth.user,
       profileImage: (state) => state.auth.profileImage,

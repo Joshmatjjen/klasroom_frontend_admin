@@ -21,8 +21,8 @@
     </div>
     <div v-else-if="type === 'link'" class="pr-12">
       <nuxt-link
-        :to="'/courses/create'"
         v-for="(option, key) in options"
+        :to="option.link"
         :key="key"
         class="lg:mr-4 md:text-gray-700 text-sm hover:text-gray-900 md:bg-transparent md:mb-0"
       >
