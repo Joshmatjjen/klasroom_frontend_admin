@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
-    <div
+    <!-- <div
       class="fixed"
       :class="{ hidden: !opt }"
       :style="{
@@ -16,7 +16,7 @@
           filterOpt && toggleFilter()
         }
       "
-    ></div>
+    ></div> -->
     <div class="flex flex-row justify-between px-5 my-5">
       <p class="text-sm font-semibold">
         {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
@@ -66,6 +66,7 @@
                 { key: 'active', description: 'Filter by active' },
                 { key: 'dormant', description: 'Filter by dormant' },
                 { key: 'inactive', description: 'Filter by inactive' },
+                { key: 'suspended', description: 'Filter by suspended' },
               ]"
               v-model="filter.status"
               value-attribute="key"
@@ -175,7 +176,7 @@
           enabled: false,
         }"
         :search-options="{ enabled: false }"
-        styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped"
+        styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped "
       >
         <template slot="table-row" slot-scope="props">
           <!-- <nuxt-link
@@ -190,12 +191,16 @@
             :to="{
               name: route,
               params: {
-                slug: props.row.userId ? props.row.userId : props.row.title,
+                slug: props.row.tutorId
+                  ? props.row.tutorId
+                  : props.row.userId
+                  ? props.row.userId
+                  : props.row.title,
                 userData: props.row,
                 type: type.toLowerCase(),
               },
             }"
-            class="relative"
+            class="relative flex flex-row"
           >
             <span
               v-if="
@@ -298,7 +303,7 @@
               <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
             </span>
             <span
-              class="items-center relative"
+              class="items-center relative last-col"
               v-else-if="props.column.field == 'status'"
             >
               <span
@@ -387,10 +392,14 @@
                   ))
               "
             >
-              <div class="absolute right-0 -mr-4">
+              <div class="absolute bottom-0 right-0">
                 <span
                   v-on:click.prevent="
-                    toggleMenu(props.row.id ? props.row.id : props.row.userId)
+                    toggleMenu(
+                      props.row.id
+                        ? props.row.id
+                        : props.row.userId || props.row.tutorId
+                    )
                   "
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
                   >&#xFE19;</span
@@ -402,7 +411,12 @@
                         ? props.row.id === optId
                           ? false
                           : true
-                        : opt && props.row.userId && props.row.userId === optId
+                        : (opt &&
+                            props.row.userId &&
+                            props.row.userId === optId) ||
+                          (opt &&
+                            props.row.tutorId &&
+                            props.row.tutorId === optId)
                         ? false
                         : true,
                     'bottom-0': props.index > 5 ? true : false,
@@ -449,7 +463,9 @@
                       :to="{
                         name: route,
                         params: {
-                          slug: props.row.userId
+                          slug: props.row.tutorId
+                            ? props.row.tutorId
+                            : props.row.userId
                             ? props.row.userId
                             : props.row.title,
                           userData: props.row,
@@ -548,6 +564,10 @@ export default {
 </script>
 
 <style scoped>
+.last-col {
+  min-width: 5.8rem;
+}
+
 #filter-input {
   width: 9.8rem;
   padding: 8px;
@@ -575,15 +595,18 @@ export default {
   border-width: 0.1rem;
   min-width: 17rem;
 }
+
 .vgt-table > thead > th {
   @apply font-normal text-xs;
 }
 .vgt-wrap {
   min-width: 60rem;
+  min-height: 33rem;
   overflow-x: auto;
   overflow-y: hidden;
   margin: 0.5rem;
 }
+
 .vgt-left-align > span {
   /* pr-10 */
   @apply text-gray-700 font-normal text-left text-xs pr-5;
