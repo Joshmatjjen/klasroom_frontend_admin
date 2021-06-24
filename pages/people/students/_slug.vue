@@ -1,120 +1,147 @@
 <template>
-  <div
-    class="min-h-screen mb-24"
-    v-if="
-      singleUser.user && singleUser.user.userId === parseInt($route.params.slug)
-    "
-  >
-    <section class="flex flex-row justify-between items-center">
-      <div class="flex flex-row mb-8">
-        <div
-          class="course-image mr-3"
-          :style="{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }"
-        >
-          <img
-            class="profile-img rounded-xl"
-            :src="singleUser.user.image"
-            alt="My profile"
-          />
-        </div>
-        <div class="flex flex-col justify-end">
-          <span class="text-gray-700 font-semibold text-left text-md">{{
-            singleUser.user.name
-          }}</span
-          ><span class="text-gray-700 font-normal text-left text-xs">{{
-            singleUser.user.email
-          }}</span>
-        </div>
-      </div>
-      <div
-        class="btn btn-primary h-12 flex flex-row align-middle rlative"
-        @click="toggleActionOpt"
-      >
-        <p class="text-center pr-3">Action</p>
-        <img src="/actions/arrow-down-light.svg" alt="" />
-        <div
-          :class="{
-            hidden: actionOpt ? false : true,
-          }"
-          class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
-          :style="{ zIndex: 100 }"
-          @click.capture.stop="accountAction('suspend')"
-          v-if="singleUser.user.isActive"
-        >
-          <p
-            class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+  <div>
+    <div
+      class="min-h-screen mb-24"
+      v-if="
+        singleUser.user &&
+        singleUser.user.userId === parseInt($route.params.slug)
+      "
+    >
+      <section class="flex flex-row justify-between items-center">
+        <div class="flex flex-row mb-8">
+          <div
+            class="course-image mr-3"
+            :style="{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }"
           >
-            Suspend account
-          </p>
+            <img
+              class="profile-img rounded-xl"
+              :src="
+                singleUser.user.image ? singleUser.user.image : '/no-pic.webp'
+              "
+              alt="My profile"
+            />
+          </div>
+          <div class="flex flex-col justify-end">
+            <div>
+              <span class="text-gray-700 font-semibold text-left text-md">{{
+                singleUser.user.name
+              }}</span>
+              <span
+                class="text-white rounded-full font-normal text-center text-sm py-1 px-2"
+                :class="
+                  singleUser.user.status === 'active'
+                    ? 'bg-green-600'
+                    : singleUser.user.status === 'inactive' ||
+                      singleUser.user.status === 'dormant'
+                    ? 'bg-gray-500'
+                    : 'bg-red-600'
+                "
+                >{{
+                  singleUser.user.status.charAt(0).toUpperCase() +
+                  singleUser.user.status.slice(1)
+                }}</span
+              >
+            </div>
+            <span class="text-gray-700 font-normal text-left text-xs">{{
+              singleUser.user.email
+            }}</span>
+          </div>
         </div>
-
         <div
-          :class="{
-            hidden: actionOpt ? false : true,
-          }"
-          class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
-          :style="{ zIndex: 100 }"
-          @click.capture.stop="accountAction('unsuspend')"
-          v-if="!singleUser.user.isActive"
+          class="btn btn-primary h-12 flex flex-row align-middle rlative"
+          @click="toggleActionOpt"
         >
-          <p
-            class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          <p class="text-center pr-3">Action</p>
+          <img src="/actions/arrow-down-light.svg" alt="" />
+          <div
+            :class="{
+              hidden: actionOpt ? false : true,
+            }"
+            class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+            :style="{ zIndex: 100 }"
+            @click.capture.stop="accountAction('suspend')"
+            v-if="singleUser.user.isActive"
           >
-            Unsuspend account
-          </p>
+            <p
+              class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+            >
+              Suspend account
+            </p>
+          </div>
+
+          <div
+            :class="{
+              hidden: actionOpt ? false : true,
+            }"
+            class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+            :style="{ zIndex: 100 }"
+            @click.capture.stop="accountAction('unsuspend')"
+            v-if="!singleUser.user.isActive"
+          >
+            <p
+              class="text-center md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+            >
+              Unsuspend account
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
-    <section-switcher
-      v-model="tab"
-      :tabs="[
-        `${
-          singleUser.currentCourses ? singleUser.currentCourses.data.length : 0
-        } Current Courses`,
-        `${
-          singleUser.completedCourses
-            ? singleUser.completedCourses.data.length
-            : 0
-        } Completed Courses`,
-        `${6} Upcoming Webinars`,
-        `${6} Prev. Webinars`,
-        `Active log`,
-        `Account summary`,
-      ]"
-    />
-    <!-- Current Courses -->
-    <section v-if="tab === 0 && singleUser.currentCourses">
-      <current-courses :tabs="tab" :data="singleUser.currentCourses" />
-    </section>
+      </section>
+      <section-switcher
+        v-model="tab"
+        :tabs="[
+          `${
+            singleStudent.currentCourses
+              ? singleStudent.currentCourses.data.length
+              : 0
+          } Current Courses`,
+          `${
+            singleStudent.completedCourses
+              ? singleStudent.completedCourses.data.length
+              : 0
+          } Completed Courses`,
+          `${6} Upcoming Webinars`,
+          `${6} Prev. Webinars`,
+          `Active log`,
+          `Account summary`,
+        ]"
+      />
+      <!-- Current Courses -->
+      <section v-if="tab === 0 && singleStudent.currentCourses">
+        <current-courses :tabs="tab" :data="singleStudent.currentCourses" />
+      </section>
 
-    <!-- Completed Courses -->
-    <section v-if="tab === 1 && singleUser.completedCourses">
-      <completed-courses :tabs="tab" :data="singleUser.completedCourses" />
-    </section>
+      <!-- Completed Courses -->
+      <section v-if="tab === 1 && singleStudent.completedCourses">
+        <completed-courses :tabs="tab" :data="singleStudent.completedCourses" />
+      </section>
 
-    <!-- Upcomming Webinars -->
-    <section v-if="tab === 2">
-      <upcoming-webinars :tabs="tab" />
-    </section>
+      <!-- Upcomming Webinars -->
+      <section v-if="tab === 2">
+        <upcoming-webinars :tabs="tab" />
+      </section>
 
-    <!-- Previous Webinars -->
-    <section v-if="tab === 3">
-      <previous-webinars :tabs="tab" />
-    </section>
+      <!-- Previous Webinars -->
+      <section v-if="tab === 3">
+        <previous-webinars :tabs="tab" />
+      </section>
 
-    <!-- Activity Log -->
-    <section v-if="tab === 4">
-      <activity-log :tabs="tab" />
-    </section>
+      <!-- Activity Log -->
+      <section v-if="tab === 4">
+        <activity-log :tabs="tab" />
+      </section>
 
-    <!-- Account Summary -->
-    <section v-if="tab === 5 && singleUser.user">
-      <account-summary :tabs="tab" :data="singleUser.user" />
-    </section>
+      <!-- Account Summary -->
+      <section v-if="tab === 5 && singleUser.user">
+        <account-summary :tabs="tab" :data="singleUser.user" />
+      </section>
+    </div>
+    <div v-else loader class="">
+      <img class="spinner w-16 h-16" src="/spinner/spinner.svg" alt="" />
+    </div>
   </div>
 </template>
 
@@ -155,6 +182,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       singleUser: (state) => state.people.singleUser,
+      singleStudent: (state) => state.people.singleStudent,
     }),
   },
 
@@ -166,7 +194,10 @@ export default {
     if (this.$route.params) {
       // getUser
       this.$store
-        .dispatch('people/getUser', this.$route.params.slug)
+        .dispatch('people/getUser', {
+          id: this.$route.params.slug,
+          type: this.$route.params.type,
+        })
         .then((res) => {
           console.log('User Data', res)
           this.loading = false
@@ -241,7 +272,10 @@ export default {
             .catch((e) => console.log('e: ', e))
         } else if (newValue === 5) {
           this.$store
-            .dispatch('people/getUser', this.$route.params.slug)
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug,
+              type: this.$route.params.type,
+            })
             .then((res) => {
               console.log('User Data', res)
               this.loading = false
@@ -295,6 +329,13 @@ export default {
 }
 </script>
 <style scoped>
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 .pop-up {
   min-width: 9rem;
   top: 12.5rem;

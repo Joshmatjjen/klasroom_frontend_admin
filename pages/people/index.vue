@@ -111,6 +111,10 @@
                 route="people-tutors-slug"
                 :exportCSV="exportCSV"
                 :filterData="filterData"
+                :popUpProps="[
+                  { name: 'Preview', action: null },
+                  { name: 'Action', action: toggleAcctAction },
+                ]"
               />
             </div>
           </div>
@@ -172,6 +176,10 @@
                 route="people-admins-slug"
                 :exportCSV="exportCSV"
                 :filterData="filterData"
+                :popUpProps="[
+                  { name: 'Preview', action: null },
+                  { name: 'Action', action: toggleAcctAction },
+                ]"
               />
             </div>
           </div>
