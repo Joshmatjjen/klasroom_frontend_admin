@@ -151,7 +151,9 @@ export const actions = {
     const { id, type } = params
     try {
       const { data } = await this.$axios.$get(
-        type === 'tutors' ? `/users/${type}/${id}` : `/users/${id}`
+        type === 'tutors'
+          ? `/users/${type.substring(0, type.length - 1)}/${id}`
+          : `/users/${id}`
       )
 
       if (data) {
@@ -289,6 +291,27 @@ export const actions = {
 
       if (data) {
         console.log('Tutor Courses', data)
+        // vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async approveTutor(vuexContext, userId) {
+    try {
+      const { data } = await this.$axios.$get(`/users/approve/tutor/${userId}`)
+
+      if (data) {
+        console.log('Tutor Approval message', data)
         // vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))

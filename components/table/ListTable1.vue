@@ -463,7 +463,9 @@
                       :to="{
                         name: route,
                         params: {
-                          slug: props.row.userId
+                          slug: props.row.tutorId
+                            ? props.row.tutorId
+                            : props.row.userId
                             ? props.row.userId
                             : props.row.title,
                           userData: props.row,
