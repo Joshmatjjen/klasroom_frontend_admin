@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 
 // state
 export const state = () => ({
-  students: null,
+  courseCategory: null,
   studentsSummary: null,
   tutors: null,
   tutorsSummary: null,
@@ -29,8 +29,8 @@ export const getters = {
 // mutations
 export const mutations = {
   //STUDENTS
-  FETCH_STUDENTS_SUCCESS(state, students) {
-    state.students = students
+  FETCH_COURSE_CATEGORY(state, courseCategory) {
+    state.courseCategory = courseCategory.data
   },
 
   FETCH_STUDENTS_FAILURE(state) {
@@ -96,18 +96,16 @@ export const mutations = {
 
 // actions
 export const actions = {
-  // List of Student
-  async getStudents(vuexContext, page) {
+  // get course category
+  async getCourseCategory(vuexContext) {
     try {
-      const data = await this.$axios.$get(
-        page ? `/users/students?page=${page}` : '/users/students'
-      )
+      const data = await this.$axios.$get('courses/categories')
 
       if (data) {
-        console.log('Student Data', data)
-        vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
+        console.log('course category Data', data)
+        vuexContext.commit('FETCH_COURSE_CATEGORY', data)
 
-        localStorage.setItem('students', JSON.stringify(data))
+        localStorage.setItem('courseCategory', JSON.stringify(data))
 
         // Cookie.set('students', JSON.stringify(data))
 
@@ -120,24 +118,12 @@ export const actions = {
     }
   },
 
-  async getUser(vuexContext, id) {
+  async addCourseCategory(vuexContext, formData) {
     try {
-      const { data } = await this.$axios.$get(`/users/${id}`)
-
-      if (data) {
-        console.log('User Data', data)
-        vuexContext.commit('FETCH_USER_SUCCESS', data)
-
-        // localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
-        return data
-      }
-      return false
+      const { data } = await this.$axios.$post('courses/categories', formData)
+      vuexContext.commit('FETCH_COURSE_CATEGORY', data)
     } catch (e) {
-      // console.log('fetch user failed: ', e)
-      return false
+      console.log('Data failed: ', e)
     }
   },
 

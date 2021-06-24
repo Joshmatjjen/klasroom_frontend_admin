@@ -88,6 +88,33 @@
                                 />
                               </div>
                             </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name"
+                                >Course category</label
+                              >
+                              <v-select
+                              class="form-input style-chooser cursor-pointer capitalize"
+                              placeholder="Select course category"
+                              :options="[
+                                'Business',
+                                'Programming',
+                                'Cryptocurrency',
+                              ]"
+                            />
+                            </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name"
+                                >What will the students learn?</label
+                              >
+                              <div>
+                                <input
+                                  id="input-name"
+                                  type="text"
+                                  class="form-input"
+                                  placeholder="Enter what student will learn here"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </dash-items-section-group>
@@ -655,6 +682,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       token: (state) => state.auth.token,
+      category: (state) => state.courses.courseCategory,
       userType: (state) =>
         state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),

@@ -22,21 +22,51 @@
                 placeholder="Enter category name"
                 v-model="categoryName"
             />
+        <button @click="addCourseCategory" class="btn btn-primary flex flex-row">Create category</button>
         </div>
     </section>
-    <section>
-      <div class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <category-table :columns="columns" :rows="rows" @click="Test" type="categories" />
-          </div>
+    <section class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
+        <div class="flex flex-row justify-between px-5 my-5">
+            <p class="text-sm font-semibold">
+                {{ category.length }} categories
+            </p>
         </div>
-      </div>
+        <hr>
+        <div class="px-4 py-4 text-gray-500 font-base">Category title</div>
+        <hr>
+        <div>
+            <div class="container mx-auto px-4 lg:px-4" v-for="(categ, key) in category" :key="key + 1">
+                <div class="flex items-center justify-between">
+                    <p class="py-4 w-1/2">{{categ}}</p>
+                    <span @click="toggle(key +1)" class="text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg">&#xFE19;</span>
+                <div
+                    :class="{
+                    hidden: opt && key + 1 === optId ? false : true,
+                  }" 
+                  class="pop-up flex flex-col items-start p-3 justify-around absolute top-12 right-12 border  mt-5 border-gray-500 bg-white rounded-lg h-20 w-32 shadow-lg"
+                  :style="{ zIndex: 100 }">
+                  <div @click="editCategory(key + 1)"
+                    class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                  >
+                    <p>Edit</p>
+                  </div>
+                  <div
+                    @click="deleteCategory(key + 1)"
+                    class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                  >
+                    <p>Delete</p>
+                  </div>
+                </div>
+                </div>
+            <hr/>
+            </div>
+        </div>
     </section>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   middleware: ['check-auth', 'auth'],
   fetch({ store }) {
@@ -45,29 +75,47 @@ export default {
   data: () => ({
     showModal: false,
     categoryName: '',
-    columns: [
-      {
-        label: 'Category title',
-        field: 'categoryTitle',
-      },
-      {
-        label: 'Created On',
-        field: 'createdAt',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
-    ],
-    rows: [
-        { id: 1, title: "Technolgy" },
-        { id: 2, title: "Business" },
-        { id: 3, title: "Education" },
-    ],
+    opt: false,
+    optId: null,
   }),
+  computed: {
+    // ...mapState({
+    //   category: (state) => state.courses.courseCategory,
+    // }),
+    ...mapState('courses', ['courseCategory']),
+  },
+  created() {
+    console.log(this.courseCategory.length)
+    this.$store
+      .dispatch('courses/getCourseCategory')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+  },
   methods: {
-    Test(id) {
-        alert('testing', id)
+    async addCourseCategory() {
+        try {
+            await this.$store.dispatch('courses/addCourseCategory', this.categoryName)
+        } catch (error) {
+            console.log(error)
+        } 
+    },
+    toggle(optId) {
+      this.opt = !this.opt
+      if (optId) this.optId = optId
+    },
+    deleteCategory(id) {
+        console.log(id)
     }
   }
 }
 </script>
+<style scoped>
+.pop-panel {
+    position: absolute;
+    top: 12%;
+    right: 4%;
+}
+</style>
