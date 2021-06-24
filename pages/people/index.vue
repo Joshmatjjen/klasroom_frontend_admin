@@ -114,6 +114,7 @@
                 :popUpProps="[
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
+                  { name: 'Approve', action: toggleApprove },
                 ]"
               />
             </div>
@@ -525,6 +526,30 @@ export default {
           console.log('downloaded')
           // if (res) {
           // }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
+    toggleApprove(userId) {
+      console.log(userId, 'toggleAcctAction')
+      this.$store
+        .dispatch('people/approveTutor', userId)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            this.$store
+              .dispatch('people/getTutors', 1)
+              .then((res) => {
+                console.log(res)
+                this.loading = false
+                // this.settings = res
+                if (res) {
+                  // this.showSuccess(res)
+                }
+              })
+              .catch((e) => console.log('e: ', e))
+          }
         })
         .catch((e) => console.log('e: ', e))
     },
