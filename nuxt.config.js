@@ -65,8 +65,9 @@ export default {
    */
   components: true,
   loading: {
-    color: 'black',
+    color: '#f99e42',
     height: '4px',
+    failedColor: 'red',
   },
   /*
    ** Nuxt.js dev-modules

@@ -50,6 +50,7 @@
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
                 ]"
+                :currentPage="students ? students.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -116,6 +117,7 @@
                   { name: 'Action', action: toggleAcctAction },
                   { name: 'Approve', action: toggleApprove },
                 ]"
+                :currentPage="tutors ? tutors.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -181,6 +183,7 @@
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
                 ]"
+                :currentPage="admins ? admins.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -553,7 +556,8 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
     },
-    toggleAcctAction(name, actionType, type, userId) {
+    toggleAcctAction(name, actionType, type, userId, currentPage) {
+      console.log('Current Page', currentPage)
       console.log(name, 'toggleAcctAction', type)
       this.$store.commit('app/ACTION_MODAL', {
         status: true,
@@ -563,6 +567,7 @@ export default {
         actionType,
         type,
         userId,
+        currentPage,
       })
     },
     isEmptyObject(value) {

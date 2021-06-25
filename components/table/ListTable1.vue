@@ -459,7 +459,10 @@
                               ? 'Reactivate'
                               : 'Suspend',
                             type,
-                            props.row.userId
+                            props.row.tutorId
+                              ? props.row.tutorId
+                              : props.row.userId,
+                            currentPage
                           )
                           toggleMenu(
                             props.row.id ? props.row.id : props.row.userId
@@ -529,6 +532,7 @@ export default {
     exportCSV: { type: Function, required: false },
     popUpProps: { type: Array, required: false },
     filterData: { type: Function, required: false },
+    currentPage: { type: Number, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',
