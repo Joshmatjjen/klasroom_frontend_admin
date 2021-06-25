@@ -28,14 +28,14 @@
     <section class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
         <div class="flex flex-row justify-between px-5 my-5">
             <p class="text-sm font-semibold">
-                {{ category.length }} categories
+                12 categories
             </p>
         </div>
         <hr>
         <div class="px-4 py-4 text-gray-500 font-base">Category title</div>
         <hr>
         <div>
-            <div class="container mx-auto px-4 lg:px-4" v-for="(categ, key) in category" :key="key + 1">
+            <div class="container mx-auto px-4 lg:px-4" v-for="(categ, key) in courseCategory" :key="key + 1">
                 <div class="flex items-center justify-between">
                     <p class="py-4 w-1/2">{{categ}}</p>
                     <span @click="toggle(key +1)" class="text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg">&#xFE19;</span>
@@ -43,7 +43,7 @@
                     :class="{
                     hidden: opt && key + 1 === optId ? false : true,
                   }" 
-                  class="pop-up flex flex-col items-start p-3 justify-around absolute top-12 right-12 border  mt-5 border-gray-500 bg-white rounded-lg h-20 w-32 shadow-lg"
+                  class="pop-up flex flex-col items-start p-3 justify-around absolute top-20 right-1/2 border  mt-5 border-gray-500 bg-white rounded-lg h-20 w-32 shadow-lg"
                   :style="{ zIndex: 100 }">
                   <div @click="editCategory(key + 1)"
                     class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
@@ -79,13 +79,9 @@ export default {
     optId: null,
   }),
   computed: {
-    // ...mapState({
-    //   category: (state) => state.courses.courseCategory,
-    // }),
     ...mapState('courses', ['courseCategory']),
   },
   created() {
-    console.log(this.courseCategory.length)
     this.$store
       .dispatch('courses/getCourseCategory')
       .then((res) => {
@@ -106,9 +102,16 @@ export default {
       this.opt = !this.opt
       if (optId) this.optId = optId
     },
-    deleteCategory(id) {
-        console.log(id)
-    }
+    async deleteCategory(id) {
+      const response = confirm(`Are you sure you want to delete this category ${id}`)
+      if (response) {
+        try {
+          await this.$store.dispatch('courses/deleteCourseCategory', id)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
   }
 }
 </script>

@@ -29,8 +29,13 @@ export const getters = {
 // mutations
 export const mutations = {
   //STUDENTS
-  FETCH_COURSE_CATEGORY(state, courseCategory) {
+  SET_COURSE_CATEGORY(state, courseCategory) {
     state.courseCategory = courseCategory.data
+  },
+
+  SET_DELETE_COURSE_CATEGORY(state, id) {
+    const catgeory = state.courseCategory.filter((x) => x.id !== id)
+    state.courseCategory = catgeory
   },
 
   FETCH_STUDENTS_FAILURE(state) {
@@ -103,7 +108,7 @@ export const actions = {
 
       if (data) {
         console.log('course category Data', data)
-        vuexContext.commit('FETCH_COURSE_CATEGORY', data)
+        vuexContext.commit('SET_COURSE_CATEGORY', data)
 
         localStorage.setItem('courseCategory', JSON.stringify(data))
 
@@ -120,8 +125,16 @@ export const actions = {
 
   async addCourseCategory(vuexContext, formData) {
     try {
-      const { data } = await this.$axios.$post('courses/categories', formData)
-      vuexContext.commit('FETCH_COURSE_CATEGORY', data)
+      const data  = await this.$axios.$post('courses/categories', formData)
+      vuexContext.commit('SET_COURSE_CATEGORY', data)
+    } catch (e) {
+      console.log('Data failed: ', e)
+    }
+  },
+  async deleteCourseCategory(vuexContext, id) {
+    try {
+      const data  = await this.$axios.$delete(`courses/categories/${id}`)
+      vuexContext.commit('SET_DELETE_COURSE_CATEGORY', data)
     } catch (e) {
       console.log('Data failed: ', e)
     }

@@ -473,8 +473,8 @@
               <div class="px-4 md:px-5 lg:px-6 py-4">
                 <ul class="text-gray-700">
                   <li class="text-left">
-                    <h5 class="font-bold mb-2">Title</h5>
-                    <p class="text-xs text-gray-700">introduction</p>
+                    <h5 class="font-bold mb-2">{{course.title}}</h5>
+                    <p class="text-xs text-gray-700">{{course.introduction}}</p>
                   </li>
                   <li>
                     <hr class="my-5" />
@@ -603,7 +603,7 @@
                   }
                 "
               >
-                {{ isCourseSwitch === 2 ? 'Publish Webinar' : 'Next' }}
+                {{ isCourseSwitch === 2 ? 'Publish Course' : 'Next' }}
                 <loader v-if="loading" color="white" />
               </button>
             </div>
