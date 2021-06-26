@@ -456,6 +456,7 @@ table.vgt-table td {
 }
 .vgt-responsive {
   border: none !important;
+  overflow: visible !important;
 }
 
 table.vgt-table {

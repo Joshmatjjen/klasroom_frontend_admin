@@ -67,7 +67,7 @@
     </section>
     <section-switcher
       v-model="tabs"
-      :tabs="[`Active log`, `Account summary`]"
+      :tabs="[`Activity log`, `Account and Permissions `]"
     />
     <!-- Activity Logs -->
     <section v-if="tabs === 0">

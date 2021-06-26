@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
-    <div
+    <!-- <div
       class="fixed"
       :class="{ hidden: !opt }"
       :style="{
@@ -16,7 +16,7 @@
           filterOpt && toggleFilter()
         }
       "
-    ></div>
+    ></div> -->
     <div class="flex flex-row justify-between px-5 my-5">
       <p class="text-sm font-semibold">
         {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
@@ -176,7 +176,7 @@
           enabled: false,
         }"
         :search-options="{ enabled: false }"
-        styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped"
+        styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped "
       >
         <template slot="table-row" slot-scope="props">
           <!-- <nuxt-link
@@ -191,12 +191,16 @@
             :to="{
               name: route,
               params: {
-                slug: props.row.userId ? props.row.userId : props.row.title,
+                slug: props.row.tutorId
+                  ? props.row.tutorId
+                  : props.row.userId
+                  ? props.row.userId
+                  : props.row.title,
                 userData: props.row,
                 type: type.toLowerCase(),
               },
             }"
-            class="relative"
+            class="relative flex flex-row"
           >
             <span
               v-if="
@@ -299,7 +303,7 @@
               <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
             </span>
             <span
-              class="items-center relative"
+              class="items-center relative last-col"
               v-else-if="props.column.field == 'status'"
             >
               <span
@@ -317,7 +321,7 @@
                     : 'bg-gray-500'
                 "
               ></span>
-              <span class="last-col text-gray-700 text-center">{{
+              <span class="text-gray-700 text-center">{{
                 props.row.status.charAt(0).toUpperCase() +
                 props.row.status.slice(1)
               }}</span>
@@ -388,10 +392,14 @@
                   ))
               "
             >
-              <div class="absolute right-0 -mr-4">
+              <div class="absolute bottom-0 right-0">
                 <span
                   v-on:click.prevent="
-                    toggleMenu(props.row.id ? props.row.id : props.row.userId)
+                    toggleMenu(
+                      props.row.id
+                        ? props.row.id
+                        : props.row.userId || props.row.tutorId
+                    )
                   "
                   class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
                   >&#xFE19;</span
@@ -403,7 +411,12 @@
                         ? props.row.id === optId
                           ? false
                           : true
-                        : opt && props.row.userId && props.row.userId === optId
+                        : (opt &&
+                            props.row.userId &&
+                            props.row.userId === optId) ||
+                          (opt &&
+                            props.row.tutorId &&
+                            props.row.tutorId === optId)
                         ? false
                         : true,
                     'bottom-0': props.index > 5 ? true : false,
@@ -415,12 +428,29 @@
                   :style="{ zIndex: 100 }"
                 >
                   <div
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-2"
+                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-1"
                     v-for="({ name, action }, key) in popUpProps"
                     :key="key"
                   >
                     <p
-                      v-if="name === 'Action'"
+                      v-if="
+                        name === 'Approve' && props.row.status === 'inactive'
+                      "
+                      v-on:click.prevent="
+                        () => {
+                          action(props.row.userId)
+                          toggleMenu(
+                            props.row.id ? props.row.id : props.row.userId
+                          )
+                        }
+                      "
+                    >
+                      {{ name }}
+                    </p>
+                    <p
+                      v-if="
+                        name === 'Action' && props.row.status !== 'inactive'
+                      "
                       v-on:click.prevent="
                         () => {
                           action(
@@ -429,7 +459,10 @@
                               ? 'Reactivate'
                               : 'Suspend',
                             type,
-                            props.row.userId
+                            props.row.tutorId
+                              ? props.row.tutorId
+                              : props.row.userId,
+                            currentPage
                           )
                           toggleMenu(
                             props.row.id ? props.row.id : props.row.userId
@@ -450,7 +483,9 @@
                       :to="{
                         name: route,
                         params: {
-                          slug: props.row.userId
+                          slug: props.row.tutorId
+                            ? props.row.tutorId
+                            : props.row.userId
                             ? props.row.userId
                             : props.row.title,
                           userData: props.row,
@@ -497,6 +532,7 @@ export default {
     exportCSV: { type: Function, required: false },
     popUpProps: { type: Array, required: false },
     filterData: { type: Function, required: false },
+    currentPage: { type: Number, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',
@@ -550,7 +586,7 @@ export default {
 
 <style scoped>
 .last-col {
-  min-width: 13rem;
+  min-width: 5.8rem;
 }
 
 #filter-input {
@@ -580,15 +616,18 @@ export default {
   border-width: 0.1rem;
   min-width: 17rem;
 }
+
 .vgt-table > thead > th {
   @apply font-normal text-xs;
 }
 .vgt-wrap {
   min-width: 60rem;
+  min-height: 33rem;
   overflow-x: auto;
   overflow-y: hidden;
   margin: 0.5rem;
 }
+
 .vgt-left-align > span {
   /* pr-10 */
   @apply text-gray-700 font-normal text-left text-xs pr-5;

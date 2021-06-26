@@ -12,11 +12,13 @@
     <div
       class="flex flex-row rounded-3xl items-center align-middle justify-center text-xs md:text-sm text-white md:text-rightmr-5"
     >
-      <button
-        class="btn2 btn2-primary text-xs md:text-sm py-2 md:py-3 w-24 md:w-32 items-center mr-1 md:mr-5"
-      >
-        {{ name }}
-      </button>
+      <nuxt-link :to="`/webinars/edit/` + id">
+        <button
+          class="btn2 btn2-primary text-xs md:text-sm py-2 md:py-3 w-24 md:w-32 items-center mr-1 md:mr-5"
+        >
+          {{ name }}
+        </button>
+      </nuxt-link>
       <div class="flex flex-row gap-10 items-center justify-end relative">
         <span
           v-on:click.prevent="toggleMenu()"
@@ -30,12 +32,12 @@
           class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 mt-10 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
           :style="{ zIndex: 3 }"
         >
-          <a
-            href="#"
+          <nuxt-link
+            :to="`/webinars/edit/` + id"
             class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
           >
             <p>Edit webinar</p>
-          </a>
+          </nuxt-link>
           <a
             href="#"
             class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
@@ -65,6 +67,7 @@ export default {
   props: {
     desc: { type: String, required: false },
     name: { type: String, required: false },
+    id: { type: String, required: false },
   },
   // computed: {
   //   view_route() {

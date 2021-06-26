@@ -12,11 +12,23 @@ export const state = () => ({
   adminsSummary: null,
   singleUser: {
     user: null,
+    activeLog: null,
+  },
+  singleStudent: {
     currentCourses: null,
     completedCourses: null,
     upcomingWebinars: null,
     prevWebinars: null,
-    activeLog: null,
+  },
+  singleTutor: {
+    courses: null,
+    webinars: null,
+    sales: {
+      all: null,
+      courses: null,
+      webinars: null,
+    },
+    withdrawals: null,
   },
 })
 
@@ -28,6 +40,15 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  // ALL users
+  FETCH_USER_SUCCESS(state, user) {
+    state.singleUser.user = user
+  },
+
+  FETCH_ACTIVE_LOG_SUCCESS(state, log) {
+    state.singleUser.activeLog = log
+  },
+
   //STUDENTS
   FETCH_STUDENTS_SUCCESS(state, students) {
     state.students = students
@@ -46,15 +67,12 @@ export const mutations = {
   },
 
   // Single Student
-  FETCH_USER_SUCCESS(state, user) {
-    state.singleUser.user = user
-  },
   FETCH_STUDENT_CURRENT_COURSES_SUCCESS(state, data) {
-    state.singleUser.currentCourses = data
+    state.singleStudent.currentCourses = data
   },
 
   FETCH_STUDENT_COMPLETED_COURSES_SUCCESS(state, data) {
-    state.singleUser.completedCourses = data
+    state.singleStudent.completedCourses = data
   },
 
   //TUTORS
@@ -73,6 +91,15 @@ export const mutations = {
 
   FETCH_TUTORS_SUMMARY_FAILURE(state) {
     state.tutorsSummary = null
+  },
+
+  // Single Tutor
+  FETCH_TUTOR_COURSES_SUCCESS(state, data) {
+    state.singleTutor.courses = data
+  },
+
+  FETCH_STUDENT_COMPLETED_COURSES_SUCCESS(state, data) {
+    state.singleStudent.completedCourses = data
   },
 
   //ADMINS
@@ -120,9 +147,14 @@ export const actions = {
     }
   },
 
-  async getUser(vuexContext, id) {
+  async getUser(vuexContext, params) {
+    const { id, type } = params
     try {
-      const { data } = await this.$axios.$get(`/users/${id}`)
+      const { data } = await this.$axios.$get(
+        type === 'tutors'
+          ? `/users/${type.substring(0, type.length - 1)}/${id}`
+          : `/users/${id}`
+      )
 
       if (data) {
         console.log('User Data', data)
@@ -241,6 +273,62 @@ export const actions = {
         vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
 
         localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorCourses(vuexContext, userId) {
+    try {
+      const { data } = await this.$axios.$get(`/courses/tutors/${userId}`)
+
+      if (data) {
+        console.log('Tutor Courses', data)
+        // vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async approveTutor(vuexContext, userId) {
+    try {
+      const { data, message } = await this.$axios.$get(
+        `/users/approve/tutor/${userId}`
+      )
+
+      if (data && message) {
+        console.log('Tutor Approval message', message)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Successfully generated excel template url !!!',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+        vuexContext.commit('FETCH_USER_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
         // Cookie.set('tutorsSummary', JSON.stringify(data))
 

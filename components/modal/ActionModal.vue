@@ -94,6 +94,7 @@
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
           <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
             <button
+              v-if="!loading"
               @click="
                 comment.length > 5 || actionModal.actionType === 'Reactivate'
                   ? submit()
@@ -108,6 +109,20 @@
               "
             >
               {{ capitalizeFirstLetter(actionModal.actionName) }}
+            </button>
+
+            <button
+              v-if="loading"
+              @click="null"
+              type="button"
+              class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 text-base leading-6 font-mediu shadow-sm sm:text-sm sm:leading-5"
+              :class="
+                comment.length > 5 || actionModal.actionType === 'Reactivate'
+                  ? 'bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red transition ease-in-out duration-150'
+                  : 'bg-red-300'
+              "
+            >
+              <img src="/spinner/white-loader.svg" class="w-5 h-5" alt="" />
             </button>
           </span>
           <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
@@ -131,6 +146,7 @@ import { mapState } from 'vuex'
 export default {
   data: () => ({
     comment: '',
+    loading: false,
   }),
   computed: {
     ...mapState({
@@ -139,6 +155,7 @@ export default {
   },
   methods: {
     submit() {
+      this.loading = true
       this.$store
         .dispatch('people/accountActions', {
           actionType: this.actionModal.actionType.toLowerCase(),
@@ -147,14 +164,35 @@ export default {
           comment: this.comment,
         })
         .then((res) => {
-          console.log(res)
+          console.log('TYperes', this.actionModal.type)
+          console.log(
+            'Current Page In Action Modal',
+            this.actionModal.currentPage
+          )
           this.loading = false
           // this.settings = res
-          if (res) {
-            // this.showSuccess(res)
+          if (this.actionModal.currentPage) {
+            this.$store
+              .dispatch(
+                `people/get${this.actionModal.type}`,
+                this.actionModal.currentPage
+              )
+              .then((res) => {
+                console.log(res)
+                this.loading = false
+                // this.settings = res
+                if (res) {
+                  // this.showSuccess(res)
+                }
+              })
+              .catch((e) => console.log('e: ', e))
           }
+          this.$store.commit('app/ACTION_MODAL', null)
         })
-        .catch((e) => console.log('e: ', e))
+        .catch((e) => {
+          console.log('e: ', e)
+          this.$store.commit('app/ACTION_MODAL', null)
+        })
     },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
