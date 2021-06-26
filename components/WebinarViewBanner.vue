@@ -1,37 +1,69 @@
 <template>
   <div class="grid lg:grid-cols-12 gap-10">
     <div class="col-span-12 lg:col-span-5 px-4 lg:px-0 hidden md:block">
-      <div class="banner-card text-center px-12 pt-40 pb-12">
+      <div
+        class="banner-card text-center px-12 pt-40 pb-12"
+        :style="{
+          backgroundImage: webinar.webinar.image.signedUrl
+            ? `url(${webinar.webinar.image.signedUrl})`
+            : `url('/webinar-view-bg.jpg')`,
+        }"
+      >
+        <nuxt-link
+          v-if="!isPast && isStarted"
+          :to="
+            webinar.webinar.roomName
+              ? `/webinars/start/${webinar.webinar.roomName}`
+              : ``
+          "
+          ><button class="btn btn-primary mx-auto my-auto">
+            Go to Webinar
+          </button></nuxt-link
+        >
         <button
+          v-if="!isStarted"
           class="btn btn-primary mx-auto my-auto"
           @click.prevent="purchaseWebinar"
         >
           Reserve Slot Now
         </button>
-        <div class="mt-6">
+
+        <div v-if="!isStarted" class="mt-6">
           <p class="font-semibold text-sm text-white">
             This webinar will start in
           </p>
-          <div class="countdown-timer text-white mt-4">
-            <span>2</span>
+          <div v-if="date" class="countdown-timer text-white mt-4">
+            <span>{{ date.days }}</span>
             days
-            <span>14</span>
+            <span>{{ date.hours }}</span>
             hours
-            <span>22</span>
+            <span>{{ date.minutes }}</span>
             minutes
-            <span>16</span>
+            <span>{{ date.seconds }}</span>
             seconds
           </div>
+          <div v-else class="countdown-timer text-white mt-4">
+            <span>Loading...</span>
+          </div>
+        </div>
+
+        <div v-else-if="isStarted && !isPast" class="mb-8">
+          <p class="font-semibold text-sm text-white">
+            This webinar has started
+          </p>
+        </div>
+
+        <div v-else class="mb-8">
+          <p class="font-semibold text-sm text-white">This webinar has past</p>
         </div>
       </div>
     </div>
     <div class="lg:col-span-6">
       <h2 class="font-bold mb-8 leading-tight lg:pr-12">
-        The Cryptocurrency Masterclass
+        {{ webinar.webinar.title }}
       </h2>
       <p class="text-md md:text-md mb-8 text-gray-700 leading-normal">
-        Everything you need to know about Cryptocurrency and ways you can profit
-        from it
+        {{ webinar.webinar.subtitle }}
       </p>
       <div class="flex mb-10 md:mb-16">
         <img src="/avatar.jpg" class="rounded-full mr-3 w-8 h-8" />
@@ -47,7 +79,9 @@
       </div>
       <div class="grid grid-cols-12 gap-y-6">
         <div class="col-span-6 md:col-span-3">
-          <span class="text-sm text-gray-700 block mb-1">30th Sep. 2020</span>
+          <span class="text-sm text-gray-700 block mb-1">{{
+            formatDate(webinar.webinar.startDateTime)
+          }}</span>
           <p class="text-xs text-gray-500 mb-0">Date</p>
         </div>
         <div class="col-span-6 md:col-span-2">
@@ -55,31 +89,66 @@
           <p class="text-xs text-gray-500 mb-0">Signed up</p>
         </div>
         <div class="col-span-6 md:col-span-3">
-          <span class="text-sm text-gray-700 block mb-1">42</span>
-          <p class="text-xs text-gray-500 mb-0">Current students</p>
+          <span class="text-sm text-gray-700 block mb-1">{{
+            webinar.price.price
+              | currency(currencySymbols(webinar.price.currency), 0)
+          }}</span>
+          <p class="text-xs text-gray-500 mb-0">Price</p>
         </div>
-        <div class="col-span-6 md:col-span-3">
+        <!-- <div class="col-span-6 md:col-span-3">
           <span class="text-sm text-gray-700 block mb-1">104</span>
           <p class="text-xs text-gray-500 mb-0">Completions</p>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+import { currencySymbols } from '~/utils/index'
+
 export default {
+  props: {
+    purchaseWebinar: { type: Function, required: false },
+    webinar: { type: Object, required: false },
+  },
+  data: () => ({
+    date: null,
+    currencySymbols,
+    timer: null,
+    isPast: false,
+    isStarted: false,
+  }),
   methods: {
-    purchaseWebinar() {
-      this.$store.commit('app/SET_MODAL', 'purchase-modal')
-      this.$store.commit('app/SET_VIEW_DATA', {
-        type: 'Webinar',
-        title: 'The Cryptocurrency Masterclass',
-        desc: `Everything you need to know about Cryptocurrency 
-          and ways you can profit from it`,
-        price: 2500,
-      })
+    addToCalendar() {},
+    countdownTimer() {
+      this.timer = setInterval(() => {
+        if (this.webinar) {
+          this.isPast = moment(this.webinar.webinar.endDateTime) < moment()
+          this.isStarted = moment(this.webinar.webinar.startDateTime) < moment()
+          const datetime = moment.duration(
+            moment(this.webinar.webinar.startDateTime).diff(moment()),
+            'milliseconds'
+          )
+          this.date = {
+            days: datetime.days(),
+            hours: datetime.hours(),
+            minutes: datetime.minutes(),
+            seconds: datetime.seconds(),
+          }
+        }
+      }, 1000)
     },
+    formatDate(date) {
+      return moment(date).format('Do MMM. YYYY')
+    },
+  },
+  mounted() {
+    this.countdownTimer()
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
 }
 </script>

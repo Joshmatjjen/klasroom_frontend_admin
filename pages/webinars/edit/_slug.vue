@@ -1312,10 +1312,123 @@ const webinars = require('@/static/json/webinars.json')
 export default {
   middleware: ['check-auth', 'auth'],
   components: { UserChip, PollChip },
-  fetch() {
-    this.$store.commit('app/SET_TITLE', 'Create webinar')
+  async fetch() {
+    this.$store.commit('app/SET_TITLE', 'Edit webinar')
     this.location = location.origin
+    try {
+      const { data } = await this.$axios.$get(
+        `https://streaming.staging.klasroom.com/v1/webinars/${this.$route.params.slug}`,
+        {
+          headers: getAccessTokenHeader(this.token),
+        }
+      )
+      console.log('webinar: ', data)
+
+      const {
+        webinar,
+        organizers,
+        polls,
+        price,
+        promotions,
+        resources,
+        settingsNpermissions,
+      } = data
+
+      this.webinar = webinar
+      if (webinar) {
+        this.createWebinar = {
+          title: webinar.title,
+          subtitle: webinar.subtitle,
+          introduction: webinar.introduction,
+          date: moment(webinar.startDateTime).format('yyyy-MM-DD'),
+          startTime: moment(webinar.startDateTime).format('HH:mm:ss'),
+          endTime: moment(webinar.endDateTime).format('HH:mm:ss'),
+          tags: webinar.tags,
+          image: webinar.image,
+        }
+
+        // Setting Organizers Data
+        if (organizers.length) {
+          this.organizerId = organizers
+          this.coHostOrganizers = organizers.filter((i) => i.type === 'co_host')
+          this.modratorOrganizers = organizers.filter(
+            (i) => i.type === 'moderator'
+          )
+        }
+
+        // Setting Resources Data
+        if (resources.length) {
+          this.resourceId = resources
+          this.fileResources = [
+            ...resources
+              .filter((i) => i.resourceType === 'file')
+              .map((i) => {
+                return {
+                  resource: i.resource.fileName,
+                  type: i.resourceType,
+                  name: i.resource.fileName,
+                }
+              }),
+          ]
+          this.linkResources = [
+            ...resources
+              .filter((i) => i.resourceType === 'link')
+              .map((i) => i.resource),
+          ]
+        }
+
+        // Setting Polls Data
+        if (polls.length) {
+          this.pollId = polls
+          this.polls = [
+            ...polls.map((i) => {
+              return {
+                question: i.question,
+                choices: i.choices,
+                duration: i.duration,
+              }
+            }),
+          ]
+        }
+
+        // Setting Settings Data
+        if (settingsNpermissions && Object.keys(settingsNpermissions).length) {
+          this.settingId = settingsNpermissions.id
+          this.settings = {
+            tutors: settingsNpermissions.tutors,
+            moderators: settingsNpermissions.moderators,
+            students: settingsNpermissions.students,
+          }
+          if (price && Object.keys(price).length) {
+            this.priceId = price.id
+            this.price = price.price
+          }
+          if (promotions && Object.keys(promotions).length) {
+            this.promotionId = promotions.id
+            this.runPricePromotion = true
+            this.promo = {
+              percentageOff: promotions.percentageOff,
+              startDate: moment(promotions.startDate).format('YYYY-MM-DD'),
+              endDate: moment(promotions.endDate).format('YYYY-MM-DD'),
+            }
+          }
+        }
+        // organizerId: null,
+        // resourceId: null,
+        // pollId: null,
+
+        this.webinarStates = {
+          organizers: true,
+          resources: true,
+          polls: true,
+          settings: true,
+        }
+      }
+    } catch (err) {
+      console.log(err)
+    }
   },
+  fetchOnServer: false,
   data: () => ({
     courses: _.take(courses, 4),
     webinars: _.take(webinars, 4),
@@ -1410,6 +1523,10 @@ export default {
       console.log('runPricePromotion: ', value)
       // await this.$nextTick()
     },
+    async createWebinar(value) {
+      console.log('createWebinar: ', value)
+      // await this.$nextTick()
+    },
   },
   methods: {
     switcher: function (value) {
@@ -1485,7 +1602,7 @@ export default {
         return
       }
     },
-    gotoWebinar(type) {
+    gotoWebinar() {
       this.$router.push(`/webinars`)
       this.close()
     },
@@ -1511,9 +1628,7 @@ export default {
 
             if (this.webinar) {
               const { data } = await this.$axios.$put(
-                `https://streaming.staging.klasroom.com/v1/webinars/${
-                  this.webinar.id
-                }?publish_now=${false}`,
+                `https://streaming.staging.klasroom.com/v1/webinars/${this.webinar.id}?publish_now=${this.webinar.isPublished}`,
                 resData,
                 {
                   headers: getAccessTokenHeader(this.token),
@@ -1578,7 +1693,7 @@ export default {
             }
 
             console.log('Organizers newData: ', newData)
-            this.organizerId = newData
+            this.organizerId = newData.id
 
             this.loading = false
             this.webinarStates.resources = true
@@ -1661,7 +1776,7 @@ export default {
 
               console.log('newData: ', newData)
 
-              this.resourceId = newData
+              this.resourceId = newData.id
             }
 
             this.loading = false
@@ -1724,7 +1839,7 @@ export default {
 
               console.log('Polls newData: ', newData)
 
-              this.pollId = newData
+              this.pollId = newData.id
             }
             if (!this.pollsError) {
               this.webinarStates.settings = true
@@ -1911,6 +2026,7 @@ export default {
     },
     async setImage(e) {
       console.log('Uploading__')
+      this.resourceUploading = true
       const files = e.target.files
       console.log('files: ', files)
 
@@ -1998,6 +2114,9 @@ export default {
     removePoll(id) {
       this.polls = this.polls.filter((i, index) => index !== id)
     },
+  },
+  mounted() {
+    console.log(this.$route)
   },
 }
 </script>

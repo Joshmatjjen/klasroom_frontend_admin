@@ -50,6 +50,7 @@
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
                 ]"
+                :currentPage="students ? students.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -114,7 +115,9 @@
                 :popUpProps="[
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
+                  { name: 'Approve', action: toggleApprove },
                 ]"
+                :currentPage="tutors ? tutors.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -180,6 +183,7 @@
                   { name: 'Preview', action: null },
                   { name: 'Action', action: toggleAcctAction },
                 ]"
+                :currentPage="admins ? admins.pagination.currentPage : 1"
               />
             </div>
           </div>
@@ -528,7 +532,32 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
     },
-    toggleAcctAction(name, actionType, type, userId) {
+    toggleApprove(userId) {
+      console.log(userId, 'toggleAcctAction')
+      this.$store
+        .dispatch('people/approveTutor', userId)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            this.$store
+              .dispatch('people/getTutors', 1)
+              .then((res) => {
+                console.log(res)
+                this.loading = false
+                // this.settings = res
+                if (res) {
+                  // this.showSuccess(res)
+                }
+              })
+              .catch((e) => console.log('e: ', e))
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
+    toggleAcctAction(name, actionType, type, userId, currentPage) {
+      console.log('Current Page', currentPage)
       console.log(name, 'toggleAcctAction', type)
       this.$store.commit('app/ACTION_MODAL', {
         status: true,
@@ -538,6 +567,7 @@ export default {
         actionType,
         type,
         userId,
+        currentPage,
       })
     },
     isEmptyObject(value) {

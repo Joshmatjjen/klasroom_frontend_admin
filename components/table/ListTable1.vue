@@ -428,12 +428,29 @@
                   :style="{ zIndex: 100 }"
                 >
                   <div
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-2"
+                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-1"
                     v-for="({ name, action }, key) in popUpProps"
                     :key="key"
                   >
                     <p
-                      v-if="name === 'Action'"
+                      v-if="
+                        name === 'Approve' && props.row.status === 'inactive'
+                      "
+                      v-on:click.prevent="
+                        () => {
+                          action(props.row.userId)
+                          toggleMenu(
+                            props.row.id ? props.row.id : props.row.userId
+                          )
+                        }
+                      "
+                    >
+                      {{ name }}
+                    </p>
+                    <p
+                      v-if="
+                        name === 'Action' && props.row.status !== 'inactive'
+                      "
                       v-on:click.prevent="
                         () => {
                           action(
@@ -442,7 +459,10 @@
                               ? 'Reactivate'
                               : 'Suspend',
                             type,
-                            props.row.userId
+                            props.row.tutorId
+                              ? props.row.tutorId
+                              : props.row.userId,
+                            currentPage
                           )
                           toggleMenu(
                             props.row.id ? props.row.id : props.row.userId
@@ -512,6 +532,7 @@ export default {
     exportCSV: { type: Function, required: false },
     popUpProps: { type: Array, required: false },
     filterData: { type: Function, required: false },
+    currentPage: { type: Number, required: false },
     // more: { type: String, default: null },
   },
   name: 'list-table1',

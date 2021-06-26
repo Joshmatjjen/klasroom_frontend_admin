@@ -48,29 +48,35 @@ export const reference = () => {
   return 'KLA-' + text
 }
 
+export const currencySymbols = (value) => {
+  const symbols = { USD: '$', NGN: '₦' }
+  if (symbols[value]) return symbols[value]
+  else return '*'
+}
+
 export const getAuthHeader = (authToken) => {
   return {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: `${authToken}`,
-  };
+  }
 }
 
 export const getAccessTokenHeader = (accessToken) => {
   return {
-    "Content-Type": "application/json",
-    "Access-Token": `${accessToken}`,
-  };
+    'Content-Type': 'application/json',
+    'Access-Token': `${accessToken}`,
+  }
 }
 
 export const getAuthFileHeader = (authToken) => {
   return {
-    "Content-Type": "multipart/form-data",
+    'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${authToken}`,
-  };
+  }
 }
 
 export const ICE_CONFIG = {
-  iceTransportPolicy: "all",
+  iceTransportPolicy: 'all',
   reconnectTimer: 3000,
 
   // These settings are no secret, since they are readable from the client side anyway

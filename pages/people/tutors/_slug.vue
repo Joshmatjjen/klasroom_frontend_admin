@@ -93,7 +93,7 @@
         :tabs="[
           `${12} Courses`,
           `${6} Webinars`,
-          `Active log`,
+          `Activity log`,
           `Account summary`,
           `${4006} Sales`,
           `${46} Withdrawals`,

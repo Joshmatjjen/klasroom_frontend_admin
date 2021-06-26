@@ -53,6 +53,7 @@ export default {
     // { src: '~plugins/vue-tailwind-pagination', mode: 'client', ssr: false },
     { src: '~plugins/datepicker', mode: 'client' },
     { src: '~plugins/vue-select', mode: 'client' },
+    { src: '~plugins/vue-link-prevue', mode: 'client' },
     // { src: '~plugins/vue-video-player', mode: 'client' },
     { src: '~plugins/paystack', mode: 'client' },
     { src: '~/plugins/vue-good-table', ssr: false },
@@ -63,6 +64,11 @@ export default {
    ** See https://nuxtjs.org/api/configuration-components
    */
   components: true,
+  loading: {
+    color: '#f99e42',
+    height: '4px',
+    failedColor: 'red',
+  },
   /*
    ** Nuxt.js dev-modules
    */

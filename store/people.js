@@ -308,11 +308,25 @@ export const actions = {
 
   async approveTutor(vuexContext, userId) {
     try {
-      const { data } = await this.$axios.$get(`/users/approve/tutor/${userId}`)
+      const { data, message } = await this.$axios.$get(
+        `/users/approve/tutor/${userId}`
+      )
 
-      if (data) {
-        console.log('Tutor Approval message', data)
-        // vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
+      if (data && message) {
+        console.log('Tutor Approval message', message)
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Successfully generated excel template url !!!',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+        vuexContext.commit('FETCH_USER_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
