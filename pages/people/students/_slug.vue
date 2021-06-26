@@ -105,7 +105,7 @@
           } Completed Courses`,
           `${6} Upcoming Webinars`,
           `${6} Prev. Webinars`,
-          `Active log`,
+          `Activity log`,
           `Account summary`,
         ]"
       />
