@@ -233,6 +233,19 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // Get Activity Log
+      this.$store
+        .dispatch('people/getActivityLog', this.$route.params.slug)
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
 
