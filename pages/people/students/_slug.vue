@@ -131,7 +131,7 @@
 
       <!-- Activity Log -->
       <section v-if="tab === 4">
-        <activity-log :tabs="tab" />
+        <activity-log :tabs="tab" :data="singleUser.activityLog" />
       </section>
 
       <!-- Account Summary -->
@@ -276,6 +276,18 @@ export default {
             )
             .then((res) => {
               console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 4) {
+          this.$store
+            .dispatch('people/getActivityLog', this.$route.params.slug)
+            .then((res) => {
+              console.log('DAta In Auditing', res)
               this.loading = false
               // this.settings = res
               if (res) {
