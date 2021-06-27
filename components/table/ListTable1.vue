@@ -283,7 +283,9 @@
             </span>
             <span v-else-if="props.column.field == 'createdAt'">
               <span class="text-gray-700 font-normal">{{
-                props.row.createdAt.substring(0, 12)
+                props.row.createdAt.indexOf('T')
+                  ? props.row.createdAt.split('T')[0]
+                  : props.row.createdAt.substring(0, 12)
               }}</span>
             </span>
             <span v-else-if="props.column.field == 'attendance'">
@@ -353,10 +355,6 @@
                 (props.column.field === 'lastActive' &&
                   !rows.some((obj) => Object.keys(obj).includes('status')) &&
                   !rows.some((obj) => Object.keys(obj).includes('isActive'))) ||
-                (!rows.some((obj) => Object.keys(obj).includes('isActive')) &&
-                  !rows.some((obj) =>
-                    Object.keys(obj).includes('dateStarted')
-                  )) ||
                 (props.column.field === 'status' &&
                   !rows.some((obj) => Object.keys(obj).includes('date')) &&
                   !rows.some((obj) =>

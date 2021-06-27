@@ -12,7 +12,7 @@ export const state = () => ({
   adminsSummary: null,
   singleUser: {
     user: null,
-    activeLog: null,
+    activityLog: null,
   },
   singleStudent: {
     currentCourses: null,
@@ -46,7 +46,7 @@ export const mutations = {
   },
 
   FETCH_ACTIVE_LOG_SUCCESS(state, log) {
-    state.singleUser.activeLog = log
+    state.singleUser.activityLog = log
   },
 
   //STUDENTS
@@ -508,7 +508,28 @@ export const actions = {
 
       if (data) {
         console.log('All Courses Data', data)
-        // vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
+        vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
+
+        // localStorage.setItem('students', JSON.stringify(data))
+
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getActivityLog(vuexContext, userId) {
+    try {
+      const data = await this.$axios.$get(`/audit/logs/${userId}`)
+
+      if (data) {
+        console.log('All Auditing Data', data)
+        vuexContext.commit('FETCH_ACTIVE_LOG_SUCCESS', data)
 
         // localStorage.setItem('students', JSON.stringify(data))
 
