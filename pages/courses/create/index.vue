@@ -95,11 +95,10 @@
                               <v-select
                               class="form-input style-chooser cursor-pointer capitalize"
                               placeholder="Select course category"
-                              :options="[
-                                'Business',
-                                'Programming',
-                                'Cryptocurrency',
-                              ]"
+                              multiple 
+                              @input="setSelected"
+                              label="categoryName"
+                              :options="courseCategory"
                             />
                             </div>
                             <div class="form-group mb-5">
@@ -680,7 +679,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       token: (state) => state.auth.token,
-      category: (state) => state.courses.courseCategory,
+      courseCategory: (state) => state.courses.courseCategory,
       userType: (state) =>
         state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
@@ -700,6 +699,13 @@ export default {
     },
   },
   methods: {
+    setSelected(value) {
+      value.forEach((el) => {
+        // console.log(el.categoryName)
+        this.categories = el.categoryName
+        console.log(this.categories) 
+      })
+    },
     switcher: function (value) {
       this.isCourseSwitch = value
       // some code to filter users
@@ -726,7 +732,7 @@ export default {
 
             if (this.course) {
               const { data } = await this.$axios.$put(
-                `https://api.staging.klasroom.com/v1/courses/${
+                `https://streaming.staging.klasroom.com/v1/courses/${
                   this.course.id
                 }?publish_now=${false}`,
                 resData,
@@ -737,7 +743,7 @@ export default {
               newData = data
             } else {
               const { data } = await this.$axios.$post(
-                `https://api.staging.klasroom.com/v1/courses?publish_now=${false}`,
+                `https://streaming.staging.klasroom.com/v1/courses?publish_now=${false}`,
                 resData,
                 {
                   headers: getAccessTokenHeader(this.token),
