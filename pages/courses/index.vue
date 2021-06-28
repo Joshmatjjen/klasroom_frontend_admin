@@ -4,23 +4,23 @@
       <div class="container mx-auto mb-10 px-4 lg:px-0">
         <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
           <dash-item-metrics
-            :title="12 + ' courses'"
+            :title="courseSummary.publishedCourses.toLocaleString() + ' courses'"
             label="Published"
             link="/student/courses"
           />
           <dash-item-metrics
-            :title="316 + ' courses'"
+            :title="courseSummary.unPublishedCourses.toLocaleString() + ' courses'"
             label="Unpublished"
             @click="switcher('unpublished')"
             more="/student/courses"
           />
           <dash-item-metrics
-            :title="316 + ' courses'"
+            :title="courseSummary.courseSales.toLocaleString() + ' courses'"
             label="Course sales"
             link="/student/courses"
           />
           <dash-item-metrics
-            :title="206 + ' courses'"
+            :title="courseSummary.completions.toLocaleString() + ' courses'"
             label="Completions"
             link="/student/courses"
           />
@@ -60,15 +60,14 @@
       <div v-if="isCourses.live" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table
+            <courses-table
               :columns="columnLive"
-              :rows="rowsLive"
+              :rows="courses"
               type="live courses"
             />
           </div>
         </div>
       </div>
-
       <!-- unpublished -->
       <div
         v-if="isCourses.unpublished"
@@ -105,7 +104,8 @@
 </template>
 
 <script>
-const courses = require('@/static/json/courses.json')
+import { mapState } from 'vuex'
+// const courses = require('@/static/json/courses.json')
 const unPublished = require('@/static/json/unpublished-courses.json')
 const webinars = require('@/static/json/webinars.json')
 const liveCourses = require('@/static/json/live-courses.json')
@@ -116,9 +116,9 @@ export default {
     store.commit('app/SET_TITLE', 'Courses')
   },
   data: () => ({
-    courses: _.take(courses, 4),
+    // courses: _.take(courses, 4),
     webinars: _.take(webinars, 4),
-    undoneTasks: _.take(courses, 3),
+    // undoneTasks: _.take(courses, 3),
     // live
     columnLive: [
       {
@@ -230,6 +230,28 @@ export default {
       archived: false,
     },
   }),
+  computed: {
+    ...mapState({
+      courses: (state) => state.courses.courses,
+      courseSummary: (state) => state.courses.courseSummary,
+    }),
+  },
+  created() {
+    this.$store
+      .dispatch('courses/getCourses')
+      .then((res) => {
+        console.log('COURSES:', res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+    this.$store
+      .dispatch('courses/getCoursesSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+  },
   methods: {
     switcher: function (value) {
       switch (value) {
