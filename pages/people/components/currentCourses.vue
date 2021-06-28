@@ -16,6 +16,16 @@
         </div>
       </div>
     </section>
+    <section v-if="data && data.pagination">
+      <t-pagination
+        :total-items="data.pagination.count"
+        :per-page="data.pagination.limit"
+        :limit="4"
+        :variant="'roundedSmall'"
+        :value="data.pagination.currentPage"
+        @change="changePage"
+      />
+    </section>
   </div>
 </template>
 
@@ -87,9 +97,7 @@ export default {
     }),
   },
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
-    }
+    console.log('DAtas ----<>', this.data)
   },
   methods: {
     toggleActionOpt() {
@@ -107,6 +115,19 @@ export default {
           income that leads to sustainable wealth`,
         price: 2500,
       })
+    },
+    changePage(pagination) {
+      this.$store
+        .dispatch('people/getStudentCurrentCourses', pagination)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
   },
 }

@@ -525,7 +525,9 @@ export const actions = {
 
   async getActivityLog(vuexContext, userId) {
     try {
-      const data = await this.$axios.$get(`/audit/logs/${userId}`)
+      const data = await this.$axios.$get(
+        `/audit/logs/${userId}?from=2020-10-06`
+      )
 
       if (data) {
         console.log('All Auditing Data', data)
