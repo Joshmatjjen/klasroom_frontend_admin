@@ -5,9 +5,9 @@ import Swal from 'sweetalert2'
 // state
 export const state = () => ({
   courseCategory: null,
-  studentsSummary: null,
+  courses: null,
   tutors: null,
-  tutorsSummary: null,
+  courseSummary: null,
   admins: null,
   adminsSummary: null,
   singleUser: {
@@ -28,7 +28,7 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  //STUDENTS
+  //COURSE CATEGORY
   SET_COURSE_CATEGORY(state, courseCategory) {
     state.courseCategory = courseCategory.data
   },
@@ -38,12 +38,12 @@ export const mutations = {
     state.courseCategory = catgeory
   },
 
-  FETCH_STUDENTS_FAILURE(state) {
-    state.students = null
+  FETCH_COURSES(state, courses) {
+    state.courses = courses.data
   },
 
-  FETCH_STUDENTS_SUMMARY_SUCCESS(state, students) {
-    state.studentsSummary = students
+  FETCH_COURSES_SUMMARY_SUCCESS(state, courses) {
+    state.courseSummary = courses
   },
 
   FETCH_STUDENTS_SUMMARY_FAILURE(state) {
@@ -104,7 +104,7 @@ export const actions = {
   // get course category
   async getCourseCategory(vuexContext) {
     try {
-      const data = await this.$axios.$get('courses/categories')
+      const data = await this.$axios.$get('https://streaming.staging.klasroom.com/v1/courses/categories')
 
       if (data) {
         console.log('course category Data', data)
@@ -125,30 +125,33 @@ export const actions = {
 
   async addCourseCategory(vuexContext, formData) {
     try {
-      const data  = await this.$axios.$post('courses/categories', formData)
-      vuexContext.commit('SET_COURSE_CATEGORY', data)
+      const data  = await this.$axios.$post('https://streaming.staging.klasroom.com/v1/courses/categories', formData)
+      if(data) {
+        vuexContext.commit('SET_COURSE_CATEGORY', data)
+        localStorage.setItem('courseCategory', JSON.stringify(data))
+        return data
+      }
+      return false
     } catch (e) {
       console.log('Data failed: ', e)
     }
   },
   async deleteCourseCategory(vuexContext, id) {
     try {
-      const data  = await this.$axios.$delete(`courses/categories/${id}`)
+      const data  = await this.$axios.$delete(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`)
       vuexContext.commit('SET_DELETE_COURSE_CATEGORY', data)
     } catch (e) {
       console.log('Data failed: ', e)
     }
   },
 
-  async getStudentCurrentCourses(vuexContext, id) {
+  async getCourses(vuexContext) {
     try {
-      const data = await this.$axios.$get(
-        '/courses/students/' + id + '?status=current'
-      )
+      const data = await this.$axios.$get('/courses')
 
       if (data) {
-        console.log('Student Data', data)
-        vuexContext.commit('FETCH_STUDENT_CURRENT_COURSES_SUCCESS', data)
+        console.log('courses Data', data)
+        vuexContext.commit('FETCH_COURSES', data)
 
         // localStorage.setItem('students', JSON.stringify(data))
 
@@ -186,18 +189,14 @@ export const actions = {
     }
   },
 
-  async getStudentsSummary(vuexContext) {
+  async getCoursesSummary(vuexContext) {
     try {
-      const { data } = await this.$axios.$get('/users/students/summary')
+      const { data } = await this.$axios.$get('courses/summary')
 
       if (data) {
-        console.log('Student Summary', data)
-        vuexContext.commit('FETCH_STUDENTS_SUMMARY_SUCCESS', data)
-
-        localStorage.setItem('studentsSummary', JSON.stringify(data))
-
-        // Cookie.set('studentsSummary', JSON.stringify(data))
-
+        console.log('course Summary', data)
+        vuexContext.commit('FETCH_COURSES_SUMMARY_SUCCESS', data)
+        localStorage.setItem('courseSummary', JSON.stringify(data))
         return data
       }
       return false
