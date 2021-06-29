@@ -72,18 +72,62 @@
             }"
             class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
             :style="{ zIndex: 100 }"
-            @click.capture.stop="texting"
+            @click.capture.stop="
+              accountAction(
+                singleUser.user.name,
+                (singleUser.user.status &&
+                  singleUser.user.status === 'suspended') ||
+                  (singleUser.user.status &&
+                    singleUser.user.status === 'inactive')
+                  ? 'Reactivate'
+                  : 'Suspend',
+                'Tutors',
+                singleUser.user.tutorId
+                  ? singleUser.user.tutorId
+                  : singleUser.user.userId,
+                1
+              )
+            "
+            v-if="singleUser.user.isActive"
           >
             <p
               class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
             >
               Suspend account
             </p>
-            <!-- <p
-            class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          </div>
+          <div
+            :class="{
+              hidden: actionOpt ? false : true,
+            }"
+            class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+            :style="{ zIndex: 100 }"
+            @click.capture.stop="
+              () =>
+                singleUser.user.status === 'suspended'
+                  ? accountAction(
+                      singleUser.user.name,
+                      (singleUser.user.status &&
+                        singleUser.user.status === 'suspended') ||
+                        (singleUser.user.status &&
+                          singleUser.user.status === 'inactive')
+                        ? 'Reactivate'
+                        : 'Suspend',
+                      'Tutors',
+                      singleUser.user.tutorId
+                        ? singleUser.user.tutorId
+                        : singleUser.user.userId,
+                      1
+                    )
+                  : toggleApprove(singleUser.user.userId)
+            "
+            v-if="!singleUser.user.isActive"
           >
-            Unsuspend account
-          </p> -->
+            <p
+              class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+            >
+              Unsuspend account
+            </p>
           </div>
         </div>
         <!-- </div> -->
@@ -296,6 +340,44 @@ export default {
     },
     texting() {
       console.log('Testing!!!!!')
+    },
+    toggleApprove(userId) {
+      console.log(userId, 'toggleAcctAction')
+      this.$store
+        .dispatch('people/approveTutor', userId)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            this.$store
+              .dispatch('people/getTutors', 1)
+              .then((res) => {
+                console.log(res)
+                this.loading = false
+                // this.settings = res
+                if (res) {
+                  // this.showSuccess(res)
+                }
+              })
+              .catch((e) => console.log('e: ', e))
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
+    accountAction(name, actionType, type, userId, currentPage) {
+      console.log('Current Page', currentPage)
+      console.log(name, 'toggleAcctAction', type)
+      this.$store.commit('app/ACTION_MODAL', {
+        status: true,
+        title: actionType,
+        desc: `Are you sure you want to ${actionType.toLowerCase()} ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: actionType,
+        actionType,
+        type,
+        userId,
+        currentPage,
+      })
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')
