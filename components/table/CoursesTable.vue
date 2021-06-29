@@ -364,11 +364,13 @@ export default {
 .pop-up {
   border-width: 0.1rem;
 }
+
 .vgt-table > thead > th {
   @apply font-normal text-xs;
 }
 .vgt-wrap {
   min-width: 60rem;
+  min-height: 33rem;
   overflow-x: auto;
   overflow-y: hidden;
   margin: 0.5rem;
