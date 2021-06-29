@@ -72,18 +72,62 @@
             }"
             class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
             :style="{ zIndex: 100 }"
-            @click.capture.stop="texting"
+            @click.capture.stop="
+              accountAction(
+                singleUser.user.name,
+                (singleUser.user.status &&
+                  singleUser.user.status === 'suspended') ||
+                  (singleUser.user.status &&
+                    singleUser.user.status === 'inactive')
+                  ? 'Reactivate'
+                  : 'Suspend',
+                'Tutors',
+                singleUser.user.tutorId
+                  ? singleUser.user.tutorId
+                  : singleUser.user.userId,
+                1
+              )
+            "
+            v-if="singleUser.user.isActive"
           >
             <p
               class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
             >
               Suspend account
             </p>
-            <!-- <p
-            class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+          </div>
+          <div
+            :class="{
+              hidden: actionOpt ? false : true,
+            }"
+            class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
+            :style="{ zIndex: 100 }"
+            @click.capture.stop="
+              () =>
+                singleUser.user.status === 'suspended'
+                  ? accountAction(
+                      singleUser.user.name,
+                      (singleUser.user.status &&
+                        singleUser.user.status === 'suspended') ||
+                        (singleUser.user.status &&
+                          singleUser.user.status === 'inactive')
+                        ? 'Reactivate'
+                        : 'Suspend',
+                      'Tutors',
+                      singleUser.user.tutorId
+                        ? singleUser.user.tutorId
+                        : singleUser.user.userId,
+                      1
+                    )
+                  : toggleApprove(singleUser.user.userId)
+            "
+            v-if="!singleUser.user.isActive"
           >
-            Unsuspend account
-          </p> -->
+            <p
+              class="text-center md:text-gray-700 text-sm font-normal whitespace-no-wrap hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+            >
+              Unsuspend account
+            </p>
           </div>
         </div>
         <!-- </div> -->
@@ -111,7 +155,11 @@
 
       <!-- Activity Logs -->
       <section v-if="tabs === 2">
-        <activity-log :tabs="tabs" />
+        <activity-log
+          :tabs="tabs"
+          :data="singleUser.activityLog"
+          :id="singleUser.user.userId"
+        />
       </section>
 
       <!-- Account Summary  -->
@@ -214,26 +262,122 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
-      // // CompletedCourses
-      // this.$store
-      //   .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
-      //   .then((res) => {
-      //     console.log('DAta In Slug', res)
-      //     this.loading = false
-      //     // this.settings = res
-      //     if (res) {
-      //       // this.showSuccess(res)
-      //     }
-      //   })
-      //   .catch((e) => console.log('e: ', e))
+      // Get Activity Log
+      this.$store
+        .dispatch('people/getActivityLog', {
+          id: this.$route.params.userData.userId,
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
+
+  watch: {
+    tab: {
+      handler(newValue, oldValue) {
+        console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
+        if (newValue === 0) {
+          this.$store
+            .dispatch(
+              'people/getTutorCourses',
+              this.$route.params.userData.userId
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 1) {
+          this.$store
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug,
+              type: this.$route.params.type,
+            })
+            .then((res) => {
+              console.log('User Data', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 2) {
+          this.$store
+            .dispatch('people/getActivityLog', {
+              id: this.$route.params.userData.userId,
+              pagination: 1,
+            })
+            .then((res) => {
+              console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        }
+      },
+    },
+  },
+
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
     },
     texting() {
       console.log('Testing!!!!!')
+    },
+    toggleApprove(userId) {
+      console.log(userId, 'toggleAcctAction')
+      this.$store
+        .dispatch('people/approveTutor', userId)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            this.$store
+              .dispatch('people/getTutors', 1)
+              .then((res) => {
+                console.log(res)
+                this.loading = false
+                // this.settings = res
+                if (res) {
+                  // this.showSuccess(res)
+                }
+              })
+              .catch((e) => console.log('e: ', e))
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+    },
+    accountAction(name, actionType, type, userId, currentPage) {
+      console.log('Current Page', currentPage)
+      console.log(name, 'toggleAcctAction', type)
+      this.$store.commit('app/ACTION_MODAL', {
+        status: true,
+        title: actionType,
+        desc: `Are you sure you want to ${actionType.toLowerCase()} ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: actionType,
+        actionType,
+        type,
+        userId,
+        currentPage,
+      })
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

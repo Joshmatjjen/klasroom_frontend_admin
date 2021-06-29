@@ -188,6 +188,8 @@ export default {
               .catch((e) => console.log('e: ', e))
           }
           this.$store.commit('app/ACTION_MODAL', null)
+          // this.$router.go(-1)
+          this.$router.push({ path: '/people' })
         })
         .catch((e) => {
           console.log('e: ', e)

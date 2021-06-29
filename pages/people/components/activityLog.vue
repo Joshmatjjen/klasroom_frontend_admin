@@ -12,17 +12,19 @@
               :total="124322"
               route="/people/students/"
             />
-            <!-- <t-pagination
-          :total-items="admins.pagination.count"
-          :per-page="admins.pagination.limit"
-          :limit="4"
-          :variant="'roundedSmall'"
-          :value="admins.pagination.currentPage"
-          @change="changePage"
-        /> -->
           </div>
         </div>
       </div>
+    </section>
+    <section v-if="data && data.pagination">
+      <t-pagination
+        :total-items="data.pagination.count"
+        :per-page="data.pagination.limit"
+        :limit="4"
+        :variant="'roundedSmall'"
+        :value="data.pagination.currentPage"
+        @change="changePage"
+      />
     </section>
   </div>
 </template>
@@ -38,6 +40,7 @@ export default {
   props: {
     tabs: { type: Number, required: false },
     data: { type: Array, required: false },
+    id: { type: Number, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {
@@ -85,6 +88,19 @@ export default {
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
+    },
+    changePage(pagination) {
+      this.$store
+        .dispatch('people/getActivityLog', { id: this.id, pagination })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
   },
 }
