@@ -94,7 +94,11 @@
       />
       <!-- Activity Logs -->
       <section v-if="tabs === 0">
-        <activity-log :tabs="tabs" :data="singleUser.activityLog" />
+        <activity-log
+          :tabs="tabs"
+          :data="singleUser.activityLog"
+          :id="singleUser.user.userId"
+        />
       </section>
 
       <!-- Account Summary  -->
@@ -171,7 +175,10 @@ export default {
 
       // Get Activity Log
       this.$store
-        .dispatch('people/getActivityLog', this.$route.params.slug)
+        .dispatch('people/getActivityLog', {
+          id: this.$route.params.slug,
+          pagination: 1,
+        })
         .then((res) => {
           console.log('DAta In Auditing', res)
           this.loading = false
@@ -190,7 +197,10 @@ export default {
         console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
         if (newValue === 0) {
           this.$store
-            .dispatch('people/getActivityLog', this.$route.params.slug)
+            .dispatch('people/getActivityLog', {
+              id: this.$route.params.slug,
+              pagination: 1,
+            })
             .then((res) => {
               console.log('DAta In Auditing', res)
               this.loading = false

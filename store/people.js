@@ -523,10 +523,11 @@ export const actions = {
     }
   },
 
-  async getActivityLog(vuexContext, userId) {
+  async getActivityLog(vuexContext, data) {
+    const { id, pagination } = data
     try {
       const data = await this.$axios.$get(
-        `/audit/logs/${userId}?from=2020-10-06`
+        `/audit/logs/${id}?page=${pagination}`
       )
 
       if (data) {

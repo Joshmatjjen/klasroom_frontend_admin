@@ -236,7 +236,10 @@ export default {
 
       // Get Activity Log
       this.$store
-        .dispatch('people/getActivityLog', this.$route.params.slug)
+        .dispatch('people/getActivityLog', {
+          id: this.$route.params.slug,
+          pagination: 1,
+        })
         .then((res) => {
           console.log('DAta In Auditing', res)
           this.loading = false
@@ -285,7 +288,10 @@ export default {
             .catch((e) => console.log('e: ', e))
         } else if (newValue === 4) {
           this.$store
-            .dispatch('people/getActivityLog', this.$route.params.slug)
+            .dispatch('people/getActivityLog', {
+              id: this.$route.params.slug,
+              pagination: 1,
+            })
             .then((res) => {
               console.log('DAta In Auditing', res)
               this.loading = false

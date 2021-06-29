@@ -111,7 +111,11 @@
 
       <!-- Activity Logs -->
       <section v-if="tabs === 2">
-        <activity-log :tabs="tabs" />
+        <activity-log
+          :tabs="tabs"
+          :data="singleUser.activityLog"
+          :id="singleUser.user.userId"
+        />
       </section>
 
       <!-- Account Summary  -->
@@ -214,20 +218,78 @@ export default {
         })
         .catch((e) => console.log('e: ', e))
 
-      // // CompletedCourses
-      // this.$store
-      //   .dispatch('people/getStudentCompletedCourses', this.$route.params.slug)
-      //   .then((res) => {
-      //     console.log('DAta In Slug', res)
-      //     this.loading = false
-      //     // this.settings = res
-      //     if (res) {
-      //       // this.showSuccess(res)
-      //     }
-      //   })
-      //   .catch((e) => console.log('e: ', e))
+      // Get Activity Log
+      this.$store
+        .dispatch('people/getActivityLog', {
+          id: this.$route.params.userData.userId,
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
+
+  watch: {
+    tab: {
+      handler(newValue, oldValue) {
+        console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
+        if (newValue === 0) {
+          this.$store
+            .dispatch(
+              'people/getTutorCourses',
+              this.$route.params.userData.userId
+            )
+            .then((res) => {
+              console.log('DAta In Slug', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 1) {
+          this.$store
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug,
+              type: this.$route.params.type,
+            })
+            .then((res) => {
+              console.log('User Data', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 2) {
+          this.$store
+            .dispatch('people/getActivityLog', {
+              id: this.$route.params.userData.userId,
+              pagination: 1,
+            })
+            .then((res) => {
+              console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        }
+      },
+    },
+  },
+
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt

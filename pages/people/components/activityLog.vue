@@ -40,6 +40,7 @@ export default {
   props: {
     tabs: { type: Number, required: false },
     data: { type: Array, required: false },
+    id: { type: Number, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {
@@ -90,7 +91,7 @@ export default {
     },
     changePage(pagination) {
       this.$store
-        .dispatch('people/getActivityLog', pagination)
+        .dispatch('people/getActivityLog', { id: this.id, pagination })
         .then((res) => {
           console.log('DAta In Auditing', res)
           this.loading = false
