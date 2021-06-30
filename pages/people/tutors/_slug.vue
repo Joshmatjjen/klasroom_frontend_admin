@@ -4,7 +4,7 @@
       class="min-h-screen mb-24"
       v-if="
         singleUser.user &&
-        singleUser.user.userId === parseInt($route.params.userData.userId)
+        singleUser.user.tutorId === parseInt($route.params.slug.split('-')[0])
       "
     >
       <div
@@ -236,8 +236,10 @@ export default {
       // getUser
       this.$store
         .dispatch('people/getUser', {
-          id: this.$route.params.slug,
-          type: this.$route.params.type,
+          id: this.$route.params.slug.split('-')[0],
+          type: this.$route.params.type
+            ? this.$route.params.type
+            : this.$route.name.split('-')[1],
         })
         .then((res) => {
           console.log('User Data', res)
@@ -251,7 +253,10 @@ export default {
 
       // Courses
       this.$store
-        .dispatch('people/getTutorCourses', this.$route.params.userData.userId)
+        .dispatch(
+          'people/getTutorCourses',
+          this.$route.params.slug.split('-')[0]
+        )
         .then((res) => {
           console.log('DAta In Slug', res)
           this.loading = false
@@ -265,7 +270,7 @@ export default {
       // Get Activity Log
       this.$store
         .dispatch('people/getActivityLog', {
-          id: this.$route.params.userData.userId,
+          id: this.$route.params.slug.split('-')[1],
           pagination: 1,
         })
         .then((res) => {
@@ -288,7 +293,7 @@ export default {
           this.$store
             .dispatch(
               'people/getTutorCourses',
-              this.$route.params.userData.userId
+              this.$route.params.slug.split('-')[0]
             )
             .then((res) => {
               console.log('DAta In Slug', res)
@@ -302,8 +307,10 @@ export default {
         } else if (newValue === 1) {
           this.$store
             .dispatch('people/getUser', {
-              id: this.$route.params.slug,
-              type: this.$route.params.type,
+              id: this.$route.params.slug.split('-')[0],
+              type: this.$route.params.type
+                ? this.$route.params.type
+                : this.$route.name.split('-')[1],
             })
             .then((res) => {
               console.log('User Data', res)
@@ -317,7 +324,7 @@ export default {
         } else if (newValue === 2) {
           this.$store
             .dispatch('people/getActivityLog', {
-              id: this.$route.params.userData.userId,
+              id: this.$route.params.slug.split('-')[1],
               pagination: 1,
             })
             .then((res) => {

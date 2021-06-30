@@ -192,7 +192,7 @@
               name: route,
               params: {
                 slug: props.row.tutorId
-                  ? props.row.tutorId
+                  ? props.row.tutorId + '-' + props.row.userId
                   : props.row.userId
                   ? props.row.userId
                   : props.row.title,
