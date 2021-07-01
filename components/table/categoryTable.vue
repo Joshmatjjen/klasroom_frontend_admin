@@ -61,14 +61,13 @@
                   class="pop-up flex flex-col items-start p-3 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-20 w-32 shadow-lg"
                   :style="{ zIndex: 100 }"
                 >
-                  <div
-                    @click="$emit('click', props.row.categoryId)"
+                  <nuxt-link :to="`/courses/category/edit/` + props.row.categoryId"
                     class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                   >
                     <p>Edit</p>
-                  </div>
+                  </nuxt-link>
                   <div
-                    @click="$emit('click', props.row.categoryId)"
+                    @click="deleteItem(props.row.categoryId)"
                     class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                   >
                     <p>Delete</p>
@@ -91,6 +90,7 @@ export default {
     columns: { type: Array, required: false },
     rows: { type: Array, required: false },
     type: { type: String, required: false },
+    deleteItem: { type: Function, required: false },
     // more: { type: String, default: null },
   },
   name: 'category-table',

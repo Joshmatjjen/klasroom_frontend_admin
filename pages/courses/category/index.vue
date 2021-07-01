@@ -30,8 +30,9 @@
         <div>
           <category-table
             :columns="columns"
-            :rows="courseCategory ? courseCategory : []"
+            :rows="courseCategory ? courseCategory.data : []"
             type="category"
+            :deleteItem="deleteCategory"
           />
         </div>
     </section>
@@ -62,18 +63,21 @@ export default {
     ],
   }),
   computed: {
-    ...mapState('courses', ['courseCategory']),
+    ...mapState({
+      courseCategory: (state) => state.courses.courseCategory ? state.courses.courseCategory : null,
+    }),
   },
-  created() {
-    this.$store
-      .dispatch('courses/getCourseCategory')
-      .then((res) => {
-        console.log(res)
-        this.loading = false
-      })
-      .catch((e) => console.log('e: ', e))
+  async mounted() {
+    await Promise.all([this.getCourseCategory()])
   },
   methods: {
+    async getCourseCategory() {
+      try {
+        await this.$store.dispatch('courses/getCourseCategory')
+      } catch(error) {
+        console.log(error)
+      }
+    },
     async addCourseCategory() {
       if(this.categoryName) {
         try {
@@ -90,11 +94,11 @@ export default {
       this.opt = !this.opt
       if (optId) this.optId = optId
     },
-    async deleteCategory(id) {
+     async deleteCategory(id) {
       const response = confirm(`Are you sure you want to delete this category ${id}`)
       if (response) {
         try {
-          await this.$store.dispatch('courses/deleteCourseCategory', id)
+          await this.$store.dispatch('courses/deleteCourseCategory', {id, name: this.categoryName.name})
         } catch (error) {
           console.log(error)
         }
