@@ -14,12 +14,10 @@
     ></div>
     <div class="flex flex-row justify-between px-5 my-5">
       <p class="text-sm font-semibold">
-        {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
+        {{ rows ? rows.length : 0 }} {{ type }}
       </p>
       <div class="flex flex-row gap-5">
-        <p @click="exportCSV(type)" class="text-xs font-medium cursor-pointer">
-          Export CSV
-        </p>
+        <p class="text-xs font-medium">Export CSV</p>
         <div class="vl"></div>
         <div class="flex flex-row">
           <p class="text-xs font-medium pr-3">Filter</p>
@@ -39,323 +37,184 @@
       </div>
     </div>
     <hr />
-    <div
-      class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto overflow-y-auto scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
-    >
+    <div class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto">
       <vue-good-table
         :columns="columns"
         :rows="rows"
         row-style-class="vgt-checkbox-col table-row"
         :select-options="{
-          enabled: false,
+          enabled: true,
+          selectOnCheckboxOnly: true,
         }"
         :search-options="{ enabled: false }"
-        styleClass="vgt-table vgt-wrap vgt-left-align vgt-right-align striped"
+        styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link
-            :to="
-              props.row.userId
-                ? route + props.row.userId
-                : route + props.row.title
+          <span
+            v-if="
+              props.column.field == 'webinarTitle' ||
+              props.column.field == 'courseTitle'
             "
+            class=""
+            :class="onDraft && 'flex flex-row justify-between'"
           >
-            <span
-              v-if="
-                (props.column.field == 'name' &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
-                props.column.field == 'webinarTitle' ||
-                props.column.field == 'courseTitle'
-              "
-              class="flex flex-row"
-            >
-              <div class="flex flex-row items-center">
-                <img
-                  v-if="!onDraft && props.row.image"
-                  :src="
-                    props.row.course ? props.row.course.image : props.row.image
-                  "
-                  alt="My profile"
-                  class="course-image mr-3 rounded-lg"
-                />
-                <div
-                  v-if="!props.row.image"
-                  class="course-image mr-3"
-                  :style="{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }"
-                >
-                  <img src="/icon/empty-pics-icon.svg" alt="" />
-                </div>
-                <div
-                  class="title-box flex flex-col"
-                  v-if="props.row.name || props.row.course"
-                >
-                  <span class="text-gray-700 font-semibold text-left text-md">{{
-                    props.row.course ? props.row.course.title : props.row.name
-                  }}</span>
-                </div>
-                <div class="flex flex-col" v-else>
-                  <span class="text-gray-700 font-semibold text-left text-md">{{
-                    props.row.title
-                  }}</span
-                  ><span class="text-gray-700 font-normal text-left text-xs">{{
-                    props.row.desc
-                  }}</span>
-                </div>
+            <div class="flex flex-row max-w-md">
+              <img
+                v-if="!onDraft"
+                src="/card/upcoming-webinar.png"
+                alt="My profile"
+                class="course-image mr-3"
+              />
+              <div
+                v-if="onDraft"
+                class="course-image mr-3"
+                :style="{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }"
+              >
+                <img src="/icon/empty-pics-icon.svg" alt="My profile" />
               </div>
-              <!-- Draft for webinar Start -->
-              <!-- <div
-              v-if="onDraft && props.column.field == 'name'"
+              <div class="flex flex-col">
+                <span class="text-gray-700 font-semibold text-left text-md">{{
+                  props.row.course.title
+                }}</span
+                ><span class="text-gray-700 font-normal text-left text-xs">{{
+                  props.row.course.subtitile
+                }}</span>
+              </div>
+            </div>
+            <!-- Draft for course Start -->
+            <div
+              v-if="onDraft && props.column.field == 'courseTitle'"
               class="flex flex-row gap-5 items-center justify-end relative"
             >
               <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
               <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
               <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
-            </div> -->
-
-              <!-- Draft for webinar End -->
-            </span>
-            <div
-              class="flex flex-col"
-              v-else-if="
-                props.column.field == 'name' &&
-                checkKeyPresenceInArray(rows, 'time') === true
-              "
-            >
-              <span class="text-gray-700 font-semibold text-left text-md">{{
-                props.row.name
-              }}</span>
             </div>
-            <span v-else-if="props.column.field == 'price'">
-              <span class="text-gray-700 font-semibold"
-                >₦{{ props.row.price }}</span
+            <span
+              v-if="onDraft && props.column.field == 'courseTitle'"
+              class="flex flex-row gap-10"
+            >
+              <div
+                class="flex flex-row gap-4 items-center justify-end relative"
               >
-            </span>
-            <span v-else-if="props.column.field == 'amount'">
-              <span class="text-gray-700 font-semibold"
-                >₦{{ props.row.amount }}</span
-              >
-            </span>
-            <span v-else-if="props.column.field == 'newBalance'">
-              <span class="text-gray-700 font-medium"
-                >₦{{ props.row.newBalance }}</span
-              >
-            </span>
-            <span v-else-if="props.column.field == 'createdAt'">
-              <span class="text-gray-700 font-normal">{{
-                props.row.createdAt.substring(0, 12)
-              }}</span>
-            </span>
-            <span v-else-if="props.column.field == 'attendance'">
-              <span class="text-gray-700 font-normal">{{
-                props.row.attendance
-                  ? props.row.attendance.toLocaleString()
-                  : '-----'
-              }}</span>
-            </span>
-            <span
-              v-else-if="props.column.field == 'comp'"
-              class="flex flex-row"
-            >
-              <span class="pl-2">{{ props.row.completed }}</span>
-            </span>
-            <span
-              v-else-if="
-                props.column.field == 'rating' && props.row.rating !== ''
-              "
-              class="flex flex-row"
-            >
-              <rating :grade="props.row.rating" :viewOnly="true" />
-              <span class="pl-2">{{
-                ' ' + props.row.rating ? props.row.rating : 0 + ' stars'
-              }}</span>
-            </span>
-            <span
-              class="items-center relative"
-              v-else-if="props.column.field == 'status'"
-            >
-              <span
-                class="dot absolute rounded-full"
-                :class="
-                  props.row.status === 'active' ||
-                  props.row.status === 'completed' ||
-                  props.row.status === true
-                    ? 'bg-green-500'
-                    : props.row.status === 'Upcoming'
-                    ? 'bg-gray-500'
-                    : props.row.status === 'Success'
-                    ? ''
-                    : 'bg-gray-500'
-                "
-              ></span>
-              <span class="text-gray-700 text-center">{{
-                props.row.status
-              }}</span>
-            </span>
-            <span
-              class="items-center relative"
-              v-else-if="props.column.field === 'isActive'"
-            >
-              <span
-                class="dot absolute rounded-full"
-                :class="props.row.isActive ? 'bg-green-500' : 'bg-gray-500'"
-              ></span>
-              <span class="text-gray-700 text-center">{{
-                props.row.isActive ? 'Active' : 'Deactive'
-              }}</span>
-            </span>
-            <span
-              v-else-if="props.column.field == 'progress'"
-              class="flex flex-row"
-            >
-              <progress-bar :percentage="props.row.progress" />
-              <span class="pl-2">{{ ' ' + props.row.progress + '%' }}</span>
-            </span>
-
-            <span
-              v-else-if="
-                props.column.field == 'dateStarted' && props.row.course
-              "
-              class="flex flex-row justify-center"
-            >
-              <span class="text-center">{{
-                props.row.course.createdAt.slice(0, -8)
-              }}</span>
-            </span>
-
-            <span
-              v-else-if="props.column.field == 'dateCompleted'"
-              class="flex flex-row justify-center"
-            >
-              <span class="text-center">{{
-                props.row.completedDate.slice(0, -8)
-              }}</span>
-            </span>
-            <span v-else>
-              {{ props.formattedRow[props.column.field] }}
-            </span>
-            <span
-              v-if="
-                props.column.field === 'dateStarted' ||
-                props.column.field === 'dateCompleted'
-              "
-            >
-              <div class="relative">
-                <span
-                  v-on:click.prevent="
-                    toggleMenu(props.row.id || props.row.course.id)
-                  "
-                  class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
-                  >&#xFE19;</span
+                <nuxt-link
+                  :to="`/courses/edit/` + props.row.course.id"
+                  class="btn btn-light btn-sm lg:mt-0 cursor-pointer"
                 >
-                <div
-                  :class="{
-                    hidden:
-                      (opt &&
-                        props.row.course &&
-                        props.row.course.id === optId) ||
-                      (opt && props.row && props.row.id === optId)
-                        ? false
-                        : true,
-                  }"
-                  class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
-                  :style="{ zIndex: 100 }"
-                >
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Edit webinar</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Delete</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Share</p>
-                  </a>
-                  <a
-                    href="#"
-                    class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
-                  >
-                    <p>Preview</p>
-                  </a>
-                </div>
+                  Keep editing
+                </nuxt-link>
+                <img src="/delete.svg" class="cursor-pointer" />
               </div>
             </span>
-          </nuxt-link>
+            <!-- Draft for webinar End -->
+          </span>
+          <span v-else-if="props.column.field == 'tutor'">
+            <span class="text-gray-700 font-semibold">{{ props.row.course.tutorName }}</span>
+          </span>
+          <span v-else-if="props.column.field == 'price'">
+            <span class="text-gray-700 font-semibold">{{ props.row.price ? props.row.price : '0' }}</span>
+          </span>
+          <span v-else-if="props.column.field == 'sales'">
+            <span class="text-gray-700 font-semibold">{{ props.row.sales }}</span>
+          </span>
+          <span v-else-if="props.column.field == 'rating'">
+            <rating :grade="props.row.rating" :viewOnly="true" />
+            <span class="pl-2">{{ ' ' + props.row.rating + ' stars' }}</span>
+          </span>
+
+          <span v-else-if="props.column.field == 'createdAt'">
+            <span>{{ props.row.course.createdAt }}</span>
+          </span>
+
+          <span v-else>
+            {{ props.formattedRow[props.column.field] }}
+          </span>
+          <span
+            v-if="
+              props.column.field == 'date' ||
+              props.column.field == 'heldOn' ||
+              props.column.field == 'createdAt'
+            "
+          >
+            <div class="absolute right-0 -mr-4">
+              <span
+                v-on:click.prevent="toggleMenu(props.row.course.id)"
+                class="absolute z-50 bottom-0 -mb-1 right-0 -mr-2 text-gray-600 cursor-pointer hover:text-gray-900 font-extrabold text-left text-lg"
+                >&#xFE19;</span
+              >
+              <div
+                :class="{
+                  hidden: opt && props.row.course.id === optId ? false : true,
+                }"
+                class="pop-up flex flex-col items-start p-2 justify-around pop-up absolute top-0 right-1/2 mt-2 border-gray-500 bg-white rounded-lg h-32 w-32 shadow-lg"
+                :style="{ zIndex: 100 }"
+              >
+                <nuxt-link
+                  :to="`/courses/edit/` + props.row.course.id"
+                  class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                >
+                  <p>Edit course</p>
+                </nuxt-link>
+                <span @click="$emit('click')"
+                  class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                >
+                  <p>Delete</p>
+                </span>
+                <nuxt-link
+                  :to="`/courses/preview/` + props.row.course.id"
+                  class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                >
+                  <p>Preview</p>
+                </nuxt-link>
+              </div>
+            </div>
+          </span>
         </template>
       </vue-good-table>
     </div>
-    <!-- <div v-if="more" class="absolute text-center bottom-0 mb-5 w-full px-5">
-      <hr data-v-6cf0f546="" class="mb-4" />
-      <nuxt-link :to="more" class="text-gray-700 inline-block">
-        <span class="text-xs">See more</span>
-      </nuxt-link>
-    </div> -->
   </div>
-  <!-- <img
-    v-for="(item, key) in items"
-    :key="key"
-    src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-    alt="My profile"
-    class="course-stacks mr-3"
-  /> -->
 </template>
 
 <script>
+import moment from 'moment'
+import { currencySymbols } from '~/utils/index'
+
 export default {
   props: {
     title: { type: String, required: false },
     columns: { type: Array, required: false },
     rows: { type: Array, required: false },
-    type: { type: String, required: false },
-    total: { type: Number, required: false },
     onDraft: { type: Boolean, required: false },
-    route: { type: String, required: false },
-    exportCSV: { type: Function, required: false },
+    type: { type: String, required: false },
     // more: { type: String, default: null },
   },
-  name: 'list-table1',
+  name: 'webinar-table',
   data: () => ({
     opt: false,
     optId: null,
+    currencySymbols,
   }),
   methods: {
+    formatDate(date) {
+      return moment(date).format('Do MMM. YYYY')
+    },
     toggleMenu(optId) {
       this.opt = !this.opt
       if (optId) this.optId = optId
-    },
-    checkKeyPresenceInArray(arr, key) {
-      return arr.some((obj) => Object.keys(obj).includes(key))
     },
   },
 }
 </script>
 
 <style scoped>
-.title-box {
-  min-width: 20rem;
-}
-
-.dot {
-  top: 0.3rem;
-  left: -0.8rem;
-  width: 0.3rem;
-  height: 0.3rem;
-}
 .course-image {
   display: inline-block;
-  width: 40px;
-  height: 30px;
+  width: 91px;
+  height: 60px;
   @apply bg-gray-300;
 
   /* border: 1px solid rgba(0, 0, 0, 0.1); */
@@ -364,23 +223,13 @@ export default {
 .pop-up {
   border-width: 0.1rem;
 }
-.vgt-table > thead > th {
-  @apply font-normal text-xs;
-}
 .vgt-wrap {
-  min-width: 60rem;
+  min-width: 58rem;
   overflow-x: auto;
   overflow-y: hidden;
   margin: 0.5rem;
 }
-.vgt-left-align > span {
-  /* pr-10 */
-  @apply text-gray-700 font-normal text-left text-xs pr-5;
-}
-.vgt-right-align {
-  text-align: left !important;
-}
-.vgt-right-align > span {
+.vgt-right-align > a > span {
   /* pr-10 */
   @apply text-gray-700 font-normal text-left text-xs pr-5;
 }
