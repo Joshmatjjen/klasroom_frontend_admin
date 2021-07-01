@@ -150,7 +150,7 @@
 
       <!-- Webinars -->
       <section v-if="tabs === 1">
-        <previous-webinars :tabs="tabs" />
+        <previous-webinars :tabs="tabs" :data="singleTutor.webinars" />
       </section>
 
       <!-- Activity Logs -->
@@ -255,7 +255,23 @@ export default {
       this.$store
         .dispatch(
           'people/getTutorCourses',
-          this.$route.params.slug.split('-')[0]
+          this.$route.params.slug.split('-')[1]
+        )
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // Webinars
+      this.$store
+        .dispatch(
+          'people/getTutorWebinars',
+          this.$route.params.slug.split('-')[1]
         )
         .then((res) => {
           console.log('DAta In Slug', res)
@@ -286,14 +302,14 @@ export default {
   },
 
   watch: {
-    tab: {
+    tabs: {
       handler(newValue, oldValue) {
         console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
         if (newValue === 0) {
           this.$store
             .dispatch(
               'people/getTutorCourses',
-              this.$route.params.slug.split('-')[0]
+              this.$route.params.slug.split('-')[1]
             )
             .then((res) => {
               console.log('DAta In Slug', res)
@@ -306,12 +322,10 @@ export default {
             .catch((e) => console.log('e: ', e))
         } else if (newValue === 1) {
           this.$store
-            .dispatch('people/getUser', {
-              id: this.$route.params.slug.split('-')[0],
-              type: this.$route.params.type
-                ? this.$route.params.type
-                : this.$route.name.split('-')[1],
-            })
+            .dispatch(
+              'people/getTutorWebinars',
+              this.$route.params.slug.split('-')[1]
+            )
             .then((res) => {
               console.log('User Data', res)
               this.loading = false
@@ -329,6 +343,23 @@ export default {
             })
             .then((res) => {
               console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 3) {
+          this.$store
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug.split('-')[0],
+              type: this.$route.params.type
+                ? this.$route.params.type
+                : this.$route.name.split('-')[1],
+            })
+            .then((res) => {
+              console.log('User Data', res)
               this.loading = false
               // this.settings = res
               if (res) {
