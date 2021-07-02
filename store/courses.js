@@ -110,8 +110,8 @@ export const actions = {
           showCloseButton: true,
           timer: 10000,
         })
-        vuexContext.commit('SET_COURSE_CATEGORY', data)
-        localStorage.setItem('courseCategory', JSON.stringify(data))
+        // vuexContext.commit('SET_COURSE_CATEGORY', data)
+        // localStorage.setItem('courseCategory', JSON.stringify(data))
         return data
       }
       return false

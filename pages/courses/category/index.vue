@@ -82,6 +82,7 @@ export default {
       if(this.categoryName) {
         try {
             await this.$store.dispatch('courses/addCourseCategory', this.categoryName)
+            this.categoryName = ''
         } catch (error) {
             console.log(error)
         } 
