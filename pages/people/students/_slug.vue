@@ -63,7 +63,19 @@
             }"
             class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
             :style="{ zIndex: 100 }"
-            @click.capture.stop="accountAction('suspend')"
+            @click.capture.stop="
+              accountAction(
+                singleUser.user.name,
+                singleUser.user.status && singleUser.user.status === 'suspended'
+                  ? 'Reactivate'
+                  : 'Suspend',
+                'Students',
+                singleUser.user.tutorId
+                  ? singleUser.user.tutorId
+                  : singleUser.user.userId,
+                1
+              )
+            "
             v-if="singleUser.user.isActive"
           >
             <p
@@ -79,7 +91,19 @@
             }"
             class="pop-up p-2 justify-around items-center absolute border-gray-500 bg-white rounded-lg shadow-lg"
             :style="{ zIndex: 100 }"
-            @click.capture.stop="accountAction('unsuspend')"
+            @click.capture.stop="
+              accountAction(
+                singleUser.user.name,
+                singleUser.user.status && singleUser.user.status === 'suspended'
+                  ? 'Reactivate'
+                  : 'Suspend',
+                'Students',
+                singleUser.user.tutorId
+                  ? singleUser.user.tutorId
+                  : singleUser.user.userId,
+                1
+              )
+            "
             v-if="!singleUser.user.isActive"
           >
             <p
@@ -131,7 +155,7 @@
 
       <!-- Activity Log -->
       <section v-if="tab === 4">
-        <activity-log :tabs="tab" />
+        <activity-log :tabs="tab" :data="singleUser.activityLog" />
       </section>
 
       <!-- Account Summary -->
@@ -233,6 +257,22 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // Get Activity Log
+      this.$store
+        .dispatch('people/getActivityLog', {
+          id: this.$route.params.slug,
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
 
@@ -270,6 +310,21 @@ export default {
               }
             })
             .catch((e) => console.log('e: ', e))
+        } else if (newValue === 4) {
+          this.$store
+            .dispatch('people/getActivityLog', {
+              id: this.$route.params.slug,
+              pagination: 1,
+            })
+            .then((res) => {
+              console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
         } else if (newValue === 5) {
           this.$store
             .dispatch('people/getUser', {
@@ -297,23 +352,19 @@ export default {
     texting() {
       console.log('Testing!!!!!')
     },
-    accountAction(actionType) {
-      console.log('Hello', this.$route, 'Type-->', this.$route.params.type)
-      this.$store
-        .dispatch('people/accountActions', {
-          actionType,
-          type: this.$route.params.type,
-          userId: this.$route.params.slug,
-        })
-        .then((res) => {
-          console.log(res)
-          this.loading = false
-          // this.settings = res
-          if (res) {
-            // this.showSuccess(res)
-          }
-        })
-        .catch((e) => console.log('e: ', e))
+    accountAction(name, actionType, type, userId, currentPage) {
+      console.log('Current Page', currentPage)
+      console.log(name, 'toggleAcctAction', type)
+      this.$store.commit('app/ACTION_MODAL', {
+        status: true,
+        title: actionType,
+        desc: `Are you sure you want to ${actionType.toLowerCase()} ${name} account? Remember this action would make ${name} unable to enter into the platform.`,
+        actionName: actionType,
+        actionType,
+        type,
+        userId,
+        currentPage,
+      })
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

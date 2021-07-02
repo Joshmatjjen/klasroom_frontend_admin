@@ -27,6 +27,7 @@ export const state = () => ({
   changePasswordModal: null,
   editImageModal: null,
   deleteAccountModal: null,
+  peopleTab: 'Students',
 })
 
 // getters
@@ -47,6 +48,9 @@ export const getters = {
 export const mutations = {
   ACTION_MODAL(state, actionData) {
     state.actionModal = actionData
+  },
+  SET_PEOPLE_TAB(state, type) {
+    state.peopleTab = type
   },
   SET_REDIRECT(state, url) {
     state.redirect_url = url

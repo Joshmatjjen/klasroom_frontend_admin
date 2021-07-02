@@ -1,8 +1,11 @@
 <template>
   <div class="min-h-screen mb-24">
-    <section-switcher v-model="tab" :tabs="[`Students`, `Tutors`, `Admins`]" />
+    <people-switcher
+      :value="peopleTab"
+      :tabs="[`Students`, `Tutors`, `Admins`]"
+    />
     <!-- Students Section -->
-    <section v-if="tab === 0">
+    <section v-if="peopleTab === 'Students'">
       <section class="bg-orange-100" v-if="studentsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
@@ -69,7 +72,7 @@
     </section>
 
     <!-- Tutors Section -->
-    <section v-if="tab === 1">
+    <section v-if="peopleTab === 'Tutors'">
       <section class="bg-orange-100" v-if="tutorsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0 place-self-end">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
@@ -136,7 +139,7 @@
     </section>
 
     <!-- Admins Section -->
-    <section v-if="tab === 2">
+    <section v-if="peopleTab === 'Admins'">
       <section class="bg-orange-100" v-if="adminsSummary">
         <div class="container mx-auto mb-10 px-4 mt-8 lg:px-0">
           <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
@@ -215,7 +218,7 @@ export default {
   },
   data: () => ({
     undoneTasks: _.take(courses, 3),
-    tab: 0,
+    tab: null,
     current: 1,
     perPage: 2,
     total: 20,
@@ -259,6 +262,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
+      peopleTab: (state) => state.app.peopleTab,
       students: (state) => state.people.students,
       studentsSummary: (state) => state.people.studentsSummary,
       tutors: (state) => state.people.tutors,
@@ -352,7 +356,7 @@ export default {
       this.$route.params.constructor === Object
     ) {
       console.log(this.$route.params)
-      this.tab = this.$route.params.tab
+      this.$store.commit('app/SET_PEOPLE_TAB', this.$route.params.tab)
     } else this.tab = 0
   },
 

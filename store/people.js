@@ -12,7 +12,7 @@ export const state = () => ({
   adminsSummary: null,
   singleUser: {
     user: null,
-    activeLog: null,
+    activityLog: null,
   },
   singleStudent: {
     currentCourses: null,
@@ -46,7 +46,7 @@ export const mutations = {
   },
 
   FETCH_ACTIVE_LOG_SUCCESS(state, log) {
-    state.singleUser.activeLog = log
+    state.singleUser.activityLog = log
   },
 
   //STUDENTS
@@ -98,8 +98,8 @@ export const mutations = {
     state.singleTutor.courses = data
   },
 
-  FETCH_STUDENT_COMPLETED_COURSES_SUCCESS(state, data) {
-    state.singleStudent.completedCourses = data
+  FETCH_TUTOR_WEBINARS_SUCCESS(state, data) {
+    state.singleTutor.webinars = data
   },
 
   //ADMINS
@@ -123,7 +123,7 @@ export const mutations = {
 
 // actions
 export const actions = {
-  // List of Student
+  // Student ANCHOR
   async getStudents(vuexContext, page) {
     try {
       const data = await this.$axios.$get(
@@ -240,7 +240,7 @@ export const actions = {
     }
   },
 
-  // TUTORS
+  // TUTORS  ANCHOR
   async getTutors(vuexContext, page) {
     try {
       const data = await this.$axios.$get(
@@ -287,11 +287,32 @@ export const actions = {
 
   async getTutorCourses(vuexContext, userId) {
     try {
-      const { data } = await this.$axios.$get(`/courses/tutors/${userId}`)
+      const data = await this.$axios.$get(`/courses/tutors/${userId}`)
 
       if (data) {
         console.log('Tutor Courses', data)
-        // vuexContext.commit('FETCH_TUTORS_SUMMARY_SUCCESS', data)
+        vuexContext.commit('FETCH_TUTOR_COURSES_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorWebinars(vuexContext, userId) {
+    try {
+      const data = await this.$axios.$get(`/webinars/tutors/${userId}`)
+
+      if (data) {
+        console.log('Tutor Webinars', data)
+        vuexContext.commit('FETCH_TUTOR_WEBINARS_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -341,7 +362,7 @@ export const actions = {
     }
   },
 
-  // ADMINS
+  // ADMINS  ANCHOR
   async getAdmins(vuexContext, page) {
     try {
       const data = await this.$axios.$get(
@@ -508,7 +529,31 @@ export const actions = {
 
       if (data) {
         console.log('All Courses Data', data)
-        // vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
+        vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
+
+        // localStorage.setItem('students', JSON.stringify(data))
+
+        // Cookie.set('students', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getActivityLog(vuexContext, data) {
+    const { id, pagination } = data
+    try {
+      const data = await this.$axios.$get(
+        `/audit/logs/${id}?page=${pagination}`
+      )
+
+      if (data) {
+        console.log('All Auditing Data', data)
+        vuexContext.commit('FETCH_ACTIVE_LOG_SUCCESS', data)
 
         // localStorage.setItem('students', JSON.stringify(data))
 
