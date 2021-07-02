@@ -78,23 +78,8 @@ export default {
     async editCategory() {
         if(this.categoryName) {
             try {
-             await this.$store.dispatch('courses/updateCourseCategory', {name: this.categoryName.name, id: this.$route.params.slug}).then((res) => {
-                 if(res) {
-                     Swal.fire({
-                      position: 'top-end',
-                      width: '350px',
-                      text: res.message
-                        ? res.message
-                        : 'Course category updated succesfully.',
-                      backdrop: false,
-                      allowOutsideClick: false,
-                      showConfirmButton: false,
-                      showCloseButton: true,
-                      timer: 10000,
-                    })
-                 }
-             })
-             console.log(res.message)
+                await this.$store.dispatch('courses/updateCourseCategory', {name: this.categoryName.name, id: this.$route.params.slug})
+                this.categoryName = ''
             } catch (error) {
                 console.log(error)
             } 

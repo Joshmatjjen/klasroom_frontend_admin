@@ -80,7 +80,7 @@ export const actions = {
   // get single course category
   async getAcourseCategory(vuexContext, id) {
     try {
-      const data = await this.$axios.$get(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`)
+      const {data} = await this.$axios.$get(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`)
       if (data) {
         console.log('course category Data', data)
         vuexContext.commit('SET_A_COURSE_CATEGORY', data)
@@ -96,8 +96,20 @@ export const actions = {
   //add course category
   async addCourseCategory(vuexContext, formData) {
     try {
-      const data  = await this.$axios.$post('https://streaming.staging.klasroom.com/v1/courses/categories', formData)
-      if(data) {
+      const {data, message}  = await this.$axios.$post('https://streaming.staging.klasroom.com/v1/courses/categories', formData)
+      if(data && message) {
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Course category created succesfully.',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
         vuexContext.commit('SET_COURSE_CATEGORY', data)
         localStorage.setItem('courseCategory', JSON.stringify(data))
         return data
@@ -110,10 +122,25 @@ export const actions = {
    // update course category
    async updateCourseCategory(vuexContext,{name, id}) {
     try {
-      const data  = await this.$axios.$put(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
+      const {data, message } = await this.$axios.$put(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
         name
       })
-      vuexContext.commit('SET_A_COURSE_CATEGORY', data)
+      if (data && message) {
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Course category updated succesfully.',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+        vuexContext.commit('SET_A_COURSE_CATEGORY', data)
+        return data
+      }
     } catch (e) {
       console.log('Data failed: ', e)
     }
