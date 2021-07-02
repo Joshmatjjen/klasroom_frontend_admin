@@ -88,6 +88,32 @@
                                 />
                               </div>
                             </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name"
+                                >Course category</label
+                              >
+                              <v-select
+                              class="form-input style-chooser cursor-pointer capitalize"
+                              placeholder="Select course category"
+                              multiple 
+                              @input="setSelected"
+                              label="categoryName"
+                              :options="courseCategory"
+                            />
+                            </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name"
+                                >What will the students learn?</label
+                              >
+                              <div>
+                                <input
+                                  id="input-name"
+                                  type="text"
+                                  class="form-input"
+                                  placeholder="Enter what student will learn here"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </dash-items-section-group>
@@ -172,7 +198,7 @@
             </section>
 
             <!-- settings -->
-            <section v-if="isCourseSwitch === 2">
+            <section class="mt-5" v-if="isCourseSwitch === 2">
               <dash-items-section-group
                 title="Graduation Criteria"
                 :edit="false"
@@ -446,8 +472,8 @@
               <div class="px-4 md:px-5 lg:px-6 py-4">
                 <ul class="text-gray-700">
                   <li class="text-left">
-                    <h5 class="font-bold mb-2">Title</h5>
-                    <p class="text-xs text-gray-700">introduction</p>
+                    <h5 class="font-bold mb-2">{{course.title}}</h5>
+                    <p class="text-xs text-gray-700">{{course.introduction}}</p>
                   </li>
                   <li>
                     <hr class="my-5" />
@@ -535,10 +561,10 @@
                         name="image"
                         accept="image/*"
                         multiple
-                        @change="setWebinarImage"
+                        @change="setcourseImage"
                       />
                       <button
-                        @click.prevent="showFileChooser('webinarImage')"
+                        @click.prevent="showFileChooser('courseImage')"
                         class="focus:outline-none"
                       >
                         Add Picture
@@ -574,7 +600,7 @@
                   }
                 "
               >
-                {{ isCourseSwitch === 2 ? 'Publish Webinar' : 'Next' }}
+                {{ isCourseSwitch === 2 ? 'Publish Course' : 'Next' }}
                 <loader v-if="loading" color="white" />
               </button>
             </div>
@@ -620,11 +646,9 @@ export default {
       title: '',
       subtitle: '',
       introduction: '',
-      date: '',
-      startTime: '',
-      endTime: '',
-      tags: [],
-      image: null,
+      userID: 0,
+      categories: [],
+      image: null
     },
     lesson: [
       {
@@ -655,6 +679,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       token: (state) => state.auth.token,
+      courseCategory: (state) => state.courses.courseCategory,
       userType: (state) =>
         state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
@@ -674,6 +699,13 @@ export default {
     },
   },
   methods: {
+    setSelected(value) {
+      value.forEach((el) => {
+        // console.log(el.categoryName)
+        this.categories = el.categoryName
+        console.log(this.categories) 
+      })
+    },
     switcher: function (value) {
       this.isCourseSwitch = value
       // some code to filter users
@@ -687,7 +719,50 @@ export default {
     async goNext(isCourseSwitch) {
       switch (isCourseSwitch) {
         case 0:
-          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          try {
+            this.loading = true
+            const { image } = this.createCourse
+            const resData = {
+              ...this.createCourse,
+              courseImage: image ? image.fileName : '',
+            }
+            console.log('resData: ', resData)
+
+            let newData
+
+            if (this.course) {
+              const { data } = await this.$axios.$put(
+                `https://streaming.staging.klasroom.com/v1/courses/${
+                  this.course.id
+                }?publish_now=${false}`,
+                resData,
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              newData = data
+            } else {
+              const { data } = await this.$axios.$post(
+                `https://streaming.staging.klasroom.com/v1/courses?publish_now=${false}`,
+                resData,
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              newData = data
+            }
+
+            console.log('course data: ', newData)
+            this.course = newData
+            this.loading = false
+            this.courseStates.lessons = true
+            isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+            window.scrollTo(0, 0)
+          } catch (e) {
+            console.log(e)
+            this.loading = false
+            return
+          }
           break
         case 1:
           isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
@@ -709,7 +784,7 @@ export default {
       })
     },
     showFileChooser(type) {
-      if (type === 'webinarImage') this.$refs.image.click()
+      if (type === 'courseImage') this.$refs.image.click()
       else this.$refs.input.click()
     },
     checkFormError(type) {
@@ -717,7 +792,7 @@ export default {
       else if (type === 'co_host') this.coHostFormError = false
       else this.moderatorFormError = false
     },
-    async setWebinarImage(e) {
+    async setcourseImage(e) {
       console.log('Uploading__')
       const file = e.target.files[0]
       console.log('file: ', file)

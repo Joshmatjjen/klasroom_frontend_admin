@@ -54,6 +54,11 @@
                   link: '/courses/create',
                 },
                 {
+                  name: 'Create course category',
+                  type: 'link',
+                  link: '/courses/category',
+                },
+                {
                   name: 'Create webinar',
                   type: 'link',
                   link: '/webinars/create',
