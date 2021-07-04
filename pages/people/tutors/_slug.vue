@@ -314,6 +314,39 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+        // Course sales
+        this.$store
+        .dispatch('people/getTutorCourseSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+        // Webinar sales
+        this.$store
+        .dispatch('people/getTutorWebinarsSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+        
     }
   },
 
