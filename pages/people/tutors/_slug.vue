@@ -4,7 +4,7 @@
       class="min-h-screen mb-24"
       v-if="
         singleUser.user &&
-        singleUser.user.userId === parseInt($route.params.userData.userId)
+        singleUser.user.tutorId === parseInt($route.params.slug.split('-')[0])
       "
     >
       <div
@@ -150,7 +150,7 @@
 
       <!-- Webinars -->
       <section v-if="tabs === 1">
-        <previous-webinars :tabs="tabs" />
+        <previous-webinars :tabs="tabs" :data="singleTutor.webinars" />
       </section>
 
       <!-- Activity Logs -->
@@ -164,12 +164,12 @@
 
       <!-- Account Summary  -->
       <section v-if="tabs === 3">
-        <account-summary :tabs="tabs" type="tutors" />
+        <account-summary :tabs="tabs" :data="singleUser.user" type="tutors" />
       </section>
 
       <!--  Sales -->
       <section v-if="tabs === 4">
-        <sales :tabs="tabs" />
+        <sales :tabs="tabs" :data="singleTutor.sales.all" />
       </section>
 
       <!-- Withdrawals -->
@@ -236,8 +236,10 @@ export default {
       // getUser
       this.$store
         .dispatch('people/getUser', {
-          id: this.$route.params.slug,
-          type: this.$route.params.type,
+          id: this.$route.params.slug.split('-')[0],
+          type: this.$route.params.type
+            ? this.$route.params.type
+            : this.$route.name.split('-')[1],
         })
         .then((res) => {
           console.log('User Data', res)
@@ -251,7 +253,26 @@ export default {
 
       // Courses
       this.$store
-        .dispatch('people/getTutorCourses', this.$route.params.userData.userId)
+        .dispatch(
+          'people/getTutorCourses',
+          this.$route.params.slug.split('-')[1]
+        )
+        .then((res) => {
+          console.log('DAta In Slug', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+      // Webinars
+      this.$store
+        .dispatch(
+          'people/getTutorWebinars',
+          this.$route.params.slug.split('-')[1]
+        )
         .then((res) => {
           console.log('DAta In Slug', res)
           this.loading = false
@@ -265,7 +286,7 @@ export default {
       // Get Activity Log
       this.$store
         .dispatch('people/getActivityLog', {
-          id: this.$route.params.userData.userId,
+          id: this.$route.params.slug.split('-')[1],
           pagination: 1,
         })
         .then((res) => {
@@ -277,18 +298,67 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // Get All Sales
+      this.$store
+        .dispatch('people/getTutorAllSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+        // Course sales
+        this.$store
+        .dispatch('people/getTutorCourseSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+        // Webinar sales
+        this.$store
+        .dispatch('people/getTutorWebinarsSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+        
     }
   },
 
   watch: {
-    tab: {
+    tabs: {
       handler(newValue, oldValue) {
         console.log('change in tab', 'new ->', newValue, 'old ->', oldValue)
         if (newValue === 0) {
           this.$store
             .dispatch(
               'people/getTutorCourses',
-              this.$route.params.userData.userId
+              this.$route.params.slug.split('-')[1]
             )
             .then((res) => {
               console.log('DAta In Slug', res)
@@ -301,10 +371,10 @@ export default {
             .catch((e) => console.log('e: ', e))
         } else if (newValue === 1) {
           this.$store
-            .dispatch('people/getUser', {
-              id: this.$route.params.slug,
-              type: this.$route.params.type,
-            })
+            .dispatch(
+              'people/getTutorWebinars',
+              this.$route.params.slug.split('-')[1]
+            )
             .then((res) => {
               console.log('User Data', res)
               this.loading = false
@@ -317,11 +387,28 @@ export default {
         } else if (newValue === 2) {
           this.$store
             .dispatch('people/getActivityLog', {
-              id: this.$route.params.userData.userId,
+              id: this.$route.params.slug.split('-')[1],
               pagination: 1,
             })
             .then((res) => {
               console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 3) {
+          this.$store
+            .dispatch('people/getUser', {
+              id: this.$route.params.slug.split('-')[0],
+              type: this.$route.params.type
+                ? this.$route.params.type
+                : this.$route.name.split('-')[1],
+            })
+            .then((res) => {
+              console.log('User Data', res)
               this.loading = false
               // this.settings = res
               if (res) {

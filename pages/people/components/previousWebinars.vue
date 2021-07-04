@@ -5,11 +5,11 @@
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <list-table-1
+            <webinars-table
               :columns="prevWebinarsColumns"
-              :rows="prevWebinarsRows"
-              type="Students"
-              :total="124322"
+              :rows="data ? data.data : []"
+              type="Webinars"
+              :total="data && data.data ? data.data.length : 0"
               route="/people/students/"
             />
           </div>
@@ -29,6 +29,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   props: {
     tabs: { type: Number, required: false },
+    data: { type: Array, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {
@@ -44,14 +45,14 @@ export default {
       draft: false,
     },
     prevWebinarsColumns: [
-      {
-        label: 'Course title',
-        field: 'courseTitle',
-      },
-      {
-        label: 'Status',
-        field: 'status',
-      },
+      // {
+      //   label: 'Course title',
+      //   field: 'courseTitle',
+      // },
+      // {
+      //   label: 'Status',
+      //   field: 'status',
+      // },
       {
         label: 'Price',
         field: 'price',
@@ -61,20 +62,20 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Attendance',
-        field: 'attendance',
+        label: 'Attendees',
+        field: 'attendees',
       },
       {
         label: 'Rating',
         field: 'rating',
       },
-      {
-        label: 'Date',
-        field: 'date',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
+      // {
+      //   label: 'Date',
+      //   field: 'date',
+      //   type: 'date',
+      //   dateInputFormat: 'yyyy-MM-dd',
+      //   dateOutputFormat: 'MMM do yy',
+      // },
     ],
     prevWebinarsRows: _.take(prevWebinars, 10),
 

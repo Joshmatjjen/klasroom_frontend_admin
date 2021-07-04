@@ -11,7 +11,7 @@
   >
     <div v-if="type === 'route'" class="pr-12">
       <nuxt-link
-        :to="{ name: 'people', params: { tab: option.tab } }"
+        :to="{ name: 'people', params: { tab: option.name } }"
         v-for="(option, key) in options"
         :key="key"
         class="lg:mr-4 md:text-gray-700 text-sm hover:text-gray-900 md:bg-transparent md:mb-0"

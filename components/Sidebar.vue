@@ -76,7 +76,7 @@
             </li>
             <li class="nav-item relative">
               <router-link
-                :to="{ name: 'people', params: { tab: 0 } }"
+                :to="{ name: 'people', params: { tab: 'Students' } }"
                 class="nav-link nav-people"
                 active-class="active"
                 exact
@@ -109,19 +109,16 @@
                     name: 'Students',
                     type: 'props',
                     props: 'students',
-                    tab: 0,
                   },
                   {
                     name: 'Tutors',
                     type: 'props',
                     props: 'tutors',
-                    tab: 1,
                   },
                   {
                     name: 'Admins',
                     type: 'props',
                     props: 'admin',
-                    tab: 2,
                   },
                 ]"
               />

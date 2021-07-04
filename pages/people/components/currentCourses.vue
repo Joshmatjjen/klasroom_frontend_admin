@@ -9,7 +9,7 @@
               :columns="currentCoursesColumns"
               :rows="data ? data.data : []"
               type="Courses"
-              :total="data ? data.data.length : 0"
+              :total="data && data.data ? data.data.length : 0"
               route="/people/students/"
             />
           </div>
