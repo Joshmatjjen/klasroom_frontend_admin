@@ -164,12 +164,12 @@
 
       <!-- Account Summary  -->
       <section v-if="tabs === 3">
-        <account-summary :tabs="tabs" type="tutors" />
+        <account-summary :tabs="tabs" :data="singleUser.user" type="tutors" />
       </section>
 
       <!--  Sales -->
       <section v-if="tabs === 4">
-        <sales :tabs="tabs" />
+        <sales :tabs="tabs" :data="singleTutor.sales.all" />
       </section>
 
       <!-- Withdrawals -->
@@ -298,6 +298,55 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // Get All Sales
+      this.$store
+        .dispatch('people/getTutorAllSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+        // Course sales
+        this.$store
+        .dispatch('people/getTutorCourseSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+
+        // Webinar sales
+        this.$store
+        .dispatch('people/getTutorWebinarsSales', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
+        
     }
   },
 
