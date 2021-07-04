@@ -102,6 +102,18 @@ export const mutations = {
     state.singleTutor.webinars = data
   },
 
+  FETCH_TUTOR_ALL_SALES_SUCCESS(state, data) {
+    state.singleTutor.sales.all = data
+  },
+
+  FETCH_TUTOR_COURSES_SALES_SUCCESS(state, data) {
+    state.singleTutor.sales.course = data
+  },
+
+  FETCH_TUTOR_WEBINARS_SALES_SUCCESS(state, data) {
+    state.singleTutor.sales.webinars = data
+  },
+
   //ADMINS
 
   FETCH_ADMINS_SUCCESS(state, admins) {
@@ -313,6 +325,28 @@ export const actions = {
       if (data) {
         console.log('Tutor Webinars', data)
         vuexContext.commit('FETCH_TUTOR_WEBINARS_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorAllSales(vuexContext, datas) {
+    const { id, pagination } = datas
+    try {
+      const data = await this.$axios.$get(`/sales/${id}?page=${pagination}`)
+
+      if (data) {
+        console.log('Sales All', data)
+        vuexContext.commit('FETCH_TUTOR_ALL_SALES_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 

@@ -91,8 +91,8 @@
                 <div class="flex flex-col" v-else>
                   <span class="text-gray-700 font-semibold text-left text-md">{{
                     props.row.title
-                  }}</span
-                  ><span class="text-gray-700 font-normal text-left text-xs">{{
+                  }}</span>
+                  <span class="text-gray-700 font-normal text-left text-xs">{{
                     props.row.desc
                   }}</span>
                 </div>
@@ -109,6 +109,32 @@
 
               <!-- Draft for webinar End -->
             </span>
+
+            <span v-else-if="props.column.field == 'title'">
+              <span class="text-gray-700 text-left">{{
+                props.row.courseName
+                  ? props.row.courseName
+                  : props.row.webinarName
+              }}</span>
+            </span>
+            <span v-else-if="props.column.field == 'student'">
+              <span class="text-gray-700 text-left">{{
+                props.row.studentName
+              }}</span>
+            </span>
+
+            <span v-else-if="props.column.field == 'date'">
+              <span class="text-gray-700 text-left">{{
+                formatDate(props.row.purchasedAt)
+              }}</span>
+            </span>
+
+            <span v-else-if="props.column.field == 'time'">
+              <span class="text-gray-700 text-left">{{
+                formatTime(props.row.purchasedAt)
+              }}</span>
+            </span>
+            <!-- //end          ;   -->
             <span v-else-if="props.column.field == 'price'">
               <span class="text-gray-700 font-semibold"
                 >₦{{ props.row.price }}</span
@@ -188,9 +214,6 @@
                   )) ||
                 (props.column.field === 'status' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
@@ -264,6 +287,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     title: { type: String, required: false },
@@ -285,6 +310,12 @@ export default {
     toggleMenu(optId) {
       this.opt = !this.opt
       if (optId) this.optId = optId
+    },
+    formatTime(date) {
+      return moment(date).format('LT')
+    },
+    formatDate(date) {
+      return moment(date).format('ll')
     },
   },
 }

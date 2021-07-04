@@ -7,7 +7,7 @@
           <div class="col-span-12">
             <list-table-2
               :columns="allSalesColumns"
-              :rows="allSalesRows"
+              :rows="data ? data.data : []"
               type="Students"
               :total="124322"
               route="/people/students/"
@@ -29,6 +29,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   props: {
     tabs: { type: Number, required: false },
+    data: { type: Array, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {
@@ -53,6 +54,10 @@ export default {
         field: 'student',
       },
       {
+        label: 'Type',
+        field: 'type',
+      },
+      {
         label: 'Date',
         field: 'date',
         type: 'date',
@@ -62,10 +67,6 @@ export default {
       {
         label: 'Time',
         field: 'time',
-      },
-      {
-        label: 'Purchaser',
-        field: 'purchaser',
       },
       {
         label: 'Price',
