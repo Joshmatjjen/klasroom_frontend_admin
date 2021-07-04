@@ -361,6 +361,54 @@ export const actions = {
     }
   },
 
+  async getTutorCourseSales(vuexContext, datas) {
+    const { id, pagination } = datas
+    try {
+      const data = await this.$axios.$get(
+        `/sales/courses/${id}?page=${pagination}`
+      )
+
+      if (data) {
+        console.log('Sales Courses', data)
+        vuexContext.commit('FETCH_TUTOR_COURSES_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorWebinarsSales(vuexContext, datas) {
+    const { id, pagination } = datas
+    try {
+      const data = await this.$axios.$get(
+        `/sales/webinars/${id}?page=${pagination}`
+      )
+
+      if (data) {
+        console.log('Sales Webinars', data)
+        vuexContext.commit('FETCH_TUTOR_WEBINARS_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
   async approveTutor(vuexContext, userId) {
     try {
       const { data, message } = await this.$axios.$get(
