@@ -107,7 +107,7 @@ export const mutations = {
   },
 
   FETCH_TUTOR_COURSES_SALES_SUCCESS(state, data) {
-    state.singleTutor.sales.course = data
+    state.singleTutor.sales.courses = data
   },
 
   FETCH_TUTOR_WEBINARS_SALES_SUCCESS(state, data) {
@@ -303,7 +303,7 @@ export const actions = {
 
       if (data) {
         console.log('Tutor Courses', data)
-        vuexContext.commit('FETCH_TUTOR_COURSES_SUCCESS', data)
+        vuexContext.commit('FETCH_TUTOR_COURSES_SALES_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -324,7 +324,7 @@ export const actions = {
 
       if (data) {
         console.log('Tutor Webinars', data)
-        vuexContext.commit('FETCH_TUTOR_WEBINARS_SUCCESS', data)
+        vuexContext.commit('FETCH_TUTOR_WEBINARS_SALES_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
