@@ -96,9 +96,10 @@
                               class="form-input style-chooser cursor-pointer capitalize"
                               placeholder="Select course category"
                               multiple 
+                              taggable
                               @input="setSelected"
                               label="categoryName"
-                              :options="courseCategory"
+                              :options="courseCategory.data"
                             />
                             </div>
                             <div class="form-group mb-5">
@@ -114,6 +115,69 @@
                                 />
                               </div>
                             </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name">Tutor Email</label>
+                              <div>
+                                <input
+                                  id="input-name"
+                                  type="email"
+                                  class="form-input"
+                                  placeholder="Tutor email"
+                                  v-model="createCourse.tutorEmail"
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="input-name">Introductory video</label>
+                              <div class="relative h-full">
+                                <input
+                                  ref="input"
+                                  type="file"
+                                  name="image"
+                                  accept="video/*"
+                                  multiple
+                                  @change="setIntroVideo"
+                                />
+                                <div class="py-2">
+                                  <!-- introductory name -->
+                                  <resource-chip
+                                    v-for="(item, key) in fileResources"
+                                    :key="key"
+                                    :file="{ filename: item.name }"
+                                    :id="key"
+                                    :deleteItem="deleteResItem"
+                                  />
+                                  <div
+                                    class="container flex flex-row bg-white rounded-lg border border-gray-300 shadow-hover mb-5"
+                                  >
+                                    <div
+                                      class="flex flex-row justify-center items-center w-full p-4 cursor-pointer"
+                                      @click.prevent="showFileChooser"
+                                    >
+                                      <div>
+                                        <svg
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M9.375 7.44601H11.107V15.3749C11.107 15.478 11.1914 15.5624 11.2945 15.5624H12.7008C12.8039 15.5624 12.8883 15.478 12.8883 15.3749V7.44601H14.625C14.782 7.44601 14.8687 7.26554 14.7727 7.14367L12.1477 3.82023C12.1301 3.79782 12.1077 3.7797 12.0821 3.76723C12.0565 3.75477 12.0285 3.74829 12 3.74829C11.9715 3.74829 11.9435 3.75477 11.9179 3.76723C11.8923 3.7797 11.8699 3.79782 11.8523 3.82023L9.22734 7.14133C9.13125 7.26555 9.21797 7.44601 9.375 7.44601ZM20.5781 14.6718H19.1719C19.0688 14.6718 18.9844 14.7562 18.9844 14.8593V18.4687H5.01562V14.8593C5.01562 14.7562 4.93125 14.6718 4.82812 14.6718H3.42188C3.31875 14.6718 3.23438 14.7562 3.23438 14.8593V19.4999C3.23438 19.9148 3.56953 20.2499 3.98438 20.2499H20.0156C20.4305 20.2499 20.7656 19.9148 20.7656 19.4999V14.8593C20.7656 14.7562 20.6812 14.6718 20.5781 14.6718Z"
+                                            fill="black"
+                                          />
+                                        </svg>
+                                      </div>
+                                      <p
+                                        class="text-sm text-center font-thin text-gray-700 pl-3"
+                                      >
+                                        Click here to upload an introductory video
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </dash-items-section-group>
@@ -124,6 +188,7 @@
             </section>
 
             <!-- Course Part -->
+
             <section v-if="isCourseSwitch === 1">
               <section>
                 <div class="container mx-auto my-10 px-2 lg:px-0">
@@ -132,7 +197,18 @@
                       <!-- Part 1 -->
                       <dash-items-section-group title="Lessons" :edit="false">
                         <!-- course part -->
-
+                        <div class="mb-8">
+                            <no-ssr placeholder="Loading Your Editor...">
+                              <vue-editor placeholder="Write Something..." v-model="content"></vue-editor>
+                            </no-ssr>
+                            <div class="content">
+                              <div v-html="content"></div>
+                              <pre><code>{{ content }}</code></pre>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-4 flex flex-row" style="padding-left: 1rem; padding-right: 1rem" @click="saveContent">
+                              Save
+                            </button>
+                          </div>
                         <div
                           class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                         >
@@ -629,6 +705,9 @@ export default {
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
+    // resourceUploading: false,
+
+    content: '',
 
     course: null,
     settingId: null,
@@ -643,12 +722,11 @@ export default {
 
     isCourseSwitch: 0,
     createCourse: {
-      title: '',
-      subtitle: '',
-      introduction: '',
-      userID: 0,
+      title: null,
+      subtitle: null,
+      introduction: null,
+      tutorEmail: null,
       categories: [],
-      image: null
     },
     lesson: [
       {
@@ -698,12 +776,23 @@ export default {
       // await this.$nextTick()
     },
   },
+  async mounted() {
+    await this.getCourseCategory()
+  },
   methods: {
+    saveContent() {
+      console.log(this.content)
+    },
+    async getCourseCategory() {
+      try {
+        await this.$store.dispatch('courses/getCourseCategory')
+      } catch(error) {
+        console.log(error)
+      }
+    },
     setSelected(value) {
-      value.forEach((el) => {
-        // console.log(el.categoryName)
-        this.categories = el.categoryName
-        console.log(this.categories) 
+      value.forEach((value) => {
+        this.createCourse.categories = value.categoryName
       })
     },
     switcher: function (value) {
@@ -815,7 +904,7 @@ export default {
         return
       }
     },
-    async setImage(e) {
+    async setIntroVideo(e) {
       console.log('Uploading__')
       const files = e.target.files
       console.log('files: ', files)
