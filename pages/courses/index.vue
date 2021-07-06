@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen mb-24">
+<section>
+  <div v-if="courseSummary" class="min-h-screen mb-24">
     <section class="bg-orange-100">
       <div class="container mx-auto mb-10 px-4 lg:px-0">
         <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
@@ -110,11 +111,15 @@
       </div>
     </section>
   </div>
+  <loader-2 v-else/>
+</section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Loader2 from '~/components/loader/Loader2.vue'
 export default {
+  components: { Loader2 },
   middleware: ['check-auth', 'auth'],
   async fetch() {
     this.$store.commit('app/SET_TITLE', 'Courses')
