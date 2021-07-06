@@ -4,19 +4,14 @@ import Swal from 'sweetalert2'
 
 // state
 export const state = () => ({
-  students: null,
-  studentsSummary: null,
-  tutors: null,
-  tutorsSummary: null,
-  admins: null,
-  adminsSummary: null,
-  singleUser: {
-    user: null,
-    currentCourses: null,
-    completedCourses: null,
-    upcomingWebinars: null,
-    prevWebinars: null,
-    activeLog: null,
+  courseCategory: [],
+  courseCateg: [],
+  courses: null,
+  courseSummary: null,
+  coursesData: {
+    liveCourses: null,
+    unPublishedCourses: null,
+    archived: null,
   },
 })
 
@@ -28,177 +23,195 @@ export const getters = {
 
 // mutations
 export const mutations = {
-  //STUDENTS
-  FETCH_STUDENTS_SUCCESS(state, students) {
-    state.students = students
+  //COURSE CATEGORY
+  SET_COURSE_CATEGORY(state, courseCategory) {
+    state.courseCategory = courseCategory
+  },
+  SET_A_COURSE_CATEGORY(state, courseCateg) {
+    state.courseCateg = courseCateg.data
+  },
+  SET_DELETE_COURSE_CATEGORY(state, id) {
+    const catgeory = state.courseCategory.filter((x) => x.categoryId !== id)
+    state.courseCategory = catgeory
+  },
+  SET_UPDATED_COURSE_CATEGORY(state, index) {
+    state.courseCategory.forEach((x) => {
+      if (x.categoryId === index.categoryId) {
+        x = index
+      }
+    })
+  },
+  FETCH_COURSES_SUMMARY_SUCCESS(state, courses) {
+    state.courseSummary = courses
   },
 
-  FETCH_STUDENTS_FAILURE(state) {
-    state.students = null
+  //live courses
+  FETCH_LIVE_COURSES (state, data) {
+    state.coursesData.liveCourses = data.data
   },
-
-  FETCH_STUDENTS_SUMMARY_SUCCESS(state, students) {
-    state.studentsSummary = students
+  //unpublished courses
+  FETCH_UNPUBLISHED_COURSES (state, data) {
+    state.coursesData.unPublishedCourses = data.data
   },
-
-  FETCH_STUDENTS_SUMMARY_FAILURE(state) {
-    state.studentsSummary = null
-  },
-
-  // Single Student
-  FETCH_USER_SUCCESS(state, user) {
-    state.singleUser.user = user
-  },
-  FETCH_STUDENT_CURRENT_COURSES_SUCCESS(state, data) {
-    state.singleUser.currentCourses = data
-  },
-
-  FETCH_STUDENT_COMPLETED_COURSES_SUCCESS(state, data) {
-    state.singleUser.completedCourses = data
-  },
-
-  //TUTORS
-
-  FETCH_TUTORS_SUCCESS(state, tutors) {
-    state.tutors = tutors
-  },
-
-  FETCH_TUTORS_FAILURE(state) {
-    state.tutors = null
-  },
-
-  FETCH_TUTORS_SUMMARY_SUCCESS(state, tutors) {
-    state.tutorsSummary = tutors
-  },
-
-  FETCH_TUTORS_SUMMARY_FAILURE(state) {
-    state.tutorsSummary = null
-  },
-
-  //ADMINS
-
-  FETCH_ADMINS_SUCCESS(state, admins) {
-    state.admins = admins
-  },
-
-  FETCH_ADMINS_FAILURE(state) {
-    state.admins = null
-  },
-
-  FETCH_ADMINS_SUMMARY_SUCCESS(state, admins) {
-    state.adminsSummary = admins
-  },
-
-  FETCH_ADMINS_SUMMARY_FAILURE(state) {
-    state.adminsSummary = null
+  //archived courses
+  FETCH_ARCHIVED_COURSES (state, data) {
+    state.coursesData.archived = data.data
   },
 }
 
 // actions
 export const actions = {
-  // List of Student
-  async getStudents(vuexContext, page) {
+  // get course category
+  async getCourseCategory(vuexContext) {
     try {
-      const data = await this.$axios.$get(
-        page ? `/users/students?page=${page}` : '/users/students'
-      )
-
+      const data = await this.$axios.$get('https://streaming.staging.klasroom.com/v1/courses/categories')
       if (data) {
-        console.log('Student Data', data)
-        vuexContext.commit('FETCH_STUDENTS_SUCCESS', data)
-
-        localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
+        console.log('course category Data', data)
+        vuexContext.commit('SET_COURSE_CATEGORY', data)
+        localStorage.setItem('courseCategory', JSON.stringify(data))
         return data
       }
       return false
     } catch (e) {
-      // console.log('fetch user failed: ', e)
       return false
     }
   },
 
-  async getUser(vuexContext, id) {
+  // get single course category
+  async getAcourseCategory(vuexContext, id) {
     try {
-      const { data } = await this.$axios.$get(`/users/${id}`)
-
+      const {data} = await this.$axios.$get(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`)
       if (data) {
-        console.log('User Data', data)
-        vuexContext.commit('FETCH_USER_SUCCESS', data)
-
-        // localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
+        console.log('course category Data', data)
+        vuexContext.commit('SET_A_COURSE_CATEGORY', data)
+        localStorage.setItem('courseCategory', JSON.stringify(data))
         return data
       }
       return false
     } catch (e) {
-      // console.log('fetch user failed: ', e)
       return false
     }
   },
 
-  async getStudentCurrentCourses(vuexContext, id) {
+  //add course category
+  async addCourseCategory(vuexContext, formData) {
     try {
-      const data = await this.$axios.$get(
-        '/courses/students/' + id + '?status=current'
-      )
-
-      if (data) {
-        console.log('Student Data', data)
-        vuexContext.commit('FETCH_STUDENT_CURRENT_COURSES_SUCCESS', data)
-
-        // localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
+      const {data, message}  = await this.$axios.$post('https://streaming.staging.klasroom.com/v1/courses/categories', formData)
+      if(data && message) {
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Course category created succesfully.',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+        // vuexContext.commit('SET_COURSE_CATEGORY', data)
+        // localStorage.setItem('courseCategory', JSON.stringify(data))
         return data
       }
       return false
     } catch (e) {
-      // console.log('fetch user failed: ', e)
-      return false
+      console.log('Data failed: ', e)
+    }
+  },
+   // update course category
+   async updateCourseCategory(vuexContext,{name, id}) {
+    try {
+      const {data, message } = await this.$axios.$put(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
+        name
+      })
+      if (data && message) {
+        Swal.fire({
+          position: 'top-end',
+          width: '350px',
+          text: message
+            ? message
+            : 'Course category updated succesfully.',
+          backdrop: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          timer: 10000,
+        })
+        vuexContext.commit('SET_A_COURSE_CATEGORY', data)
+        return data
+      }
+    } catch (e) {
+      console.log('Data failed: ', e)
+    }
+  },
+  // delete course category
+  async deleteCourseCategory(vuexContext, {id, name}) {
+    try {
+      const data  = await this.$axios.$delete(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
+        name
+      })
+      vuexContext.commit('SET_DELETE_COURSE_CATEGORY', data)
+    } catch (e) {
+      console.log('Data failed: ', e)
     }
   },
 
-  async getStudentCompletedCourses(vuexContext, id) {
+  //get live courses
+  async getLiveCourses(vuexContext) {
     try {
-      const data = await this.$axios.$get(
-        '/courses/students/' + id + '?status=completed'
-      )
+      const data = await this.$axios.$get('/courses?status=live')
 
       if (data) {
-        console.log('Completed Course Data', data)
-        vuexContext.commit('FETCH_STUDENT_COMPLETED_COURSES_SUCCESS', data)
-
-        // localStorage.setItem('students', JSON.stringify(data))
-
-        // Cookie.set('students', JSON.stringify(data))
-
+        console.log('courses live', data)
+        vuexContext.commit('FETCH_LIVE_COURSES', data)
         return data
       }
       return false
     } catch (e) {
-      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+  //get unpublished courses
+  async getUnPublishedCourses(vuexContext) {
+    try {
+      const data = await this.$axios.$get('/courses?status=unpublished')
+
+      if (data) {
+        console.log('courses unpublished', data)
+        vuexContext.commit('FETCH_UNPUBLISHED_COURSES', data)
+        return data
+      }
+      return false
+    } catch (e) {
       return false
     }
   },
 
-  async getStudentsSummary(vuexContext) {
+    //get archived courses
+    async getArchivedCourses(vuexContext) {
+      try {
+        const data = await this.$axios.$get('/courses?status=archived')
+  
+        if (data) {
+          console.log('archived courses', data)
+          vuexContext.commit('FETCH_ARCHIVED_COURSES', data)
+          return data
+        }
+        return false
+      } catch (e) {
+        return false
+      }
+    },
+
+  async getCoursesSummary(vuexContext) {
     try {
-      const { data } = await this.$axios.$get('/users/students/summary')
+      const { data } = await this.$axios.$get('courses/summary')
 
       if (data) {
-        console.log('Student Summary', data)
-        vuexContext.commit('FETCH_STUDENTS_SUMMARY_SUCCESS', data)
-
-        localStorage.setItem('studentsSummary', JSON.stringify(data))
-
-        // Cookie.set('studentsSummary', JSON.stringify(data))
-
+        console.log('course Summary', data)
+        vuexContext.commit('FETCH_COURSES_SUMMARY_SUCCESS', data)
+        localStorage.setItem('courseSummary', JSON.stringify(data))
         return data
       }
       return false

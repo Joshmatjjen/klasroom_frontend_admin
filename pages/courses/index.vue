@@ -4,25 +4,33 @@
       <div class="container mx-auto mb-10 px-4 lg:px-0">
         <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
           <dash-item-metrics
-            :title="12 + ' courses'"
+            :title="courseSummary.publishedCourses.toLocaleString() + ' courses'"
             label="Published"
-            link="/student/courses"
+            type="filter"
+            tableType="published"
+            filterType="active"
           />
           <dash-item-metrics
-            :title="316 + ' courses'"
+            :title="courseSummary.unPublishedCourses.toLocaleString() + ' courses'"
             label="Unpublished"
+            type="filter"
+            tableType="unPublished"
+            filterType="active"
             @click="switcher('unpublished')"
-            more="/student/courses"
           />
           <dash-item-metrics
-            :title="316 + ' courses'"
+            :title="courseSummary.courseSales.toLocaleString() + ' courses'"
             label="Course sales"
-            link="/student/courses"
+            type="filter"
+            tableType="CourseSales"
+            filterType="active"
           />
           <dash-item-metrics
-            :title="206 + ' courses'"
+            :title="courseSummary.completions.toLocaleString() + ' courses'"
             label="Completions"
-            link="/student/courses"
+            type="filter"
+            tableType="completions"
+            filterType="active"
           />
         </div>
       </div>
@@ -60,15 +68,14 @@
       <div v-if="isCourses.live" class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table
+            <courses-table
               :columns="columnLive"
-              :rows="rowsLive"
+              :rows="liveCourses ? liveCourses : []"
               type="live courses"
             />
           </div>
         </div>
       </div>
-
       <!-- unpublished -->
       <div
         v-if="isCourses.unpublished"
@@ -76,9 +83,9 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table
+            <courses-table
               :columns="columnsUnpublished"
-              :rows="rowsUnpublished"
+              :rows="unPublishedCourses ? unPublishedCourses : []"
               type="unpublished courses"
             />
           </div>
@@ -92,9 +99,10 @@
       >
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <simple-table
+            <courses-table
               :columns="columnsArchived"
-              :rows="rowsArchived"
+              :rows="archivedCourses ? archivedCourses : []"
+              :onDraft="true"
               type="archived courses"
             />
           </div>
@@ -105,20 +113,23 @@
 </template>
 
 <script>
-const courses = require('@/static/json/courses.json')
-const unPublished = require('@/static/json/unpublished-courses.json')
-const webinars = require('@/static/json/webinars.json')
-const liveCourses = require('@/static/json/live-courses.json')
-
+import { mapState } from 'vuex'
 export default {
   middleware: ['check-auth', 'auth'],
-  fetch({ store }) {
-    store.commit('app/SET_TITLE', 'Courses')
+  async fetch() {
+    this.$store.commit('app/SET_TITLE', 'Courses')
+    try {
+      await this.$store.dispatch('courses/getLiveCourses')
+      await this.$store.dispatch('courses/getCoursesSummary')
+      await this.$store.dispatch('courses/getUnPublishedCourses')
+      await this.$store.dispatch('courses/getArchivedCourses')
+    } catch (err) {
+      console.log(err)
+    }
   },
+  // call fetch only on client-side
+  fetchOnServer: false,
   data: () => ({
-    courses: _.take(courses, 4),
-    webinars: _.take(webinars, 4),
-    undoneTasks: _.take(courses, 3),
     // live
     columnLive: [
       {
@@ -138,10 +149,6 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Comp.',
-        field: 'comp',
-      },
-      {
         label: 'Rating',
         field: 'rating',
       },
@@ -153,7 +160,6 @@ export default {
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    rowsLive: _.take(liveCourses, 4),
     // unpublished
     columnsUnpublished: [
       {
@@ -173,10 +179,6 @@ export default {
         field: 'sales',
       },
       {
-        label: 'Comp.',
-        field: 'comp',
-      },
-      {
         label: 'Rating',
         field: 'rating',
       },
@@ -188,48 +190,37 @@ export default {
         dateOutputFormat: 'MMM do yy',
       },
     ],
-    rowsUnpublished: _.take(unPublished, 3),
     columnsArchived: [
       {
         label: 'Course title',
         field: 'courseTitle',
       },
-      {
-        label: 'Tutor',
-        field: 'tutor',
-      },
-      {
-        label: 'Price',
-        field: 'price',
-      },
-      {
-        label: 'Sales',
-        field: 'sales',
-      },
-      {
-        label: 'Comp.',
-        field: 'comp',
-      },
-      {
-        label: 'Rating',
-        field: 'rating',
-      },
-      {
-        label: 'Date',
-        field: 'createdAt',
-        type: 'createdAt',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
     ],
-    rowsArchived: _.take(liveCourses, 4),
-
     isCourses: {
       live: true,
       unpublished: false,
       archived: false,
     },
   }),
+  computed: {
+    ...mapState({
+      courses: (state) => state.courses.courses,
+      courseSummary: (state) => state.courses.courseSummary,
+      liveCourses: (state) => state.courses.coursesData.liveCourses,
+      unPublishedCourses: (state) => state.courses.coursesData.unPublishedCourses,
+      archivedCourses: (state) => state.courses.coursesData.archived,
+
+    }),
+  },
+  created() {
+    this.$store
+      .dispatch('courses/getCoursesSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+  },
   methods: {
     switcher: function (value) {
       switch (value) {
