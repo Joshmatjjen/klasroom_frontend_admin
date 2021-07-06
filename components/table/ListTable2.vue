@@ -100,13 +100,13 @@
 
             <span v-else-if="props.column.field == 'date'">
               <span class="text-gray-700 text-left">{{
-                formatDate(props.row.purchasedAt)
+                props.row.purchasedAt.substring(0, 12)
               }}</span>
             </span>
 
             <span v-else-if="props.column.field == 'time'">
               <span class="text-gray-700 text-left">{{
-                formatTime(props.row.purchasedAt)
+                props.row.purchasedAt.substring(13)
               }}</span>
             </span>
             <!-- //end          ;   -->

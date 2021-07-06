@@ -98,11 +98,9 @@
     <section v-if="dataAll && dataCourses && dataWebinars">
       <t-pagination
         :total-items="
-          tab === 0
-            ? dataAll.pagination.count
-            : tab === 1
-            ? dataCourses.pagination.count
-            : dataWebinars.pagination.webinars
+          (tab === 0 && dataAll.pagination.count) ||
+          (tab === 1 && dataCourses.pagination.count) ||
+          (tab === 2 && dataWebinars.pagination.count)
         "
         :per-page="
           (tab === 0 && dataAll.pagination.limit) ||
@@ -112,11 +110,9 @@
         :limit="4"
         :variant="'roundedSmall'"
         :value="
-          tab === 0
-            ? dataAll.pagination.currentPage
-            : tab === 1
-            ? dataCourses.pagination.currentPage
-            : dataWebinars.pagination.currentPage
+          (tab === 0 && dataAll.pagination.currentPage) ||
+          (tab === 1 && dataCourses.pagination.currentPage) ||
+          (tab === 2 && dataWebinars.pagination.currentPage)
         "
         @change="changePage"
       />
@@ -264,11 +260,9 @@ export default {
     changePage(pagination) {
       this.$store
         .dispatch(
-          tab === 0
-            ? 'people/getTutorAllSales'
-            : tab === 1
-            ? 'people/getTutorCourseSales'
-            : 'people/getTutorWebinarsSales',
+          (this.tab === 0 && 'people/getTutorAllSales') ||
+            (this.tab === 1 && 'people/getTutorCourseSales') ||
+            (this.tab === 2 && 'people/getTutorWebinarsSales'),
           {
             id: this.$route.params.slug.split('-')[1],
             pagination,

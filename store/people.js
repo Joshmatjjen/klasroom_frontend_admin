@@ -370,7 +370,7 @@ export const actions = {
 
       if (data) {
         console.log('Sales Courses', data)
-        vuexContext.commit('FETCH_TUTOR_COURSES_SUCCESS', data)
+        vuexContext.commit('FETCH_TUTOR_COURSES_SALES_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -394,7 +394,7 @@ export const actions = {
 
       if (data) {
         console.log('Sales Webinars', data)
-        vuexContext.commit('FETCH_TUTOR_WEBINARS_SUCCESS', data)
+        vuexContext.commit('FETCH_TUTOR_WEBINARS_SALES_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
