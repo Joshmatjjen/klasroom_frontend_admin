@@ -57,6 +57,7 @@ export default {
     // { src: '~plugins/vue-video-player', mode: 'client' },
     { src: '~plugins/paystack', mode: 'client' },
     { src: '~/plugins/vue-good-table', ssr: false },
+    { src: "~/plugins/vue2-editor", ssr: false }
     // { src: '~plugins/webrtc-adaptor', ssr: false },
   ],
   /*
