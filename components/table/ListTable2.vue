@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
+  <div class="bg-white rounded-xl border-gray-300 shadow-hover relative">
     <div
       class="fixed"
       :class="{ hidden: !opt }"
@@ -12,30 +12,7 @@
       }"
       @click="toggleMenu"
     ></div>
-    <div class="flex flex-row justify-between px-5">
-      <section-switcher v-model="tab" :tabs="[`All`, `Courses`, `Webinars`]" />
-      <div
-        class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"
-      >
-        <p class="text-xs font-medium">Export CSV</p>
-        <div class="vl -py-5"></div>
-        <div class="flex flex-row items-center">
-          <p class="text-xs font-medium pr-3">Filter</p>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
-              fill="#545454"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
+
     <hr />
     <div
       class="pb-1 md:pb-2 lg:pb-2 overflow-x-auto overflow-y-auto scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
@@ -91,8 +68,8 @@
                 <div class="flex flex-col" v-else>
                   <span class="text-gray-700 font-semibold text-left text-md">{{
                     props.row.title
-                  }}</span
-                  ><span class="text-gray-700 font-normal text-left text-xs">{{
+                  }}</span>
+                  <span class="text-gray-700 font-normal text-left text-xs">{{
                     props.row.desc
                   }}</span>
                 </div>
@@ -109,6 +86,30 @@
 
               <!-- Draft for webinar End -->
             </span>
+
+            <span v-else-if="props.column.field == 'title'">
+              <span class="text-gray-700 text-left">{{
+                props.row.courseName || props.row.webinarName
+              }}</span>
+            </span>
+            <span v-else-if="props.column.field == 'student'">
+              <span class="text-gray-700 text-left">{{
+                props.row.studentName
+              }}</span>
+            </span>
+
+            <span v-else-if="props.column.field == 'date'">
+              <span class="text-gray-700 text-left">{{
+                props.row.purchasedAt.substring(0, 12)
+              }}</span>
+            </span>
+
+            <span v-else-if="props.column.field == 'time'">
+              <span class="text-gray-700 text-left">{{
+                props.row.purchasedAt.substring(13)
+              }}</span>
+            </span>
+            <!-- //end          ;   -->
             <span v-else-if="props.column.field == 'price'">
               <span class="text-gray-700 font-semibold"
                 >₦{{ props.row.price }}</span
@@ -188,9 +189,6 @@
                   )) ||
                 (props.column.field === 'status' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
-                (props.column.field === 'date' &&
-                  !rows.some((obj) => Object.keys(obj).includes('action')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
@@ -264,6 +262,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     title: { type: String, required: false },
@@ -277,14 +277,20 @@ export default {
   },
   name: 'list-table1',
   data: () => ({
-    tab: 0,
     opt: false,
     optId: null,
   }),
+
   methods: {
     toggleMenu(optId) {
       this.opt = !this.opt
       if (optId) this.optId = optId
+    },
+    formatTime(date) {
+      return moment(date).format('LT')
+    },
+    formatDate(date) {
+      return moment(date).format('ll')
     },
   },
 }
