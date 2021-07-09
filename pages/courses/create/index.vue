@@ -189,7 +189,7 @@
 
             <!-- Course Part -->
 
-            <section v-if="isCourseSwitch === 1">
+            <section>
               <section>
                 <div class="container mx-auto my-10 px-2 lg:px-0">
                   <div class="grid grid-cols-12 gap-4">
@@ -203,7 +203,7 @@
                             </no-ssr>
                             <div class="content">
                               <div v-html="content"></div>
-                              <pre><code>{{ content }}</code></pre>
+                              <pre><code style="width: 50%">{{ content }}</code></pre>
                             </div>
                             <button type="button" class="btn btn-primary mt-4 flex flex-row" style="padding-left: 1rem; padding-right: 1rem" @click="saveContent">
                               Save
@@ -640,11 +640,13 @@
                         @change="setcourseImage"
                       />
                       <button
+                      v-if="!uploading"
                         @click.prevent="showFileChooser('courseImage')"
                         class="focus:outline-none"
                       >
                         Add Picture
                       </button>
+                      <loader v-else color="white" />
                     </div>
                   </div>
                   <div
@@ -719,7 +721,7 @@ export default {
       lessons: false,
       settings: false,
     },
-
+    uploading: false,
     isCourseSwitch: 0,
     createCourse: {
       title: null,
@@ -727,6 +729,7 @@ export default {
       introduction: null,
       tutorEmail: null,
       categories: [],
+      image: null,
     },
     lesson: [
       {
@@ -883,6 +886,7 @@ export default {
     },
     async setcourseImage(e) {
       console.log('Uploading__')
+      this.uploading = true
       const file = e.target.files[0]
       console.log('file: ', file)
 
@@ -899,7 +903,9 @@ export default {
         console.log('uploaded: ', message, data)
 
         this.createCourse.image = data.webinar_image
+        this.uploading = false
       } catch (e) {
+        this.uploading = false
         console.log(e)
         return
       }
