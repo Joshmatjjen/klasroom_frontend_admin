@@ -1,20 +1,30 @@
 <template>
   <div>
-    <!-- Activity Log -->
+    <!-- Withdrawals -->
     <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
             <list-table-1
               :columns="withdrawalsColumns"
-              :rows="withdrawalsRows"
+              :rows="data ? data.data : []"
               type="Students"
-              :total="124322"
+              :total="data && data.data ? data.data.length : 0"
               route="/people/students/"
             />
           </div>
         </div>
       </div>
+    </section>
+    <section v-if="data && data.pagination">
+      <t-pagination
+        :total-items="data.pagination.count"
+        :per-page="data.pagination.limit"
+        :limit="4"
+        :variant="'roundedSmall'"
+        :value="data.pagination.currentPage"
+        @change="changePage"
+      />
     </section>
   </div>
 </template>
@@ -29,6 +39,7 @@ export default {
   middleware: ['check-auth', 'auth'],
   props: {
     tabs: { type: Number, required: false },
+    data: { type: Array, required: false },
   },
   name: 'completed-courses',
   fetch({ store }) {
@@ -88,6 +99,19 @@ export default {
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
+    },
+    changePage(pagination) {
+      this.$store
+        .dispatch('people/getTutorWithdrawals', pagination)
+        .then((res) => {
+          console.log(res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     },
   },
 }

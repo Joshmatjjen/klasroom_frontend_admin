@@ -114,6 +114,10 @@ export const mutations = {
     state.singleTutor.sales.webinars = data
   },
 
+  FETCH_TUTOR_WITHDRAWALS_SUCCESS(state, data) {
+    state.singleTutor.withdrawals = data
+  },
+
   //ADMINS
 
   FETCH_ADMINS_SUCCESS(state, admins) {
@@ -321,8 +325,10 @@ export const actions = {
   async getTutorWebinars(vuexContext, userId) {
     try {
       const data = await this.$axios.$get(`/webinars/tutors/${userId}`)
+      const newData = await this.$axios.$get(`/finances/withdrawals/${userId}`)
 
       if (data) {
+        if (newData) console.log('Withdrawals', newData)
         console.log('Tutor Webinars', data)
         vuexContext.commit('FETCH_TUTOR_WEBINARS_SALES_SUCCESS', data)
 
@@ -395,6 +401,28 @@ export const actions = {
       if (data) {
         console.log('Sales Webinars', data)
         vuexContext.commit('FETCH_TUTOR_WEBINARS_SALES_SUCCESS', data)
+
+        // localStorage.setItem('tutorsSummary', JSON.stringify(data))
+
+        // Cookie.set('tutorsSummary', JSON.stringify(data))
+
+        return data
+      }
+      return false
+    } catch (e) {
+      // console.log('fetch user failed: ', e)
+      return false
+    }
+  },
+
+  async getTutorWithdrawals(vuexContext, datas) {
+    const { id, pagination } = datas
+    try {
+      const data = await this.$axios.$get(`/finances/withdrawals/${id}`)
+
+      if (data) {
+        console.log('Get Withdrawals', data)
+        vuexContext.commit('FETCH_TUTOR_WITHDRAWALS_SUCCESS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
