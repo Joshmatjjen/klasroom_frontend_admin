@@ -229,9 +229,12 @@
                 >
                   <img src="/icon/empty-pics-icon.svg" alt="" />
                 </div>
-                <div class="flex flex-col" v-if="props.row.name">
+                <div
+                  class="flex flex-col"
+                  v-if="props.row.name || props.row.user"
+                >
                   <span class="text-gray-700 font-semibold text-left text-md">{{
-                    props.row.name
+                    props.row.name || props.row.user
                   }}</span>
                 </div>
                 <div class="flex flex-col" v-else>
@@ -293,6 +296,17 @@
                 props.row.attendance
                   ? props.row.attendance.toLocaleString()
                   : '-----'
+              }}</span>
+            </span>
+            <span v-else-if="props.column.field == 'date'">
+              <span class="text-gray-700 text-left">{{
+                formatDate(props.row.createdAt)
+              }}</span>
+            </span>
+
+            <span v-else-if="props.column.field == 'time'">
+              <span class="text-gray-700 text-left">{{
+                formaTime(props.row.createdAt)
               }}</span>
             </span>
             <span
@@ -362,7 +376,8 @@
                   ) &&
                   !rows.some((obj) =>
                     Object.keys(obj).includes('dateCompleted')
-                  )) ||
+                  ) &&
+                  !rows.some((obj) => Object.keys(obj).includes('user'))) ||
                 (props.column.field === 'isActive' &&
                   !rows.some((obj) => Object.keys(obj).includes('date')) &&
                   !rows.some((obj) =>
@@ -372,12 +387,14 @@
                     Object.keys(obj).includes('dateCompleted')
                   )) ||
                 (props.column.field === 'status' &&
-                  rows.some((obj) => Object.keys(obj).includes('action'))) ||
+                  rows.some((obj) => Object.keys(obj).includes('action')) &&
+                  !rows.some((obj) => Object.keys(obj).includes('user'))) ||
                 (props.column.field === 'isActive' &&
                   rows.some((obj) => Object.keys(obj).includes('action'))) ||
                 (props.column.field === 'date' &&
                   !rows.some((obj) => Object.keys(obj).includes('action')) &&
-                  !rows.some((obj) => Object.keys(obj).includes('time'))) ||
+                  !rows.some((obj) => Object.keys(obj).includes('time')) &&
+                  !rows.some((obj) => Object.keys(obj).includes('user'))) ||
                 props.column.field === 'dateStarted' ||
                 props.column.field === 'dateCompleted' ||
                 (props.column.field == 'rating' &&
@@ -577,6 +594,12 @@ export default {
     },
     checkKeyPresenceInArray(arr, key) {
       return arr.some((obj) => Object.keys(obj).includes(key))
+    },
+    formatDate(date) {
+      return moment(date).format('DD MMM YYYY')
+    },
+    formaTime(time) {
+      return moment(time).format('h:mm A')
     },
   },
 }

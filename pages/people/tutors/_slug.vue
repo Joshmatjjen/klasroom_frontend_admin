@@ -135,12 +135,22 @@
       <section-switcher
         v-model="tabs"
         :tabs="[
-          `${12} Courses`,
-          `${6} Webinars`,
+          `${
+            singleTutor.courses ? singleTutor.courses.pagination.count : 0
+          } Courses`,
+          `${
+            singleTutor.webinars ? singleTutor.webinars.pagination.count : 0
+          } Webinars`,
           `Activity log`,
           `Account summary`,
-          `${4006} Sales`,
-          `${46} Withdrawals`,
+          `${
+            singleTutor.sales.all ? singleTutor.sales.all.pagination.count : 0
+          } Sales`,
+          `${
+            singleTutor.withdrawals
+              ? singleTutor.withdrawals.pagination.count
+              : 0
+          } Withdrawals`,
         ]"
       />
       <!-- Courses -->
@@ -179,7 +189,7 @@
 
       <!-- Withdrawals -->
       <section v-if="tabs === 5">
-        <withdrawals :tabs="tabs" />
+        <withdrawals :tabs="tabs" :data="singleTutor.withdrawals" />
       </section>
     </div>
     <div v-else loader class="">
@@ -352,6 +362,22 @@ export default {
           }
         })
         .catch((e) => console.log('e: ', e))
+
+      // Withdrawals
+      this.$store
+        .dispatch('people/getTutorWithdrawals', {
+          id: this.$route.params.slug.split('-')[1],
+          pagination: 1,
+        })
+        .then((res) => {
+          // console.log('DAta In Auditing', res)
+          this.loading = false
+          // this.settings = res
+          if (res) {
+            // this.showSuccess(res)
+          }
+        })
+        .catch((e) => console.log('e: ', e))
     }
   },
 
@@ -461,6 +487,22 @@ export default {
             })
             .then((res) => {
               console.log('DAta In Auditing', res)
+              this.loading = false
+              // this.settings = res
+              if (res) {
+                // this.showSuccess(res)
+              }
+            })
+            .catch((e) => console.log('e: ', e))
+        } else if (newValue === 5) {
+          // Withdrawals
+          this.$store
+            .dispatch('people/getTutorWithdrawals', {
+              id: this.$route.params.slug.split('-')[1],
+              pagination: 1,
+            })
+            .then((res) => {
+              // console.log('DAta In Auditing', res)
               this.loading = false
               // this.settings = res
               if (res) {

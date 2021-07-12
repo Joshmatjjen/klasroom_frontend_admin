@@ -8,8 +8,8 @@
             <list-table-1
               :columns="activityLogColumns"
               :rows="data ? data.data : []"
-              type="Students"
-              :total="124322"
+              type="Activity Log"
+              :total="data.pagination ? data.pagination.count : 0"
               route="/people/students/"
             />
           </div>
