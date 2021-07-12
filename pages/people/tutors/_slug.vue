@@ -135,12 +135,22 @@
       <section-switcher
         v-model="tabs"
         :tabs="[
-          `${12} Courses`,
-          `${6} Webinars`,
+          `${
+            singleTutor.courses ? singleTutor.courses.pagination.count : 0
+          } Courses`,
+          `${
+            singleTutor.webinars ? singleTutor.webinars.pagination.count : 0
+          } Webinars`,
           `Activity log`,
           `Account summary`,
-          `${4006} Sales`,
-          `${46} Withdrawals`,
+          `${
+            singleTutor.sales.all ? singleTutor.sales.all.pagination.count : 0
+          } Sales`,
+          `${
+            singleTutor.withdrawals
+              ? singleTutor.withdrawals.pagination.count
+              : 0
+          } Withdrawals`,
         ]"
       />
       <!-- Courses -->

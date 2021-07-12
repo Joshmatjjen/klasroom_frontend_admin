@@ -599,7 +599,7 @@ export default {
       return moment(date).format('DD MMM YYYY')
     },
     formaTime(time) {
-      return moment(time).format('h:mm:ss a')
+      return moment(time).format('h:mm A')
     },
   },
 }

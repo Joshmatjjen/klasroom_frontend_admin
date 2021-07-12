@@ -8,7 +8,7 @@
             <list-table-1
               :columns="withdrawalsColumns"
               :rows="data ? data.data : []"
-              type="Students"
+              type="Withdrawals"
               :total="data && data.data ? data.data.length : 0"
               route="/people/students/"
             />
