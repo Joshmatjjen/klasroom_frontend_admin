@@ -10,7 +10,7 @@
           class="form-input"
           :placeholder="`Enter part ${id + 1} name`"
           v-model="item.part"
-          @input="checkFormError('polls')"
+          @input="checkFormError('part')"
         />
       </div>
     </div>
@@ -101,7 +101,7 @@ export default {
       ]
     },
     removeLesson(id) {
-      this.item.lesson = this.item.lesson.filter((i, index) => index !== id)
+      this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
     },
   },
 }

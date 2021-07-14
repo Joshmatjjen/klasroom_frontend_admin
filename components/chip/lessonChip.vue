@@ -1,7 +1,7 @@
 <template>
-  <!-- Choices -->
+  <!-- Lessons -->
   <div class="form-group mb-5">
-    <label for="input-choice"
+    <label :for="`input-lesson-${id}`"
       >{{ 'Lesson ' + (id + 1) }}
       <img
         class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
@@ -12,7 +12,7 @@
     </label>
     <div>
       <input
-        id="input-choice"
+        :id="`input-lesson-${id}`"
         type="text"
         class="form-input"
         :placeholder="`Enter lesson ${id + 1} name`"
@@ -21,17 +21,11 @@
       />
     </div>
     <div class="mt-5">
-      <label for="textarea-name"
+      <label :for="`textarea-description-${id}`"
         >{{ 'Lesson ' + (id + 1) + ' description' }}
-        <img
-          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
-          src="/icon/delete.svg"
-          @click="deleteItem(id)"
-          v-if="id > 1"
-        />
       </label>
       <textarea
-        id="textarea-name"
+        :id="`textarea-description-${id}`"
         type="text"
         class="form-textarea"
         v-model="_description"
@@ -41,14 +35,8 @@
     </div>
 
     <div class="mt-5">
-      <label for="content-name"
+      <label :for="`content-editor-${id}`"
         >{{ 'Lesson ' + (id + 1) + ' content' }}
-        <img
-          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
-          src="/icon/delete.svg"
-          @click="deleteItem(id)"
-          v-if="id > 1"
-        />
       </label>
       <no-ssr placeholder="Loading Editor...">
         <quill-editor
@@ -98,7 +86,7 @@
             Add lesson video
           </p>
         </div>
-        <div
+        <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
         >
@@ -164,7 +152,7 @@
           <p class="text-xs text-center font-thin text-gray-600 pl-2">
             Add link
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -296,7 +284,6 @@ export default {
   },
   mounted() {
     if (process.client) {
-      console.log('Quill: ', window.Quill)
       window.Quill.register(window.QuillVideo, true)
       window.Quill.register('modules/ImageExtend', ImageExtend)
       window.Quill.register('modules/VideoExtend', VideoExtend)
