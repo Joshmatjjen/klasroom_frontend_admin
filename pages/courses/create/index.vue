@@ -254,7 +254,7 @@
 
             <!-- Course Part -->
 
-            <section>
+            <section v-if="isCourseSwitch === 1">
               <section>
                 <div class="container mx-auto my-10 px-2 lg:px-0">
                   <div class="grid grid-cols-12 gap-4">
