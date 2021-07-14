@@ -155,11 +155,6 @@
                               <label for="input-name"
                                 >Course category</label
                               >
-                              <!-- <select>
-                                <option v-for="category in courseCategory.data" :key="category.categoryId" :value="category.categoryId">
-                                  {{ category.categoryName }}
-                                </option>
-                              </select> -->
                               <v-select
                               class="form-input style-chooser cursor-pointer capitalize"
                               placeholder="Select course category"
@@ -259,7 +254,7 @@
 
             <!-- Course Part -->
 
-            <section v-if="isCourseSwitch === 1">
+            <section>
               <section>
                 <div class="container mx-auto my-10 px-2 lg:px-0">
                   <div class="grid grid-cols-12 gap-4">
@@ -267,28 +262,16 @@
                       <!-- Part 1 -->
                       <dash-items-section-group title="Lessons" :edit="false">
                         <!-- course part -->
-                        <div class="mb-8">
-                            <client-only placeholder="Loading Your Editor...">
-                              <vue-editor placeholder="Write Something..." v-model="content"></vue-editor>
-                            </client-only>
-                            <div class="content">
-                              <div v-html="content"></div>
-                              <pre><code style="width: 50%">{{ content }}</code></pre>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-4 flex flex-row" style="padding-left: 1rem; padding-right: 1rem" @click="saveContent">
-                              Save
-                            </button>
-                          </div>
                         <div
                           class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                         >
                           <course-chip
-                            v-for="(item, key) in lesson"
+                            v-for="(item, key) in lessonParts"
                             :key="key"
                             :id="key"
                             :item="item"
                             :deleteItem="removePart"
-                            :lesson="lesson"
+                            :lessonParts="lessonParts"
                             :checkFormError="checkFormError"
                           />
                         </div>
@@ -813,11 +796,21 @@ export default {
     },
     newTag: '',
     categoryArray: [],
-    lesson: [
+    lessonParts: [
       {
-        question: '',
-        lesson: ['', ''],
-        textarea: '',
+        part: '',
+        lessons: [
+          {
+            lesson: '',
+            description: '',
+            content: '',
+          },
+          {
+            lesson: '',
+            description: '',
+            content: '',
+          },
+        ],
       },
     ],
     settings: {
@@ -865,6 +858,20 @@ export default {
     await this.getCourseCategory()
   },
   methods: {
+    playDashVideos() {
+      // NodeList of video-js elements
+      const dashVideos = document.querySelectorAll('.video-js')
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.src({
+          src,
+          type,
+        }) 
+      }
+    },
+        // player.play()
     addTag() {
       this.createCourse.tags.push('#' + this.newTag )
       this.newTag = ''
@@ -1049,17 +1056,27 @@ export default {
         )
     },
     addLessonPart() {
-      this.lesson = [
-        ...this.lesson,
+      this.lessonParts = [
+        ...this.lessonParts,
         {
-          question: '',
-          lesson: ['', ''],
-          textarea: '',
+          part: '',
+          lessons: [
+            {
+              lesson: '',
+              description: '',
+              content: '',
+            },
+            {
+              lesson: '',
+              description: '',
+              content: '',
+            },
+          ],
         },
       ]
     },
     removePart(id) {
-      this.lesson = this.lesson.filter((i, index) => index !== id)
+      this.lessonParts = this.lessonParts.filter((i, index) => index !== id)
     },
   },
 }
