@@ -89,18 +89,16 @@
                               </div>
                             </div>
                             <div class="form-group mb-5">
-                              <label for="input-name"
-                                >Course category</label
-                              >
+                              <label for="input-name">Course category</label>
                               <v-select
-                              class="form-input style-chooser cursor-pointer capitalize"
-                              placeholder="Select course category"
-                              multiple 
-                              taggable
-                              @input="setSelected"
-                              label="categoryName"
-                              :options="courseCategory.data"
-                            />
+                                class="form-input style-chooser cursor-pointer capitalize"
+                                placeholder="Select course category"
+                                multiple
+                                taggable
+                                @input="setSelected"
+                                label="categoryName"
+                                :options="courseCategory.data"
+                              />
                             </div>
                             <div class="form-group mb-5">
                               <label for="input-name"
@@ -171,7 +169,8 @@
                                       <p
                                         class="text-sm text-center font-thin text-gray-700 pl-3"
                                       >
-                                        Click here to upload an introductory video
+                                        Click here to upload an introductory
+                                        video
                                       </p>
                                     </div>
                                   </div>
@@ -198,17 +197,40 @@
                       <dash-items-section-group title="Lessons" :edit="false">
                         <!-- course part -->
                         <div class="mb-8">
-                            <no-ssr placeholder="Loading Your Editor...">
-                              <vue-editor placeholder="Write Something..." v-model="content"></vue-editor>
-                            </no-ssr>
-                            <div class="content">
-                              <div v-html="content"></div>
-                              <pre><code style="width: 50%">{{ content }}</code></pre>
-                            </div>
-                            <button type="button" class="btn btn-primary mt-4 flex flex-row" style="padding-left: 1rem; padding-right: 1rem" @click="saveContent">
-                              Save
-                            </button>
+                          <no-ssr placeholder="Loading Your Editor...">
+                            <!-- <vue-editor
+                              placeholder="Write Something..."
+                              v-model="content"
+                            ></vue-editor> -->
+                            <quill-editor
+                              class="ql-editor"
+                              v-model="content"
+                              :options="editorOption"
+                              @change="onEditorChange($event)"
+                            ></quill-editor>
+                          </no-ssr>
+                          <div class="content">
+                            <!-- <div v-html="content"></div> -->
+                            <!-- <pre><code style="width: 50%">{{ content }}</code></pre> -->
+                            <!-- <video
+                              id="example-video"
+                              data-src="https://s3.eu-central-1.wasabisys.com/klasroom-test/course_resources/leadership/lesson1/1625843679.3936191_-_ND036_C1_L2_01_Lesson_Intro/1625843679.mpd"
+                              data-type="application/dash+xml"
+                              width="600"
+                              height="300"
+                              class="video-js vjs-default-skin"
+                              controls
+                            ></video> -->
                           </div>
+                          <button
+                            type="button"
+                            class="btn btn-primary mt-4 flex flex-row"
+                            style="padding-left: 1rem; padding-right: 1rem"
+                            @click="saveContent"
+                          >
+                            Save
+                          </button>
+                        </div>
                         <div
                           class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                         >
@@ -548,8 +570,10 @@
               <div class="px-4 md:px-5 lg:px-6 py-4">
                 <ul class="text-gray-700">
                   <li class="text-left">
-                    <h5 class="font-bold mb-2">{{course.title}}</h5>
-                    <p class="text-xs text-gray-700">{{course.introduction}}</p>
+                    <h5 class="font-bold mb-2">{{ course.title }}</h5>
+                    <p class="text-xs text-gray-700">
+                      {{ course.introduction }}
+                    </p>
                   </li>
                   <li>
                     <hr class="my-5" />
@@ -640,7 +664,7 @@
                         @change="setcourseImage"
                       />
                       <button
-                      v-if="!uploading"
+                        v-if="!uploading"
                         @click.prevent="showFileChooser('courseImage')"
                         class="focus:outline-none"
                       >
@@ -694,6 +718,20 @@ import { mapState } from 'vuex'
 import UserChip from '~/components/chip/UserChip.vue'
 import { getAccessTokenHeader } from '~/utils'
 // import PollChip from '~/components/chip/PollChip.vue'
+
+import videojs from 'video.js'
+
+import {
+  container,
+  QuillWatch,
+  QuillVideoWatch,
+  ImageExtend,
+  VideoExtend,
+} from '~/utils/quill-video-image-module/index'
+
+// import ImageResize from 'quill-image-resize-module'
+
+// Introduce the video module and register
 
 const courses = require('@/static/json/courses.json')
 
@@ -764,6 +802,88 @@ export default {
       userType: (state) =>
         state.auth.user && state.auth.user.isTutor ? 'tutor' : 'student',
     }),
+    // Rich text box parameter settings
+
+    editorOption() {
+      const self = this
+
+      return {
+        modules: {
+          // ImageResize: {},
+          ImageExtend: {
+            loading: true, // Optional parameters Whether to display upload progress and prompts
+            name: 'course_resources', // Picture parameter name
+            size: 1, // Optional parameters Image size, the unit is M, 1M = 1024kb
+            action: 'https://streaming.staging.klasroom.com/v1/uploads', // Server address, if the action is empty, use base64 to insert the picture
+            // response is a function to get the specific picture address returned by the server
+            // For example, the server returns {code: 200; data:{ url:'baidu.com'}}
+            // then return res.data.url
+            response: (res) => {
+              return res.data.course_resources[0].signedUrl
+            },
+            headers: (xhr) => {
+              xhr.setRequestHeader(
+                'Access-Token',
+                localStorage.getItem('token')
+              )
+            }, // Optional parameters Set the request header
+            start: () => {}, // Optional parameters Custom start upload trigger event
+            end: (res) => {
+              console.log('ended: ', res)
+            }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
+            error: () => {}, // Optional parameters Customize events triggered by network errors
+            change: (xhr, formData) => {
+              formData.append('file_path', 'CourseImage')
+            }, // Optional parameters Trigger every time you select a picture, it can also be used to set the header, but there is one more parameter than headers, which can be set formData
+            sizeError: () => {
+              alert('The picture cannot be larger than 1M')
+            },
+          },
+          VideoExtend: {
+            loading: true,
+            name: 'course_resources',
+            size: 100, // Optional parameters Video size, the unit is M, 1M = 1024kb
+            action: 'https://streaming.staging.klasroom.com/v1/uploads', // Video upload interface
+            headers: (xhr) => {
+              // set custom token(optional)
+              xhr.setRequestHeader(
+                'Access-Token',
+                localStorage.getItem('token')
+              )
+            },
+            change: (xhr, formData) => {
+              formData.append('file_path', 'CourseVideo')
+            },
+            end: () => {
+              console.log('ended')
+              // setTimeout(() => {
+              //   self.playDashVideos()
+              // }, 10000)
+            }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
+            response: (res) => {
+              // video uploaded path
+              // custom your own
+              return res.data.course_resources[0].signedUrl
+            },
+            sizeError: () => {
+              alert('The video cannot be larger than 100M')
+            },
+          },
+          toolbar: {
+            container: container, // container as a toolbar, all toolbars are introduced this time, and they can also be configured by themselves
+            handlers: {
+              image: function () {
+                // Hijack the original picture click button event
+                QuillWatch.emit(this.quill.id)
+              },
+              video: function () {
+                QuillVideoWatch.emit(this.quill.id)
+              },
+            },
+          },
+        },
+      }
+    },
   },
   watch: {
     async fileResources(value) {
@@ -780,16 +900,47 @@ export default {
     },
   },
   async mounted() {
+    if (process.client) {
+      console.log('Quill: ', window.Quill)
+      window.Quill.register(window.QuillVideo, true)
+      // Quill.register('modules/ImageResize', ImageResize)
+      window.Quill.register('modules/ImageExtend', ImageExtend)
+      window.Quill.register('modules/VideoExtend', VideoExtend)
+    }
+
     await this.getCourseCategory()
+    // this.playDashVideos()
   },
   methods: {
+    playDashVideos() {
+      // NodeList of video-js elements
+      const dashVideos = document.querySelectorAll('.video-js')
+
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.src({
+          src,
+          type,
+        })
+        // player.play()
+      }
+    },
+    onEditorChange({ html, quill, text }) {
+      // console.log('onEditorChange: ', text)
+      // if (text === '\n[uploading100%]\n')
+      //   setTimeout(() => {
+      //     this.playDashVideos()
+      //   }, 10000)
+    },
     saveContent() {
       console.log(this.content)
     },
     async getCourseCategory() {
       try {
         await this.$store.dispatch('courses/getCourseCategory')
-      } catch(error) {
+      } catch (error) {
         console.log(error)
       }
     },
