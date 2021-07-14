@@ -1,6 +1,6 @@
 <template>
   <div class="px-4 md:px-5 lg:px-6 py-4">
-    <!-- Question -->
+    <!-- Part -->
     <div class="form-group mb-5">
       <label for="input-name">Part {{ id + 1 }}</label>
       <div>
@@ -8,9 +8,9 @@
           id="input-name"
           type="text"
           class="form-input"
-          :placeholder="`Enter part ${ id + 1} name`"
-          v-model="item.question"
-          @input="checkFormError('polls')"
+          :placeholder="`Enter part ${id + 1} name`"
+          v-model="item.part"
+          @input="checkFormError('part')"
         />
       </div>
     </div>
@@ -18,22 +18,32 @@
 
     <div class="grid grid-cols-1 gap-x-5 gap-y-0">
       <lesson-chip
-        v-for="(i, key) in item.lesson"
+        v-for="(i, key) in item.lessons"
         :key="key"
         :id="key"
-        :choice="i"
-        @update:choice="
+        :lesson="i"
+        @update:lesson="
           (value) => {
-            item.lesson[key] = value
+            item.lessons[key].lesson = value
           }
         "
-        :deleteItem="removeChoice"
+        @update:description="
+          (value) => {
+            item.lessons[key].description = value
+          }
+        "
+        @update:content="
+          (value) => {
+            item.lessons[key].content = value
+          }
+        "
+        :deleteItem="removeLesson"
         :checkFormError="checkFormError"
       />
     </div>
-    <!-- Add New Choice Button -->
+    <!-- Add New Lesson Button -->
     <div
-      @click="addChoice"
+      @click="addLesson"
       class="relative flex items-center justify-center my-10 cursor-pointer"
     >
       <hr class="w-full" />
@@ -77,15 +87,21 @@ export default {
     item: { type: Object, required: false },
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
-    polls: { type: Array, required: false },
     checkFormError: { type: Function, required: false },
   },
   methods: {
-    addChoice() {
-      this.item.lesson = [...this.item.lesson, '']
+    addLesson() {
+      this.item.lessons = [
+        ...this.item.lessons,
+        {
+          lesson: '',
+          description: '',
+          content: '',
+        },
+      ]
     },
-    removeChoice(id) {
-      this.item.lesson = this.item.lesson.filter((i, index) => index !== id)
+    removeLesson(id) {
+      this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
     },
   },
 }

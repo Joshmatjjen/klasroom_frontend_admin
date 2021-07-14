@@ -612,3 +612,8 @@ table.vgt-table {
 .swal2-close:hover {
   color: #f27474 !important;
 }
+
+/* quill style */
+.ql-snow .ql-tooltip {
+  left: 0 !important;
+}

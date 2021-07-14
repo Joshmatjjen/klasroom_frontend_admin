@@ -13,9 +13,9 @@
       <div
         class="flex flex-row rounded-3xl text-xs md:text-sm text-white md:text-right my-5 mr-5"
       >
-        <button class="flex items-center mr-5">
+        <!-- <button class="flex items-center mr-5">
           <img class="w-6 h-6" src="/icon/edit.svg" />
-        </button>
+        </button> -->
         <button class="items-center" @click="deleteItem(id)">
           <img class="w-6 h-6" src="/icon/delete.svg" />
         </button>
