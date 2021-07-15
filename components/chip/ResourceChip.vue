@@ -13,10 +13,10 @@
       <div
         class="flex flex-row rounded-3xl text-xs md:text-sm text-white md:text-right my-5 mr-5"
       >
-        <button class="flex items-center mr-5">
+        <!-- <button class="flex items-center mr-5">
           <img class="w-6 h-6" src="/icon/edit.svg" />
-        </button>
-        <button class="items-center">
+        </button> -->
+        <button class="items-center" @click="deleteItem(id)">
           <img class="w-6 h-6" src="/icon/delete.svg" />
         </button>
       </div>
@@ -28,7 +28,9 @@
 export default {
   props: {
     file: { type: Object, required: false },
+    id: { type: Number, required: false },
     link: { type: String, required: false },
+    deleteItem: { type: Function, required: false },
   },
   // computed: {
   //   view_route() {

@@ -1,48 +1,53 @@
 <template>
-  <div class="min-h-screen mb-24"  @click.self="showModal = false">
-    <section class="bg-orange-100">
-      <div class="container mx-auto mb-10 px-4 lg:px-0">
-        <button
-            class="btn btn-primary flex flex-row"
-            style="padding-left: 1rem; padding-right: 1rem"
-            @click.prevent="showModal = !showModal"
-        >
-            Add Category
-            <img class="pl-3" src="~/static/icon/plus-white.svg" />
-        </button>
-      </div>
-    </section>
-    <section class="container mx-auto mb-10 px-4 lg:px-0">
-        <div v-if="showModal" class="form-group w-1/2 border rounded-xl p-5 bg-white">
-        <label for="input-category">Category Name</label>
-          <input
-              id="input-category"
-              type="text"
-              class="form-input my-2"
-              placeholder="Enter category name"
-              v-model="categoryName.name"
-          />
-          <p class="my-2 error">{{errorField}}</p>
-        <button @click="addCourseCategory" class="btn btn-primary flex flex-row">Create category</button>
+  <section>
+    <div v-if="courseCategory.data" class="min-h-screen mb-24"  @click.self="showModal = false">
+      <section class="bg-orange-100">
+        <div class="container mx-auto mb-10 px-4 lg:px-0">
+          <button
+              class="btn btn-primary flex flex-row"
+              style="padding-left: 1rem; padding-right: 1rem"
+              @click.prevent="showModal = !showModal"
+          >
+              Add Category
+              <img class="pl-3" src="~/static/icon/plus-white.svg" />
+          </button>
         </div>
-    </section>
-    <section class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
-        <div>
-          <category-table
-            :columns="columns"
-            :rows="courseCategory ? courseCategory.data : []"
-            type="category"
-            :deleteItem="deleteCategory"
-          />
-        </div>
-    </section>
-  </div>
+      </section>
+      <section class="container mx-auto mb-10 px-4 lg:px-0">
+          <div v-if="showModal" class="form-group w-1/2 border rounded-xl p-5 bg-white">
+          <label for="input-category">Category Name</label>
+            <input
+                id="input-category"
+                type="text"
+                class="form-input my-2"
+                placeholder="Enter category name"
+                v-model="categoryName.name"
+            />
+            <p class="my-2 error">{{errorField}}</p>
+          <button @click="addCourseCategory" class="btn btn-primary flex flex-row">Create category</button>
+          </div>
+      </section>
+      <section class="bg-white rounded-xl border border-gray-300 shadow-hover relative">
+          <div>
+            <category-table
+              :columns="columns"
+              :rows="courseCategory ? courseCategory.data : []"
+              type="category"
+              :deleteItem="deleteCategory"
+            />
+          </div>
+      </section>
+    </div>
+    <loader-2 v-else/>
+  </section>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+import Loader2 from '~/components/loader/Loader2.vue'
 export default {
   middleware: ['check-auth', 'auth'],
+  components: { Loader2 },
   fetch({ store }) {
     store.commit('app/SET_TITLE', 'Course category')
   },
@@ -64,10 +69,10 @@ export default {
   }),
   computed: {
     ...mapState({
-      courseCategory: (state) => state.courses.courseCategory ? state.courses.courseCategory : null,
+      courseCategory: (state) => state.courses.courseCategory,
     }),
   },
-  async mounted() {
+  async created() {
     await Promise.all([this.getCourseCategory()])
   },
   methods: {

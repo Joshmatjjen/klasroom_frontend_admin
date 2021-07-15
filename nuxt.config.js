@@ -23,12 +23,21 @@ export default {
       {
         'http-equiv': 'Content-Security-Policy',
         content:
-          "img-src 'self' data: *; default-src 'self' data: 'unsafe-inline' 'unsafe-eval' https://*; connect-src 'self' http://* https://* ws://* wss://*",
+          "img-src 'self' data: *; default-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval' http://* https://*; worker-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval' https://*;  connect-src 'self' http://* https://* ws://* wss://*",
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://unpkg.com/video.js/dist/video-js.css',
+      },
+    ],
     script: [
       { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
+      { src: 'https://unpkg.com/video.js/dist/video.js' },
+      { src: 'https://cdn.dashjs.org/latest/dash.all.debug.js' },
+      { src: 'https://unpkg.com/videojs-contrib-dash/dist/videojs-dash.js' },
       // { src:"js/webrtc_adaptor.js" }
     ],
   },
@@ -37,6 +46,11 @@ export default {
    */
   css: [
     // '~/assets/css/global.css'
+    'quill/dist/quill.core.css',
+    // for snow theme
+    'quill/dist/quill.snow.css',
+    // for bubble theme
+    'quill/dist/quill.bubble.css',
   ],
   /*
    ** Plugins to load before mounting the App
@@ -57,6 +71,8 @@ export default {
     // { src: '~plugins/vue-video-player', mode: 'client' },
     { src: '~plugins/paystack', mode: 'client' },
     { src: '~/plugins/vue-good-table', ssr: false },
+    { src: '~/plugins/vue2-editor', ssr: false },
+    { src: '~/plugins/quill-editor', mode: 'client', ssr: false },
     // { src: '~plugins/webrtc-adaptor', ssr: false },
   ],
   /*

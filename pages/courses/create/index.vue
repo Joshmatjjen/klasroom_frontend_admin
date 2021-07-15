@@ -84,34 +84,200 @@
                                   type="text"
                                   class="form-input"
                                   placeholder="Enter course introduction here"
-                                  v-model="createCourse.introduction"
+                                  v-model="createCourse.introductory_text"
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="input-name">Introductory video</label>
+                              <div class="relative h-full">
+                                <input
+                                  ref="input"
+                                  type="file"
+                                  name="image"
+                                  accept="video/*"
+                                  multiple
+                                  @change="setIntroVideo"
+                                />
+                                <div class="py-2">
+                                  <!-- introductory name -->
+                                  <resource-chip
+                                    v-for="(item, key) in fileResources"
+                                    :key="key"
+                                    :file="{ filename: item.name }"
+                                    :id="key"
+                                    :deleteItem="deleteResItem"
+                                  />
+                                  <div
+                                    class="container flex flex-row bg-white rounded-lg border border-gray-300 shadow-hover mb-5"
+                                  >
+                                    <div
+                                      class="flex flex-row justify-center items-center w-full p-4 cursor-pointer"
+                                      @click.prevent="showFileChooser"
+                                    >
+                                      <div>
+                                        <svg
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M9.375 7.44601H11.107V15.3749C11.107 15.478 11.1914 15.5624 11.2945 15.5624H12.7008C12.8039 15.5624 12.8883 15.478 12.8883 15.3749V7.44601H14.625C14.782 7.44601 14.8687 7.26554 14.7727 7.14367L12.1477 3.82023C12.1301 3.79782 12.1077 3.7797 12.0821 3.76723C12.0565 3.75477 12.0285 3.74829 12 3.74829C11.9715 3.74829 11.9435 3.75477 11.9179 3.76723C11.8923 3.7797 11.8699 3.79782 11.8523 3.82023L9.22734 7.14133C9.13125 7.26555 9.21797 7.44601 9.375 7.44601ZM20.5781 14.6718H19.1719C19.0688 14.6718 18.9844 14.7562 18.9844 14.8593V18.4687H5.01562V14.8593C5.01562 14.7562 4.93125 14.6718 4.82812 14.6718H3.42188C3.31875 14.6718 3.23438 14.7562 3.23438 14.8593V19.4999C3.23438 19.9148 3.56953 20.2499 3.98438 20.2499H20.0156C20.4305 20.2499 20.7656 19.9148 20.7656 19.4999V14.8593C20.7656 14.7562 20.6812 14.6718 20.5781 14.6718Z"
+                                            fill="black"
+                                          />
+                                        </svg>
+                                      </div>
+                                      <p
+                                        class="text-sm text-center font-thin text-gray-700 pl-3"
+                                      >
+                                        Click here to upload an introductory
+                                        video
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group mb-5">
+                              <label for="input-name">Tutor Email</label>
+                              <div>
+                                <input
+                                  id="input-name"
+                                  type="email"
+                                  class="form-input"
+                                  placeholder="Tutor email"
+                                  v-model="createCourse.tutor_email"
                                 />
                               </div>
                             </div>
                             <div class="form-group mb-5">
-                              <label for="input-name"
-                                >Course category</label
-                              >
+                              <label for="input-name">Course category</label>
                               <v-select
-                              class="form-input style-chooser cursor-pointer capitalize"
-                              placeholder="Select course category"
-                              multiple 
-                              @input="setSelected"
-                              label="categoryName"
-                              :options="courseCategory"
-                            />
+                                class="form-input style-chooser cursor-pointer capitalize"
+                                placeholder="Select course category"
+                                multiple
+                                v-model="selected"
+                                @input="setSelected"
+                                label="categoryName"
+                                :options="courseCategory.data"
+                              />
                             </div>
                             <div class="form-group mb-5">
-                              <label for="input-name"
-                                >What will the students learn?</label
-                              >
+                              <label for="input-name">Tags</label>
                               <div>
                                 <input
                                   id="input-name"
                                   type="text"
                                   class="form-input"
-                                  placeholder="Enter what student will learn here"
+                                  placeholder="Enter tags"
+                                  v-model="newTag"
                                 />
+                                <button
+                                  type="button"
+                                  @click="addTag"
+                                  class="btn btn-sm lg:mt-3 btn-primary"
+                                >
+                                  Add tag
+                                </button>
+                                <div class="mt-3 flex">
+                                  <p
+                                    class="mr-2"
+                                    v-for="tag in createCourse.tags"
+                                    :key="tag"
+                                  >
+                                    {{ tag }}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              v-for="(item,
+                              index) in createCourse.course_benefits"
+                              :key="index"
+                            >
+                              <div class="form-group mb-5">
+                                <div class="flex">
+                                  <label for="input-name"
+                                    >Course benefits title</label
+                                  >
+                                  <img
+                                    class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
+                                    @click="remove(index)"
+                                    v-show="
+                                      index ||
+                                      (!index &&
+                                        createCourse.course_benefits.length > 1)
+                                    "
+                                    src="/icon/delete.svg"
+                                  />
+                                </div>
+                                <input
+                                  v-model="item.title"
+                                  id="input-name"
+                                  type="text"
+                                  class="form-input"
+                                  placeholder="Enter course benefit title here"
+                                />
+                              </div>
+                              <div class="form-group mb-5">
+                                <label for="input-name"
+                                  >Course benefits description</label
+                                >
+                                <textarea
+                                  v-model="item.description"
+                                  id="input-name"
+                                  type="text"
+                                  class="form-input"
+                                  placeholder="Enter course benefit description here"
+                                />
+                              </div>
+                              <div
+                                @click="add(index)"
+                                v-show="
+                                  index ==
+                                  createCourse.course_benefits.length - 1
+                                "
+                                class="relative flex items-center justify-center my-10 cursor-pointer"
+                              >
+                                <hr class="w-full" />
+                                <empty-chip :isAbsolute="true">
+                                  <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <g clip-path="url(#clip0)">
+                                      <path
+                                        d="M-2.18262 8H7.99972V-2.18234"
+                                        stroke="#8A8A8A"
+                                        stroke-width="1.5"
+                                      />
+                                      <path
+                                        d="M8 18.1821V7.99979H18.1823"
+                                        stroke="#8A8A8A"
+                                        stroke-width="1.5"
+                                      />
+                                    </g>
+                                    <defs>
+                                      <clipPath id="clip0">
+                                        <rect
+                                          width="16"
+                                          height="16"
+                                          fill="white"
+                                        />
+                                      </clipPath>
+                                    </defs>
+                                  </svg>
+                                  <p
+                                    class="text-xs text-center font-thin text-gray-600 pl-2"
+                                  >
+                                    Add more course benefits
+                                  </p>
+                                </empty-chip>
                               </div>
                             </div>
                           </div>
@@ -124,6 +290,7 @@
             </section>
 
             <!-- Course Part -->
+
             <section v-if="isCourseSwitch === 1">
               <section>
                 <div class="container mx-auto my-10 px-2 lg:px-0">
@@ -132,17 +299,16 @@
                       <!-- Part 1 -->
                       <dash-items-section-group title="Lessons" :edit="false">
                         <!-- course part -->
-
                         <div
                           class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                         >
                           <course-chip
-                            v-for="(item, key) in lesson"
+                            v-for="(item, key) in lessonParts"
                             :key="key"
                             :id="key"
                             :item="item"
                             :deleteItem="removePart"
-                            :lesson="lesson"
+                            :lessonParts="lessonParts"
                             :checkFormError="checkFormError"
                           />
                         </div>
@@ -459,8 +625,8 @@
                 <div
                   class="big-avatar h-64 relative rounded-xl overflow-hidden"
                   :style="{
-                    backgroundImage: createCourse.image
-                      ? `url(${createCourse.image.signedUrl})`
+                    backgroundImage: preview.image
+                      ? `url(${preview.image.signedUrl})`
                       : `url('/webinar-view-bg.jpg')`,
                   }"
                 >
@@ -472,8 +638,10 @@
               <div class="px-4 md:px-5 lg:px-6 py-4">
                 <ul class="text-gray-700">
                   <li class="text-left">
-                    <h5 class="font-bold mb-2">{{course.title}}</h5>
-                    <p class="text-xs text-gray-700">{{course.introduction}}</p>
+                    <h5 class="font-bold mb-2">{{ course.title }}</h5>
+                    <p class="text-xs text-gray-700">
+                      {{ course.introductoryText }}
+                    </p>
                   </li>
                   <li>
                     <hr class="my-5" />
@@ -546,8 +714,8 @@
                 <div
                   class="big-avatar h-64 relative rounded-xl overflow-hidden"
                   :style="{
-                    backgroundImage: createCourse.image
-                      ? `url(${createCourse.image.signedUrl})`
+                    backgroundImage: preview.image
+                      ? `url(${preview.image.signedUrl})`
                       : `url('/webinar-view-bg.jpg')`,
                   }"
                 >
@@ -564,11 +732,13 @@
                         @change="setcourseImage"
                       />
                       <button
+                        v-if="!uploading"
                         @click.prevent="showFileChooser('courseImage')"
                         class="focus:outline-none"
                       >
                         Add Picture
                       </button>
+                      <loader v-else color="white" />
                     </div>
                   </div>
                   <div
@@ -629,6 +799,10 @@ export default {
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
+    // resourceUploading: false,
+
+    content: '',
+    selected: [],
 
     course: null,
     settingId: null,
@@ -640,21 +814,44 @@ export default {
       lessons: false,
       settings: false,
     },
-
+    uploading: false,
     isCourseSwitch: 0,
     createCourse: {
-      title: '',
-      subtitle: '',
-      introduction: '',
-      userID: 0,
-      categories: [],
-      image: null
+      title: null,
+      subtitle: null,
+      introductory_text: null,
+      introductory_video: null,
+      tutor_email: null,
+      category_ids: [],
+      tags: [],
+      image: null,
+      course_benefits: [
+        {
+          title: '',
+          description: '',
+        },
+      ],
     },
-    lesson: [
+    preview: {
+      image: null,
+    },
+    newTag: '',
+    categoryArray: [],
+    lessonParts: [
       {
-        question: '',
-        lesson: ['', ''],
-        textarea: '',
+        part: '',
+        lessons: [
+          {
+            lesson: '',
+            description: '',
+            content: '',
+          },
+          {
+            lesson: '',
+            description: '',
+            content: '',
+          },
+        ],
       },
     ],
     settings: {
@@ -698,12 +895,45 @@ export default {
       // await this.$nextTick()
     },
   },
+  async mounted() {
+    await this.getCourseCategory()
+  },
   methods: {
-    setSelected(value) {
-      value.forEach((el) => {
-        // console.log(el.categoryName)
-        this.categories = el.categoryName
-        console.log(this.categories) 
+    playDashVideos() {
+      // NodeList of video-js elements
+      const dashVideos = document.querySelectorAll('.video-js')
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.src({
+          src,
+          type,
+        })
+      }
+    },
+    // player.play()
+    addTag() {
+      this.createCourse.tags.push('#' + this.newTag)
+      this.newTag = ''
+    },
+    saveContent() {
+      console.log(this.content)
+    },
+    async getCourseCategory() {
+      try {
+        await this.$store.dispatch('courses/getCourseCategory')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    setSelected() {
+      this.selected.forEach((val) => {
+        this.categoryArray.push(val.categoryId)
+        const newData = new Set(this.categoryArray)
+        const result = [...newData]
+        this.createCourse.category_ids = result
+        console.log(this.createCourse.category_ids)
       })
     },
     switcher: function (value) {
@@ -716,6 +946,15 @@ export default {
     callLog() {
       console.log('adding new')
     },
+    add(index) {
+      this.createCourse.course_benefits.push({
+        title: '',
+        description: '',
+      })
+    },
+    remove(index) {
+      this.createCourse.course_benefits.splice(index, 1)
+    },
     async goNext(isCourseSwitch) {
       switch (isCourseSwitch) {
         case 0:
@@ -724,7 +963,7 @@ export default {
             const { image } = this.createCourse
             const resData = {
               ...this.createCourse,
-              courseImage: image ? image.fileName : '',
+              courseImage: image ? image : '',
             }
             console.log('resData: ', resData)
 
@@ -794,14 +1033,17 @@ export default {
     },
     async setcourseImage(e) {
       console.log('Uploading__')
+      this.uploading = true
       const file = e.target.files[0]
       console.log('file: ', file)
 
       const formData = new FormData()
-      formData.append('webinar_image', file, '.' + file.type.split('/')[1])
+      formData.append('course_resources', file, '.' + file.type.split('/')[1])
+      formData.append('file_path', 'course_introduction/image')
       try {
+        this.uploading = true
         const { data, message } = await this.$axios.$post(
-          `/uploads`,
+          `https://streaming.staging.klasroom.com/v1/uploads`,
           formData,
           {
             headers: getAccessTokenHeader(this.token),
@@ -809,18 +1051,40 @@ export default {
         )
         console.log('uploaded: ', message, data)
 
-        this.createCourse.image = data.webinar_image
+        this.createCourse.image = data.course_resources[0].fileName
+        this.preview.image = data.course_resources[0]
+        this.uploading = false
       } catch (e) {
+        this.uploading = false
         console.log(e)
         return
       }
     },
-    async setImage(e) {
+    async setIntroVideo(e) {
       console.log('Uploading__')
       const files = e.target.files
       console.log('files: ', files)
 
-      this.fileResources = [...this.fileResources, ...files]
+      const formData = new FormData()
+      formData.append('course_resources', ...files)
+      formData.append('file_path', 'course_introduction/video')
+      try {
+        const { data, message } = await this.$axios.$post(
+          `https://streaming.staging.klasroom.com/v1/uploads`,
+          formData,
+          {
+            headers: getAccessTokenHeader(this.token),
+          }
+        )
+        console.log('uploaded: ', message, data)
+        this.fileResources = [...this.fileResources, ...files]
+        this.createCourse.introductory_video = data.course_resources[0].fileName
+        this.uploading = false
+      } catch (e) {
+        this.uploading = false
+        console.log(e)
+        return
+      }
     },
     deleteResItem(id, type) {
       if (type === 'link')
@@ -833,17 +1097,27 @@ export default {
         )
     },
     addLessonPart() {
-      this.lesson = [
-        ...this.lesson,
+      this.lessonParts = [
+        ...this.lessonParts,
         {
-          question: '',
-          lesson: ['', ''],
-          textarea: '',
+          part: '',
+          lessons: [
+            {
+              lesson: '',
+              description: '',
+              content: '',
+            },
+            {
+              lesson: '',
+              description: '',
+              content: '',
+            },
+          ],
         },
       ]
     },
     removePart(id) {
-      this.lesson = this.lesson.filter((i, index) => index !== id)
+      this.lessonParts = this.lessonParts.filter((i, index) => index !== id)
     },
   },
 }
