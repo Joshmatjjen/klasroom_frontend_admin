@@ -2,117 +2,63 @@
   <section>
     <div v-if="courseSummary && liveCourses" class="min-h-screen mb-24">
       <section class="bg-orange-100">
-        <div class="container mx-auto mb-10 px-4 lg:px-0">
-          <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
-            <dash-item-metrics
-              :title="
-                courseSummary.publishedCourses.toLocaleString() + ' courses'
-              "
-              label="Published"
-              type="filter"
-              tableType="published"
-              filterType="active"
-            />
-            <dash-item-metrics
-              :title="
-                courseSummary.unPublishedCourses.toLocaleString() + ' courses'
-              "
-              label="Unpublished"
-              type="filter"
-              tableType="unPublished"
-              filterType="active"
-              @click="switcher('unpublished')"
-            />
-            <dash-item-metrics
-              :title="courseSummary.courseSales.toLocaleString() + ' courses'"
-              label="Course sales"
-              type="filter"
-              tableType="CourseSales"
-              filterType="active"
-            />
-            <dash-item-metrics
-              :title="courseSummary.completions.toLocaleString() + ' courses'"
-              label="Completions"
-              type="filter"
-              tableType="completions"
-              filterType="active"
-            />
-          </div>
-        </div>
-      </section>
-      <section>
+        <!-- <div class="container mx-auto mb-10 px-4 lg:px-0"> -->
         <div
-          class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
+          class="flex gap-5 space-y-3 md:space-y-0 pb-5 flex-row overflow-x-scroll scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
         >
-          <button
-            v-on:click="switcher('live')"
-            v-bind:class="{ active: isCourses.live }"
-            class="menu-btn"
-          >
-            <p class="text-xs text-gray-700">Live Courses</p>
-          </button>
-          <button
-            v-on:click="switcher('unpublished')"
-            v-bind:class="{ active: isCourses.unpublished }"
-            class="menu-btn"
-          >
-            <p class="text-xs text-gray-700">Unpublished courses</p>
-          </button>
-          <button
-            v-on:click="switcher('archived')"
-            v-bind:class="{ active: isCourses.archived }"
-            class="menu-btn"
-          >
-            <p class="text-xs text-gray-700">Archived courses</p>
-          </button>
+          <finance-card
+            :title="'₦122,430,000'"
+            label="Balance"
+            type="withdraw"
+            typeText="Withdraw"
+            tableType="Balance"
+            filterType="active"
+            :greenBalance="true"
+          />
+          <finance-card
+            :title="'+₦23,000'"
+            label="This week"
+            type="none"
+            tableType="unPublished"
+            filterType="active"
+            @click="switcher('unpublished')"
+          />
+          <finance-card
+            :title="'305*****72'"
+            label="Bank account"
+            type="withdraw"
+            typeText="Edit"
+            tableType="CourseSales"
+            filterType="active"
+          />
+          <finance-card
+            :title="'46,500'"
+            label="Payout"
+            type="withdraw"
+            typeText="See more"
+            tableType="completions"
+            filterType="active"
+          />
+          <finance-card
+            :title="'+₦23,000'"
+            label="See more"
+            type="none"
+            typeText="Earned by tutors"
+            tableType="unPublished"
+            filterType="active"
+            @click="switcher('unpublished')"
+          />
         </div>
+        <!-- </div> -->
       </section>
 
-      <section>
-        <!-- live -->
-        <div v-if="isCourses.live" class="container mx-auto my-10 px-2 lg:px-0">
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12">
-              <courses-table
-                :columns="columnLive"
-                :rows="liveCourses ? liveCourses : []"
-                type="live courses"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- unpublished -->
-        <div
-          v-if="isCourses.unpublished"
-          class="container mx-auto my-10 px-2 lg:px-0"
-        >
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12">
-              <courses-table
-                :columns="columnsUnpublished"
-                :rows="unPublishedCourses ? unPublishedCourses : []"
-                type="unpublished courses"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Archived -->
-        <div
-          v-if="isCourses.archived"
-          class="container mx-auto my-10 px-2 lg:px-0"
-        >
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12">
-              <courses-table
-                :columns="columnsArchived"
-                :rows="archivedCourses ? archivedCourses : []"
-                :onDraft="true"
-                type="archived courses"
-              />
-            </div>
-          </div>
-        </div>
+      <section class="mt-10">
+        <p class="text-base font-extrabold mb-5">Sales</p>
+        <sales
+          :dataAll="{ data: [] }"
+          :dataCourses="{ data: [] }"
+          :dataWebinars="{ data: [] }"
+        />
       </section>
     </div>
     <loader-2 v-else />
@@ -122,8 +68,9 @@
 <script>
 import { mapState } from 'vuex'
 import Loader2 from '~/components/loader/Loader2.vue'
+import sales from './components/sales.vue'
 export default {
-  components: { Loader2 },
+  components: { Loader2, sales },
   middleware: ['check-auth', 'auth'],
   async fetch() {
     this.$store.commit('app/SET_TITLE', 'Financials')
