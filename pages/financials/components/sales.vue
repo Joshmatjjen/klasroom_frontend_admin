@@ -3,6 +3,7 @@
     <!-- Activity Log -->
     <section>
       <div class="container mx-auto mb-10 px-2 lg:px-0">
+        <p class="text-base font-extrabold mb-3">Sales</p>
         <div
           class="grid grid-cols-12 gap-4 bg-white rounded-xl border border-gray-300 shadow-hover relative"
         >
@@ -10,7 +11,7 @@
             <div class="flex flex-row justify-between px-5">
               <section-switcher
                 v-model="tab"
-                :tabs="[`All`, `Courses`, `Webinars`]"
+                :tabs="[`All`, `Courses`, `Webinars`, `Plans`]"
               />
               <div
                 class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"

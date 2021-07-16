@@ -18,9 +18,10 @@
       "
     ></div> -->
     <div class="flex flex-row justify-between px-5 my-5">
-      <p class="text-sm font-semibold">
+      <!-- <p class="text-sm font-semibold">
         {{ total ? total.toLocaleString() : row ? rows.length : 0 }} {{ type }}
-      </p>
+      </p> -->
+      <div />
       <div class="flex flex-row gap-5">
         <p @click="exportCSV(type)" class="text-xs font-medium cursor-pointer">
           Export CSV

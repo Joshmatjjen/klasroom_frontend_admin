@@ -3,9 +3,10 @@
     <!-- Activity Log -->
     <section>
       <div class="container mx-auto my-10 px-2 lg:px-0">
+        <p class="text-base font-extrabold mb-3">Payout</p>
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <list-table-1
+            <no-option-table
               :columns="activityLogColumns"
               :rows="data ? data.data : []"
               type="Activity Log"
@@ -16,7 +17,7 @@
         </div>
       </div>
     </section>
-    <section v-if="data && data.pagination">
+    <!-- <section v-if="data && data.pagination">
       <t-pagination
         :total-items="data.pagination.count"
         :per-page="data.pagination.limit"
@@ -25,16 +26,18 @@
         :value="data.pagination.currentPage"
         @change="changePage"
       />
-    </section>
+    </section> -->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import NoOptionTable from '~/components/table/NoOptionTable.vue'
 
 const activityLog = require('@/static/json/activity-log.json')
 
 export default {
+  components: { NoOptionTable },
   // components: { tester },
   middleware: ['check-auth', 'auth'],
   props: {
@@ -57,19 +60,35 @@ export default {
     },
     activityLogColumns: [
       {
-        label: 'Action',
-        field: 'action',
+        label: 'S/N',
+        field: 'sn',
       },
       {
-        label: 'Description',
-        field: 'description',
+        label: 'Name',
+        field: 'name',
       },
       {
-        label: 'Created At',
-        field: 'createdAt',
+        label: 'Date',
+        field: 'date',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd',
         dateOutputFormat: 'MMM do yy',
+      },
+      {
+        label: 'Time',
+        field: 'time',
+      },
+      {
+        label: 'Amount',
+        field: 'amount',
+      },
+      {
+        label: 'Status',
+        field: 'status',
+      },
+      {
+        label: 'New Balance',
+        field: 'newBalance',
       },
     ],
     activityLogRows: _.take(activityLog, 10),

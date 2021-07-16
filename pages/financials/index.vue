@@ -53,12 +53,15 @@
       </section>
 
       <section class="mt-10">
-        <p class="text-base font-extrabold mb-5">Sales</p>
         <sales
           :dataAll="{ data: [] }"
           :dataCourses="{ data: [] }"
           :dataWebinars="{ data: [] }"
         />
+      </section>
+
+      <section class="mt-10">
+        <payout :data="{ data: [] }" />
       </section>
     </div>
     <loader-2 v-else />
@@ -69,8 +72,9 @@
 import { mapState } from 'vuex'
 import Loader2 from '~/components/loader/Loader2.vue'
 import sales from './components/sales.vue'
+import payout from './components/payout.vue'
 export default {
-  components: { Loader2, sales },
+  components: { Loader2, sales, payout },
   middleware: ['check-auth', 'auth'],
   async fetch() {
     this.$store.commit('app/SET_TITLE', 'Financials')
