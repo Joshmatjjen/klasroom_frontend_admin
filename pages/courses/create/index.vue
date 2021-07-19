@@ -90,7 +90,7 @@
                             </div>
                             <div class="form-group">
                               <label for="input-name">Introductory video</label>
-                              <div class="relative h-full">
+                              <div v-if="!videoUploading" class="relative h-full">
                                 <input
                                   ref="input"
                                   type="file"
@@ -139,6 +139,7 @@
                                   </div>
                                 </div>
                               </div>
+                              <loader-2 v-else/>
                             </div>
                             <div class="form-group mb-5">
                               <label for="input-name">Tutor Email</label>
@@ -384,7 +385,7 @@
                           </p>
                         </div>
                         <div class="col-span-5 text-right">
-                          <input-toggle-switch />
+                          <input-toggle-switch v-model="graduation.allCourse"/>
                         </div>
                       </div>
                       <div class="grid grid-cols-12">
@@ -394,14 +395,12 @@
                           </p>
                         </div>
                         <div class="col-span-5 text-right">
-                          <v-select
-                            class="form-input style-chooser cursor-pointer capitalize"
+                        <input
+                            :disabled="graduation.allCourse === true"
+                            type="number"
+                            class="form-input"
                             placeholder="70% of lessons"
-                            :options="[
-                              '60% of lessons',
-                              '50% of lessons',
-                              '40% of lessons',
-                            ]"
+                            v-model.number="graduation.courseCompletion"
                           />
                         </div>
                       </div>
@@ -418,7 +417,7 @@
                           </p>
                         </div>
                         <div class="col-span-5 text-right">
-                          <input-toggle-switch />
+                          <input-toggle-switch v-model="graduation.allAssignment"/>
                         </div>
                       </div>
                       <div class="grid grid-cols-12 mt-4">
@@ -428,31 +427,13 @@
                           </p>
                         </div>
                         <div class="col-span-5 text-right">
-                          <v-select
-                            class="form-input style-chooser cursor-pointer capitalize"
+                          <input
+                            :disabled="graduation.allAssignment === true"
+                            type="number"
+                            class="form-input"
                             placeholder="70% of assignments"
-                            :options="[
-                              '60% of assignments',
-                              '50% of assignments',
-                              '40% of assignments',
-                            ]"
+                            v-model.number="graduation.assignmentCompletion"
                           />
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Resources -->
-                    <div class="border-b border-gray-300 pb-5 mb-4">
-                      <p class="text-base font-bold text-gray-700 mb-3">
-                        Resources
-                      </p>
-                      <div class="grid grid-cols-12">
-                        <div class="col-span-7 lg:col-span-8 my-auto">
-                          <p class="text-sm text-gray-700">
-                            All resources must be downloaded
-                          </p>
-                        </div>
-                        <div class="col-span-5 lg:col-span-4 text-right">
-                          <input-toggle-switch />
                         </div>
                       </div>
                     </div>
@@ -468,7 +449,7 @@
                           </p>
                         </div>
                         <div class="col-span-5 lg:col-span-4 text-right">
-                          <input-toggle-switch />
+                          <input-toggle-switch v-model="graduation.generateCertificate"/>
                         </div>
                       </div>
                     </div>
@@ -492,7 +473,7 @@
                       <div class="grid grid-cols-12 mb-3">
                         <div class="col-span-7">
                           <p class="text-sm text-gray-700">
-                            Price in Nigerian Naira
+                            Price in US Dollars
                           </p>
                         </div>
                         <div
@@ -501,7 +482,7 @@
                           <p
                             class="text-sm font-bold text-gray-600 text-center py-1"
                           >
-                            ₦
+                            $
                           </p>
                           <input
                             type="number"
@@ -509,11 +490,6 @@
                             placeholder="price"
                             v-model="price"
                           />
-                          <p
-                            class="percentage-chip bg-orange-500 rounded-xl text-sm font-medium text-white text-center"
-                          >
-                            15% off
-                          </p>
                         </div>
                       </div>
                     </div>
@@ -541,7 +517,7 @@
                           </p>
                         </div>
                         <div class="col-span-5 text-right">
-                          <input-toggle-switch v-model="runPricePromotion" />
+                          <input-toggle-switch v-model="promo.runPricePromotion" />
                         </div>
                       </div>
                       <div class="flex flex-row justify-between my-4">
@@ -554,13 +530,13 @@
                         </div>
 
                         <div
-                          class="px-3 currency-box flex flex-row text-center justify-center items-center"
+                          class="px-3 form-input currency-box flex flex-row text-center justify-center items-center"
                         >
-                          <v-select
-                            class="style-chooser cursor-pointer capitalize"
-                            placeholder="15%"
-                            :value="promo.percentageOff"
-                            :options="['15%', '20%', '40%']"
+                        <input
+                            type="number"
+                            class="currency-input"
+                            placeholder="price"
+                            v-model="promo.percentageOff"
                           />
                         </div>
                       </div>
@@ -782,6 +758,7 @@
 </template>
 
 <script>
+import { image } from 'vee-validate/dist/rules'
 import { mapState } from 'vuex'
 import UserChip from '~/components/chip/UserChip.vue'
 import { getAccessTokenHeader } from '~/utils'
@@ -799,13 +776,15 @@ export default {
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
-    // resourceUploading: false,
+    videoUploading: false,
 
     content: '',
     selected: [],
 
-    course: null,
-    settingId: null,
+    course: {
+      id: 9966490
+    },
+    graudationId: null,
     priceId: null,
     promotionId: null,
 
@@ -854,20 +833,24 @@ export default {
         ],
       },
     ],
-    settings: {
-      tutors: 1,
-      moderators: 1,
-      students: 50,
+    //graudation
+    graduation: {
+      allCourse: false,
+      courseCompletion: null,
+      allAssignment: false,
+      assignmentCompletion: null,
+      generateCertificate: false,
     },
+    //pricing
     price: 0,
+    //promotion
     promo: {
       percentageOff: 0,
       startDate: '',
       endDate: '',
+      runPricePromotion: false,
     },
-    runPricePromotion: false,
-    pollsError: false,
-    publishOpt: false,
+  
     loading: false,
     fileResources: [],
     linkResources: [],
@@ -894,11 +877,61 @@ export default {
       console.log('runPricePromotion: ', value)
       // await this.$nextTick()
     },
+    async allCourse(value) {
+      console.log('allCourse: ', value)
+      // await this.$nextTick()
+    },
   },
   async mounted() {
     await this.getCourseCategory()
   },
   methods: {
+    async publishCourse() {
+      try {
+        if (this.course) {
+          const { data, message } = await this.$axios.$put(
+            `https://streaming.staging.klasroom.com/v1/courses/${this.course.id}?publish_now=${true}`,
+            {
+              title: this.course.title,
+              subtitle: this.course.subtitle,
+              introductory_text: this.course.introductory_text,
+              introductory_video: this.course.introductory_video,
+              tags: this.course.tags,
+              category_ids: this.course.categoryId,
+              tutor_email: this.course.tutor_email,
+              image: this.course.image,
+              course_benefits: this.course.course_benefits
+            },
+            {
+              headers: getAccessTokenHeader(this.token),
+            }
+          )
+
+          Swal.fire({
+            position: 'top-end',
+            width: '350px',
+            text: message,
+            backdrop: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 3000,
+          })
+
+          console.log('course data: ', data, message)
+
+          // Publish action
+          this.gotoCourses()
+        }
+      } catch (e) {
+        console.log(e)
+        return
+      }
+    },
+    gotoCourses(type) {
+      this.$router.push(`/courses`)
+      this.close()
+    },
     playDashVideos() {
       // NodeList of video-js elements
       const dashVideos = document.querySelectorAll('.video-js')
@@ -1007,7 +1040,95 @@ export default {
           isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
           break
         case 2:
-          isCourseSwitch >= 2 ? null : this.switcher(isCourseSwitch + 1)
+          this.loading = true
+          try {
+            const { startDate, endDate } = this.promo
+            const resPromoData = {
+              ...this.promo,
+              startDate: moment(startDate).format('YYYY-MM-DDTHH:mm:ss'),
+              endDate: moment(endDate).format('YYYY-MM-DDTHH:mm:ss'),
+            }
+
+            if (this.graduationId) {
+              const { data: graduationData } = await this.$axios.$put(
+                `https://streaming.staging.klasroom.com/v1/courses/grad-criteria/${this.course.id}`,
+                {
+                  ...this.graduation,
+                },
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              this.graduationId = graduationData.id
+            } else {
+              const { data: graduationData } = await this.$axios.$post(
+                `https://streaming.staging.klasroom.com/v1/courses/grad-criteria/${this.course.id}`,
+                {
+                  ...this.graduation,
+                },
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              this.graduationId = graduationData.id
+            }
+            if (this.priceId) {
+              const { data: priceData } = await this.$axios.$put(
+                `https://streaming.staging.klasroom.com/v1/courses/price/${this.course.id}`,
+                {
+                  price: this.price,
+                },
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              this.priceId = priceData.id
+            } else {
+              const { data: priceData } = await this.$axios.$post(
+                `https://streaming.staging.klasroom.com/v1/courses/price/${this.course.id}`,
+                {
+                  price: this.price,
+                },
+                {
+                  headers: getAccessTokenHeader(this.token),
+                }
+              )
+              this.priceId = priceData.id
+            }
+            if (this.runPricePromotion) {
+              if (this.promotionId) {
+                const { data: promotionData } = await this.$axios.$put(
+                  `https://streaming.staging.klasroom.com/v1/courses/promotions/${this.course.id}`,
+                  {
+                    ...resPromoData,
+                  },
+                  {
+                    headers: getAccessTokenHeader(this.token),
+                  }
+                )
+                this.promotionId = promotionData.id
+              } else {
+                const { data: promotionData } = await this.$axios.$post(
+                  `https://streaming.staging.klasroom.com/v1/courses/promotions/${this.course.id}`,
+                  {
+                    ...resPromoData,
+                  },
+                  {
+                    headers: getAccessTokenHeader(this.token),
+                  }
+                )
+                this.promotionId = promotionData.id
+              }
+            }
+
+            this.loading = false
+
+            this.publishCourse()
+          } catch (e) {
+            console.log(e)
+            this.loading = false
+            return
+          }
           break
         default:
           break
@@ -1069,6 +1190,7 @@ export default {
       formData.append('course_resources', ...files)
       formData.append('file_path', 'course_introduction/video')
       try {
+        this.videoUploading = true
         const { data, message } = await this.$axios.$post(
           `https://streaming.staging.klasroom.com/v1/uploads`,
           formData,
@@ -1079,9 +1201,9 @@ export default {
         console.log('uploaded: ', message, data)
         this.fileResources = [...this.fileResources, ...files]
         this.createCourse.introductory_video = data.course_resources[0].fileName
-        this.uploading = false
+        this.videoUploading = false
       } catch (e) {
-        this.uploading = false
+        this.videoUploading = false
         console.log(e)
         return
       }
