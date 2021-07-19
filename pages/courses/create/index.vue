@@ -303,12 +303,12 @@
                           class="bg-white rounded-xl border border-gray-300 shadow-hover relative h-full items-center mb-8"
                         >
                           <course-chip
-                            v-for="(item, key) in lessonParts"
+                            v-for="(item, key) in courseParts"
                             :key="key"
                             :id="key"
                             :item="item"
                             :deleteItem="removePart"
-                            :lessonParts="lessonParts"
+                            :courseParts="courseParts"
                             :checkFormError="checkFormError"
                           />
                         </div>
@@ -351,8 +351,10 @@
                           </div>
                         </div>
 
-                        <span v-if="pollsError" class="text-sm text-red-700"
-                          >Fill all polls input field</span
+                        <span
+                          v-if="coursePartsError"
+                          class="text-sm text-red-700"
+                          >Fill all lessons input field</span
                         >
                       </dash-items-section-group>
 
@@ -805,6 +807,7 @@ export default {
     selected: [],
 
     course: null,
+    lessons: null,
     settingId: null,
     priceId: null,
     promotionId: null,
@@ -837,7 +840,7 @@ export default {
     },
     newTag: '',
     categoryArray: [],
-    lessonParts: [
+    courseParts: [
       {
         part: '',
         lessons: [
@@ -866,7 +869,7 @@ export default {
       endDate: '',
     },
     runPricePromotion: false,
-    pollsError: false,
+    coursePartsError: false,
     publishOpt: false,
     loading: false,
     fileResources: [],
@@ -886,13 +889,12 @@ export default {
       console.log('fileResources: ', value)
       // await this.$nextTick()
     },
-    async polls(value) {
-      await this.$nextTick()
-      console.log('polls: ', value)
-    },
     async runPricePromotion(value) {
       console.log('runPricePromotion: ', value)
       // await this.$nextTick()
+    },
+    async courseParts(value) {
+      console.log('courseParts: ', value)
     },
   },
   async mounted() {
@@ -1027,9 +1029,8 @@ export default {
       else this.$refs.input.click()
     },
     checkFormError(type) {
-      if (type === 'lesson') this.pollsError = false
+      if (type === 'lesson') this.coursePartsError = false
       else if (type === 'co_host') this.coHostFormError = false
-      else this.moderatorFormError = false
     },
     async setcourseImage(e) {
       console.log('Uploading__')
@@ -1097,8 +1098,8 @@ export default {
         )
     },
     addLessonPart() {
-      this.lessonParts = [
-        ...this.lessonParts,
+      this.courseParts = [
+        ...this.courseParts,
         {
           part: '',
           lessons: [
@@ -1117,7 +1118,7 @@ export default {
       ]
     },
     removePart(id) {
-      this.lessonParts = this.lessonParts.filter((i, index) => index !== id)
+      this.courseParts = this.courseParts.filter((i, index) => index !== id)
     },
   },
 }
