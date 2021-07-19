@@ -158,10 +158,10 @@
                 Chat
               </router-link>
             </li>
-            <li v-if="userDash === 'tutor'" class="nav-item">
+            <li class="nav-item">
               <router-link
                 :to="{ name: 'financials' }"
-                class="nav-link nav-home"
+                class="nav-link nav-financial"
                 active-class="active"
                 exact
               >
@@ -376,6 +376,9 @@ ul.btn-gray-share > li {
 }
 .nav-link.nav-chat {
   background-image: url('/icon/dashboard/chat.svg');
+}
+.nav-link.nav-financial {
+  background-image: url('/icon/dashboard/money.svg');
 }
 .nav-link.nav-faqs {
   background-image: url('/icon/dashboard/help.svg');
