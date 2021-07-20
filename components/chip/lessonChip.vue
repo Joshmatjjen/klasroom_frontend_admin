@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import {
   container,
   QuillWatch,
@@ -233,7 +234,16 @@ export default {
               formData.append('file_path', 'CourseImage')
             }, // Optional parameters Trigger every time you select a picture, it can also be used to set the header, but there is one more parameter than headers, which can be set formData
             sizeError: () => {
-              alert('The picture cannot be larger than 1M')
+              Swal.fire({
+                position: 'top-end',
+                width: '350px',
+                text: 'The picture cannot be larger than 1M',
+                backdrop: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 3000,
+              })
             },
           },
           VideoExtend: {
@@ -263,7 +273,16 @@ export default {
               return res.data.course_resources[0].signedUrl
             },
             sizeError: () => {
-              alert('The video cannot be larger than 100M')
+              Swal.fire({
+                position: 'top-end',
+                width: '350px',
+                text: 'The video cannot be larger than 100M',
+                backdrop: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 3000,
+              })
             },
           },
           toolbar: {
