@@ -70,11 +70,13 @@ export const actions = {
 
   async getFinanceAllSales(vuexContext, pagination) {
     try {
-      const data = await this.$axios.$get(`/sales/all?page=${pagination}`)
+      const data = await this.$axios.$get(
+        `/sales/all?page=${pagination ? pagination : 1}`
+      )
 
       if (data) {
         console.log('Sales All', data)
-        // vuexContext.commit('FETCH_FINANCE_ALL_SALES', data)
+        vuexContext.commit('FETCH_FINANCE_ALL_SALES', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -92,12 +94,12 @@ export const actions = {
   async getFinanceCourseSales(vuexContext, pagination) {
     try {
       const data = await this.$axios.$get(
-        `/sales/all?salesType=courses&page=${pagination}`
+        `/sales/all?salesType=courses&page=${pagination ? pagination : 1}`
       )
 
       if (data) {
         console.log('Sales Courses', data)
-        // vuexContext.commit('FETCH_FINANCE_COURSES_SALES', data)
+        vuexContext.commit('FETCH_FINANCE_COURSES_SALES', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -115,12 +117,12 @@ export const actions = {
   async getFinanceWebinarsSales(vuexContext, pagination) {
     try {
       const data = await this.$axios.$get(
-        `/sales/all?salesType=webinars&page=${pagination}`
+        `/sales/all?salesType=webinars&page=${pagination ? pagination : 1}`
       )
 
       if (data) {
         console.log('Sales Webinars', data)
-        // vuexContext.commit('FETCH_FINANCE_WEBINARS_SALES', data)
+        vuexContext.commit('FETCH_FINANCE_WEBINARS_SALES', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
@@ -138,12 +140,12 @@ export const actions = {
   async getFinancePayouts(vuexContext, pagination) {
     try {
       const data = await this.$axios.$get(
-        `/finances/payouts?page=${pagination}`
+        `/finances/payouts?page=${pagination ? pagination : 1}`
       )
 
       if (data) {
         console.log('Get Payouts', data)
-        // vuexContext.commit('FETCH_FINANCE_PAYOUTS', data)
+        vuexContext.commit('FETCH_FINANCE_PAYOUTS', data)
 
         // localStorage.setItem('tutorsSummary', JSON.stringify(data))
 
