@@ -174,7 +174,7 @@ export default {
   },
   created() {
     this.$store
-      .dispatch('courses/getCoursesSummary')
+      .dispatch('financials/getFinanceSummary')
       .then((res) => {
         console.log(res)
         this.loading = false
