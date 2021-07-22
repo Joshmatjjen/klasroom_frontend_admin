@@ -180,6 +180,38 @@ export default {
         this.loading = false
       })
       .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceAllSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceCourseSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceWebinarsSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinancePayouts')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
   },
   methods: {
     switcher: function (value) {
