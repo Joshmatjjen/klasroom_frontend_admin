@@ -46,15 +46,15 @@ export const mutations = {
   },
 
   //live courses
-  FETCH_LIVE_COURSES (state, data) {
+  FETCH_LIVE_COURSES(state, data) {
     state.coursesData.liveCourses = data.data
   },
   //unpublished courses
-  FETCH_UNPUBLISHED_COURSES (state, data) {
+  FETCH_UNPUBLISHED_COURSES(state, data) {
     state.coursesData.unPublishedCourses = data.data
   },
   //archived courses
-  FETCH_ARCHIVED_COURSES (state, data) {
+  FETCH_ARCHIVED_COURSES(state, data) {
     state.coursesData.archived = data.data
   },
 }
@@ -64,7 +64,9 @@ export const actions = {
   // get course category
   async getCourseCategory(vuexContext) {
     try {
-      const data = await this.$axios.$get('https://streaming.staging.klasroom.com/v1/courses/categories')
+      const data = await this.$axios.$get(
+        'https://api.staging.klasroom.com/v1/courses/categories'
+      )
       if (data) {
         console.log('course category Data', data)
         vuexContext.commit('SET_COURSE_CATEGORY', data)
@@ -80,7 +82,9 @@ export const actions = {
   // get single course category
   async getAcourseCategory(vuexContext, id) {
     try {
-      const {data} = await this.$axios.$get(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`)
+      const { data } = await this.$axios.$get(
+        `https://api.staging.klasroom.com/v1/courses/categories/${id}`
+      )
       if (data) {
         console.log('course category Data', data)
         vuexContext.commit('SET_A_COURSE_CATEGORY', data)
@@ -96,14 +100,15 @@ export const actions = {
   //add course category
   async addCourseCategory(vuexContext, formData) {
     try {
-      const {data, message}  = await this.$axios.$post('https://streaming.staging.klasroom.com/v1/courses/categories', formData)
-      if(data && message) {
+      const { data, message } = await this.$axios.$post(
+        'https://api.staging.klasroom.com/v1/courses/categories',
+        formData
+      )
+      if (data && message) {
         Swal.fire({
           position: 'top-end',
           width: '350px',
-          text: message
-            ? message
-            : 'Course category created succesfully.',
+          text: message ? message : 'Course category created succesfully.',
           backdrop: false,
           allowOutsideClick: false,
           showConfirmButton: false,
@@ -119,19 +124,20 @@ export const actions = {
       console.log('Data failed: ', e)
     }
   },
-   // update course category
-   async updateCourseCategory(vuexContext,{name, id}) {
+  // update course category
+  async updateCourseCategory(vuexContext, { name, id }) {
     try {
-      const {data, message } = await this.$axios.$put(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
-        name
-      })
+      const { data, message } = await this.$axios.$put(
+        `https://api.staging.klasroom.com/v1/courses/categories/${id}`,
+        {
+          name,
+        }
+      )
       if (data && message) {
         Swal.fire({
           position: 'top-end',
           width: '350px',
-          text: message
-            ? message
-            : 'Course category updated succesfully.',
+          text: message ? message : 'Course category updated succesfully.',
           backdrop: false,
           allowOutsideClick: false,
           showConfirmButton: false,
@@ -146,11 +152,14 @@ export const actions = {
     }
   },
   // delete course category
-  async deleteCourseCategory(vuexContext, {id, name}) {
+  async deleteCourseCategory(vuexContext, { id, name }) {
     try {
-      const data  = await this.$axios.$delete(`https://streaming.staging.klasroom.com/v1/courses/categories/${id}`, {
-        name
-      })
+      const data = await this.$axios.$delete(
+        `https://api.staging.klasroom.com/v1/courses/categories/${id}`,
+        {
+          name,
+        }
+      )
       vuexContext.commit('SET_DELETE_COURSE_CATEGORY', data)
     } catch (e) {
       console.log('Data failed: ', e)
@@ -188,21 +197,21 @@ export const actions = {
     }
   },
 
-    //get archived courses
-    async getArchivedCourses(vuexContext) {
-      try {
-        const data = await this.$axios.$get('/courses?status=archived')
-  
-        if (data) {
-          console.log('archived courses', data)
-          vuexContext.commit('FETCH_ARCHIVED_COURSES', data)
-          return data
-        }
-        return false
-      } catch (e) {
-        return false
+  //get archived courses
+  async getArchivedCourses(vuexContext) {
+    try {
+      const data = await this.$axios.$get('/courses?status=archived')
+
+      if (data) {
+        console.log('archived courses', data)
+        vuexContext.commit('FETCH_ARCHIVED_COURSES', data)
+        return data
       }
-    },
+      return false
+    } catch (e) {
+      return false
+    }
+  },
 
   async getCoursesSummary(vuexContext) {
     try {

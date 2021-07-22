@@ -781,9 +781,129 @@ export default {
   components: { UserChip },
   layout: 'dashboard',
   middleware: ['check-auth', 'auth'],
-  fetch({ store }) {
-    store.commit('app/SET_TITLE', 'Create Course')
+
+  async fetch() {
+    this.$store.commit('app/SET_TITLE', 'Edit webinar')
+    this.location = location.origin
+    try {
+      const { data } = await this.$axios.$get(
+        `https://api.staging.klasroom.com/v1/courses/${this.$route.params.slug}`,
+        {
+          headers: getAccessTokenHeader(this.token),
+        }
+      )
+      console.log('course: ', data)
+
+      const { lessons, gradCriteria, price, promotions, ...courseData } = data
+
+      this.course = courseData
+
+      this.createCourse = {
+        title: course.title,
+        subtitle: course.subtitle,
+        introductory_text: course.introductoryText,
+        introductory_video: course.introductoryVideo,
+        tutor_email: course.tutorEmail,
+        category_ids: course.categories,
+        tags: course.tags,
+        image: course.image,
+        course_benefits: course.courseBenefits,
+      }
+
+      // if (webinar) {
+      //   this.createWebinar = {
+      //     title: webinar.title,
+      //     subtitle: webinar.subtitle,
+      //     introduction: webinar.introduction,
+      //     date: moment(webinar.startDateTime).format('yyyy-MM-DD'),
+      //     startTime: moment(webinar.startDateTime).format('HH:mm:ss'),
+      //     endTime: moment(webinar.endDateTime).format('HH:mm:ss'),
+      //     tags: webinar.tags,
+      //     image: webinar.image,
+      //   }
+
+      //   // Setting Organizers Data
+      //   if (organizers.length) {
+      //     this.organizerId = organizers
+      //     this.coHostOrganizers = organizers.filter((i) => i.type === 'co_host')
+      //     this.modratorOrganizers = organizers.filter(
+      //       (i) => i.type === 'moderator'
+      //     )
+      //   }
+
+      //   // Setting Resources Data
+      //   if (resources.length) {
+      //     this.resourceId = resources
+      //     this.fileResources = [
+      //       ...resources
+      //         .filter((i) => i.resourceType === 'file')
+      //         .map((i) => {
+      //           return {
+      //             resource: i.resource.fileName,
+      //             type: i.resourceType,
+      //             name: i.resource.fileName,
+      //           }
+      //         }),
+      //     ]
+      //     this.linkResources = [
+      //       ...resources
+      //         .filter((i) => i.resourceType === 'link')
+      //         .map((i) => i.resource),
+      //     ]
+      //   }
+
+      //   // Setting Polls Data
+      //   if (polls.length) {
+      //     this.pollId = polls
+      //     this.polls = [
+      //       ...polls.map((i) => {
+      //         return {
+      //           question: i.question,
+      //           choices: i.choices,
+      //           duration: i.duration,
+      //         }
+      //       }),
+      //     ]
+      //   }
+
+      //   // Setting Settings Data
+      //   if (settingsNpermissions && Object.keys(settingsNpermissions).length) {
+      //     this.settingId = settingsNpermissions.id
+      //     this.settings = {
+      //       tutors: settingsNpermissions.tutors,
+      //       moderators: settingsNpermissions.moderators,
+      //       students: settingsNpermissions.students,
+      //     }
+      //     if (price && Object.keys(price).length) {
+      //       this.priceId = price.id
+      //       this.price = price.price
+      //     }
+      //     if (promotions && Object.keys(promotions).length) {
+      //       this.promotionId = promotions.id
+      //       this.runPricePromotion = true
+      //       this.promo = {
+      //         percentageOff: promotions.percentageOff,
+      //         startDate: moment(promotions.startDate).format('YYYY-MM-DD'),
+      //         endDate: moment(promotions.endDate).format('YYYY-MM-DD'),
+      //       }
+      //     }
+      //   }
+      //   // organizerId: null,
+      //   // resourceId: null,
+      //   // pollId: null,
+
+      //   this.webinarStates = {
+      //     organizers: true,
+      //     resources: true,
+      //     polls: true,
+      //     settings: true,
+      //   }
+      // }
+    } catch (err) {
+      console.log(err)
+    }
   },
+  fetchOnServer: false,
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
