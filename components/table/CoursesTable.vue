@@ -165,7 +165,7 @@
                   <p>Delete</p>
                 </span>
                 <nuxt-link
-                  :to="`/courses/view/` + props.row.course.id"
+                  :to="`/courses/preview/` + props.row.course.id"
                   class="pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                 >
                   <p>Preview</p>
