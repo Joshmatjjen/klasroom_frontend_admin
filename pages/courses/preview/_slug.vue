@@ -58,13 +58,39 @@
             <div
               class="bg-white rounded-xl border border-gray-300 shadow-hover overflow-hidden relative"
             >
+              <div v-if="showIntro" class="">
+                <video
+                  class="video-js vjs-default-skin rounded-t-none rounded-b-none mb-4"
+                  controls
+                  data-type="application/dash+xml"
+                  :data-src="
+                    course.introductoryVideo
+                      ? course.introductoryVideo.publicUrl
+                      : ''
+                  "
+                  style="width: 100%"
+                ></video>
+                <div class="mb-12 px-4 md:px-5 lg:px-6 pb-4">
+                  <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
+                    <span class="text-base font-semibold my-auto"
+                      >Introduction</span
+                    >
+                  </div>
+                  <div class="space-y-3">
+                    <p class="text-xs mb-4 text-gray-700 leading-normal">
+                      {{ course.introductoryText }}
+                    </p>
+                  </div>
+                </div>
+              </div>
               <course-view-details
+                v-if="!showIntro"
                 :course="course"
                 :lessonId="lessonId"
                 :partId="partId"
                 :lesson="lesson"
               />
-              <div class="px-4 md:px-5 lg:px-6 pb-4">
+              <div v-if="!showIntro" class="px-4 md:px-5 lg:px-6 pb-4">
                 <div class="mb-12">
                   <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
                     <span class="text-base font-semibold my-auto"
@@ -134,6 +160,15 @@
                   </div>
                   <p class="text-xs text-gray-700">6 lessons completed</p>
                   <p class="text-xs text-gray-700">12 lessons to go</p>
+                </div>
+                <hr class="mt-4" />
+                <div class="mt-6 mb-4">
+                  <h6
+                    @click="selectLesson(null, 'intro')"
+                    class="text-sm text-gray-800 font-bold mb-5"
+                  >
+                    Introduction
+                  </h6>
                 </div>
                 <hr class="mt-4" />
                 <div
@@ -387,6 +422,7 @@ export default {
     price: null,
     promotions: null,
     nextTitle: 'Next Lesson',
+    showIntro: true,
 
     tab: 0,
     tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
@@ -450,7 +486,7 @@ export default {
     }
     setTimeout(() => {
       this.playDashVideos()
-    }, 5000)
+    }, 10000)
   },
   methods: {
     playDashVideos() {
@@ -505,14 +541,19 @@ export default {
         this.lesson = this.lessons[id]
         this.partId = id
         this.lessonId = 0
+        this.showIntro = false
 
         this.getNextTitle(this.lesson)
       }
       if (type === 'lesson') {
         this.lessonId = id
+        this.showIntro = false
 
         this.getNextTitle(this.lesson)
+      } else {
+        this.showIntro = true
       }
+      this.playDashVideos()
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')
