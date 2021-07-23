@@ -810,26 +810,10 @@ export default {
         course_benefits: this.course.courseBenefits,
       }
 
-      // if (webinar) {
-      //   this.createWebinar = {
-      //     title: webinar.title,
-      //     subtitle: webinar.subtitle,
-      //     introduction: webinar.introduction,
-      //     date: moment(webinar.startDateTime).format('yyyy-MM-DD'),
-      //     startTime: moment(webinar.startDateTime).format('HH:mm:ss'),
-      //     endTime: moment(webinar.endDateTime).format('HH:mm:ss'),
-      //     tags: webinar.tags,
-      //     image: webinar.image,
-      //   }
-
-      //   // Setting Organizers Data
-      //   if (organizers.length) {
-      //     this.organizerId = organizers
-      //     this.coHostOrganizers = organizers.filter((i) => i.type === 'co_host')
-      //     this.modratorOrganizers = organizers.filter(
-      //       (i) => i.type === 'moderator'
-      //     )
-      //   }
+      if (lessons && Object.keys(lessons).length) {
+        this.lessons = lessons
+        this.courseParts = lessons.lessons
+      }
 
       //   // Setting Resources Data
       //   if (resources.length) {
@@ -852,52 +836,30 @@ export default {
       //     ]
       //   }
 
-      //   // Setting Polls Data
-      //   if (polls.length) {
-      //     this.pollId = polls
-      //     this.polls = [
-      //       ...polls.map((i) => {
-      //         return {
-      //           question: i.question,
-      //           choices: i.choices,
-      //           duration: i.duration,
-      //         }
-      //       }),
-      //     ]
-      //   }
+      if (gradCriteria && Object.keys(gradCriteria).length) {
+        this.graudationId = gradCriteria.id
+        this.graduation = gradCriteria
+      }
+      if (price && Object.keys(price).length) {
+        this.priceId = price.id
+        this.price = price.price
+      }
+      if (promotions && Object.keys(promotions).length) {
+        this.promotionId = promotions.id
+        this.runPricePromotion = true
+        this.promo = {
+          percentageOff: promotions.percentageOff,
+          startDate: moment(promotions.startDate).format('YYYY-MM-DD'),
+          endDate: moment(promotions.endDate).format('YYYY-MM-DD'),
+          runPricePromotion: promotions.isActive,
+        }
+      }
 
-      //   // Setting Settings Data
-      //   if (settingsNpermissions && Object.keys(settingsNpermissions).length) {
-      //     this.settingId = settingsNpermissions.id
-      //     this.settings = {
-      //       tutors: settingsNpermissions.tutors,
-      //       moderators: settingsNpermissions.moderators,
-      //       students: settingsNpermissions.students,
-      //     }
-      //     if (price && Object.keys(price).length) {
-      //       this.priceId = price.id
-      //       this.price = price.price
-      //     }
-      //     if (promotions && Object.keys(promotions).length) {
-      //       this.promotionId = promotions.id
-      //       this.runPricePromotion = true
-      //       this.promo = {
-      //         percentageOff: promotions.percentageOff,
-      //         startDate: moment(promotions.startDate).format('YYYY-MM-DD'),
-      //         endDate: moment(promotions.endDate).format('YYYY-MM-DD'),
-      //       }
-      //     }
-      //   }
-      //   // organizerId: null,
-      //   // resourceId: null,
-      //   // pollId: null,
-
-      //   this.webinarStates = {
-      //     organizers: true,
-      //     resources: true,
-      //     polls: true,
-      //     settings: true,
-      //   }
+      this.courseStates = {
+        prem: true,
+        lessons: true,
+        settings: true,
+      }
       // }
     } catch (err) {
       console.log(err)
@@ -915,9 +877,6 @@ export default {
     course: null,
     lessons: null,
     settingId: null,
-    // course: {
-    //   id: 9966490,
-    // },
     graudationId: null,
     priceId: null,
     promotionId: null,
