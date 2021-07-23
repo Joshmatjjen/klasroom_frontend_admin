@@ -314,7 +314,6 @@
                             :deleteItem="removePart"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
-                            :showFileChooser="showFileChooser"
                           />
                         </div>
 
@@ -782,9 +781,91 @@ export default {
   components: { UserChip },
   layout: 'dashboard',
   middleware: ['check-auth', 'auth'],
-  fetch({ store }) {
-    store.commit('app/SET_TITLE', 'Create Course')
+
+  async fetch() {
+    this.$store.commit('app/SET_TITLE', 'Edit webinar')
+    this.location = location.origin
+    try {
+      const { data } = await this.$axios.$get(
+        `https://api.staging.klasroom.com/v1/courses/${this.$route.params.slug}`,
+        {
+          headers: getAccessTokenHeader(this.token),
+        }
+      )
+      console.log('course: ', data)
+
+      const { lessons, gradCriteria, price, promotions, ...courseData } = data
+
+      this.course = courseData
+
+      this.createCourse = {
+        title: this.course.title,
+        subtitle: this.course.subtitle,
+        introductory_text: this.course.introductoryText,
+        introductory_video: this.course.introductoryVideo,
+        tutor_email: this.course.tutorEmail,
+        category_ids: this.course.categories,
+        tags: this.course.tags,
+        image: this.course.image,
+        course_benefits: this.course.courseBenefits,
+      }
+
+      if (lessons && Object.keys(lessons).length) {
+        this.lessons = lessons
+        this.courseParts = lessons.lessons
+      }
+
+      //   // Setting Resources Data
+      //   if (resources.length) {
+      //     this.resourceId = resources
+      //     this.fileResources = [
+      //       ...resources
+      //         .filter((i) => i.resourceType === 'file')
+      //         .map((i) => {
+      //           return {
+      //             resource: i.resource.fileName,
+      //             type: i.resourceType,
+      //             name: i.resource.fileName,
+      //           }
+      //         }),
+      //     ]
+      //     this.linkResources = [
+      //       ...resources
+      //         .filter((i) => i.resourceType === 'link')
+      //         .map((i) => i.resource),
+      //     ]
+      //   }
+
+      if (gradCriteria && Object.keys(gradCriteria).length) {
+        this.graudationId = gradCriteria.id
+        this.graduation = gradCriteria
+      }
+      if (price && Object.keys(price).length) {
+        this.priceId = price.id
+        this.price = price.price
+      }
+      if (promotions && Object.keys(promotions).length) {
+        this.promotionId = promotions.id
+        this.runPricePromotion = true
+        this.promo = {
+          percentageOff: promotions.percentageOff,
+          startDate: moment(promotions.startDate).format('YYYY-MM-DD'),
+          endDate: moment(promotions.endDate).format('YYYY-MM-DD'),
+          runPricePromotion: promotions.isActive,
+        }
+      }
+
+      this.courseStates = {
+        prem: true,
+        lessons: true,
+        settings: true,
+      }
+      // }
+    } catch (err) {
+      console.log(err)
+    }
   },
+  fetchOnServer: false,
   data: () => ({
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
@@ -796,9 +877,6 @@ export default {
     course: null,
     lessons: null,
     settingId: null,
-    // course: {
-    //   id: 9966490,
-    // },
     graudationId: null,
     priceId: null,
     promotionId: null,
