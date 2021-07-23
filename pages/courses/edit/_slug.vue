@@ -835,10 +835,15 @@ export default {
         introductory_video: null,
         introductory_video_file: null,
         tutor_email: this.course.tutorEmail,
-        category_ids: this.course.categories,
-        tags: this.course.tags,
+        category_ids: this.course.categories || [],
+        tags: this.course.tags || [],
         image: this.course.image,
-        course_benefits: this.course.courseBenefits,
+        course_benefits: this.course.courseBenefits || [
+          {
+            title: '',
+            description: '',
+          },
+        ],
       }
 
       if (this.course.image) {
