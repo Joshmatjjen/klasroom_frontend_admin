@@ -81,7 +81,7 @@
                   props.row.course.title
                 }}</span
                 ><span class="text-gray-700 font-normal text-left text-xs">{{
-                  props.row.course.subtitile
+                  props.row.course.subtitle
                 }}</span>
               </div>
             </div>
