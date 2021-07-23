@@ -799,15 +799,15 @@ export default {
       this.course = courseData
 
       this.createCourse = {
-        title: course.title,
-        subtitle: course.subtitle,
-        introductory_text: course.introductoryText,
-        introductory_video: course.introductoryVideo,
-        tutor_email: course.tutorEmail,
-        category_ids: course.categories,
-        tags: course.tags,
-        image: course.image,
-        course_benefits: course.courseBenefits,
+        title: this.course.title,
+        subtitle: this.course.subtitle,
+        introductory_text: this.course.introductoryText,
+        introductory_video: this.course.introductoryVideo,
+        tutor_email: this.course.tutorEmail,
+        category_ids: this.course.categories,
+        tags: this.course.tags,
+        image: this.course.image,
+        course_benefits: this.course.courseBenefits,
       }
 
       // if (webinar) {

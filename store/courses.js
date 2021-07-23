@@ -47,15 +47,15 @@ export const mutations = {
 
   //live courses
   FETCH_LIVE_COURSES(state, data) {
-    state.coursesData.liveCourses = data.data
+    state.coursesData.liveCourses = data
   },
   //unpublished courses
   FETCH_UNPUBLISHED_COURSES(state, data) {
-    state.coursesData.unPublishedCourses = data.data
+    state.coursesData.unPublishedCourses = data
   },
   //archived courses
   FETCH_ARCHIVED_COURSES(state, data) {
-    state.coursesData.archived = data.data
+    state.coursesData.archived = data
   },
 }
 
@@ -167,9 +167,11 @@ export const actions = {
   },
 
   //get live courses
-  async getLiveCourses(vuexContext) {
+  async getLiveCourses(vuexContext, page) {
     try {
-      const data = await this.$axios.$get('/courses?status=live')
+      const data = await this.$axios.$get(
+        page ? `/courses?status=live&page=${page}` : '/courses?status=live'
+      )
 
       if (data) {
         console.log('courses live', data)
@@ -182,9 +184,13 @@ export const actions = {
     }
   },
   //get unpublished courses
-  async getUnPublishedCourses(vuexContext) {
+  async getUnPublishedCourses(vuexContext, page) {
     try {
-      const data = await this.$axios.$get('/courses?status=unpublished')
+      const data = await this.$axios.$get(
+        page
+          ? `/courses?status=unpublished&page=${page}`
+          : '/courses?status=unpublished'
+      )
 
       if (data) {
         console.log('courses unpublished', data)
@@ -198,9 +204,13 @@ export const actions = {
   },
 
   //get archived courses
-  async getArchivedCourses(vuexContext) {
+  async getArchivedCourses(vuexContext, page) {
     try {
-      const data = await this.$axios.$get('/courses?status=archived')
+      const data = await this.$axios.$get(
+        page
+          ? `/courses?status=archived&page=${page}`
+          : '/courses?status=archived'
+      )
 
       if (data) {
         console.log('archived courses', data)

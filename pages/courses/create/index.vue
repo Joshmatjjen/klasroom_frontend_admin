@@ -314,6 +314,7 @@
                             :deleteItem="removePart"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
+                            :showFileChooser="showFileChooser"
                           />
                         </div>
 

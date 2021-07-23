@@ -1,118 +1,156 @@
 <template>
-<section>
-  <div v-if="courseSummary && liveCourses" class="min-h-screen mb-24">
-    <section class="bg-orange-100">
-      <div class="container mx-auto mb-10 px-4 lg:px-0">
-        <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
-          <dash-item-metrics
-            :title="courseSummary.publishedCourses.toLocaleString() + ' courses'"
-            label="Published"
-            type="filter"
-            tableType="published"
-            filterType="active"
-          />
-          <dash-item-metrics
-            :title="courseSummary.unPublishedCourses.toLocaleString() + ' courses'"
-            label="Unpublished"
-            type="filter"
-            tableType="unPublished"
-            filterType="active"
-            @click="switcher('unpublished')"
-          />
-          <dash-item-metrics
-            :title="courseSummary.courseSales.toLocaleString() + ' courses'"
-            label="Course sales"
-            type="filter"
-            tableType="CourseSales"
-            filterType="active"
-          />
-          <dash-item-metrics
-            :title="courseSummary.completions.toLocaleString() + ' courses'"
-            label="Completions"
-            type="filter"
-            tableType="completions"
-            filterType="active"
-          />
+  <section>
+    <div v-if="courseSummary && liveCourses" class="min-h-screen mb-24">
+      <section class="bg-orange-100">
+        <div class="container mx-auto mb-10 px-4 lg:px-0">
+          <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
+            <dash-item-metrics
+              :title="
+                courseSummary.publishedCourses.toLocaleString() + ' courses'
+              "
+              label="Published"
+              type="filter"
+              tableType="published"
+              filterType="active"
+            />
+            <dash-item-metrics
+              :title="
+                courseSummary.unPublishedCourses.toLocaleString() + ' courses'
+              "
+              label="Unpublished"
+              type="filter"
+              tableType="unPublished"
+              filterType="active"
+              @click="switcher('unpublished')"
+            />
+            <dash-item-metrics
+              :title="courseSummary.courseSales.toLocaleString() + ' courses'"
+              label="Course sales"
+              type="filter"
+              tableType="CourseSales"
+              filterType="active"
+            />
+            <dash-item-metrics
+              :title="courseSummary.completions.toLocaleString() + ' courses'"
+              label="Completions"
+              type="filter"
+              tableType="completions"
+              filterType="active"
+            />
+          </div>
         </div>
-      </div>
-    </section>
-    <section>
-      <div
-        class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
-      >
-        <button
-          v-on:click="switcher('live')"
-          v-bind:class="{ active: isCourses.live }"
-          class="menu-btn"
+      </section>
+      <section>
+        <div
+          class="flex flex-row gap-10 place-items-start px-10 border-b-2 border-gray-200"
         >
-          <p class="text-xs text-gray-700">Live Courses</p>
-        </button>
-        <button
-          v-on:click="switcher('unpublished')"
-          v-bind:class="{ active: isCourses.unpublished }"
-          class="menu-btn"
-        >
-          <p class="text-xs text-gray-700">Unpublished courses</p>
-        </button>
-        <button
-          v-on:click="switcher('archived')"
-          v-bind:class="{ active: isCourses.archived }"
-          class="menu-btn"
-        >
-          <p class="text-xs text-gray-700">Archived courses</p>
-        </button>
-      </div>
-    </section>
+          <button
+            v-on:click="switcher('live')"
+            v-bind:class="{ active: isCourses.live }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Live Courses</p>
+          </button>
+          <button
+            v-on:click="switcher('unpublished')"
+            v-bind:class="{ active: isCourses.unpublished }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Unpublished courses</p>
+          </button>
+          <button
+            v-on:click="switcher('archived')"
+            v-bind:class="{ active: isCourses.archived }"
+            class="menu-btn"
+          >
+            <p class="text-xs text-gray-700">Archived courses</p>
+          </button>
+        </div>
+      </section>
 
-    <section>
-      <!-- live -->
-      <div v-if="isCourses.live" class="container mx-auto my-10 px-2 lg:px-0">
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <courses-table
-              :columns="columnLive"
-              :rows="liveCourses ? liveCourses : []"
-              type="live courses"
-            />
+      <section>
+        <!-- live -->
+        <div class="relative" v-if="isCourses.live">
+          <div class="container mx-auto my-10 px-2 lg:px-0">
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-12">
+                <courses-table
+                  :columns="columnLive"
+                  :rows="liveCourses ? liveCourses.data : []"
+                  type="live courses"
+                />
+              </div>
+            </div>
           </div>
+          <span class="absolute right-0">
+            <loader v-if="loading" color="black" />
+          </span>
+          <t-pagination
+            :total-items="liveCourses.pagination.count"
+            :per-page="liveCourses.pagination.limit"
+            :limit="4"
+            :variant="'roundedSmall'"
+            :value="liveCourses.pagination.currentPage"
+            @change="changePage"
+          />
         </div>
-      </div>
-      <!-- unpublished -->
-      <div
-        v-if="isCourses.unpublished"
-        class="container mx-auto my-10 px-2 lg:px-0"
-      >
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <courses-table
-              :columns="columnsUnpublished"
-              :rows="unPublishedCourses ? unPublishedCourses : []"
-              type="unpublished courses"
-            />
-          </div>
-        </div>
-      </div>
 
-      <!-- Archived -->
-      <div
-        v-if="isCourses.archived"
-        class="container mx-auto my-10 px-2 lg:px-0"
-      >
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-12">
-            <courses-table
-              :columns="columnsArchived"
-              :rows="archivedCourses ? archivedCourses : []"
-              :onDraft="true"
-              type="archived courses"
-            />
+        <!-- Unpublished -->
+        <div class="relative" v-if="isCourses.unpublished">
+          <div class="container mx-auto my-10 px-2 lg:px-0">
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-12">
+                <courses-table
+                  :columns="columnsUnpublished"
+                  :rows="unPublishedCourses ? unPublishedCourses.data : []"
+                  type="unpublished courses"
+                />
+              </div>
+            </div>
           </div>
+          <span class="absolute right-0">
+            <loader v-if="loading" color="black" />
+          </span>
+          <t-pagination
+            :total-items="unPublishedCourses.pagination.count"
+            :per-page="unPublishedCourses.pagination.limit"
+            :limit="4"
+            :variant="'roundedSmall'"
+            :value="unPublishedCourses.pagination.currentPage"
+            @change="changePage"
+          />
         </div>
-      </div>
-    </section>
-  </div>
-  <loader-2 v-else/>
-</section>
+
+        <!-- Archived -->
+        <div class="relative" v-if="isCourses.archived">
+          <div class="container mx-auto my-10 px-2 lg:px-0">
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-12">
+                <courses-table
+                  :columns="columnsArchived"
+                  :rows="archivedCourses ? archivedCourses.data : []"
+                  :onDraft="true"
+                  type="archived courses"
+                />
+              </div>
+            </div>
+          </div>
+          <span class="absolute right-0">
+            <loader v-if="loading" color="black" />
+          </span>
+          <t-pagination
+            :total-items="archivedCourses.pagination.count"
+            :per-page="archivedCourses.pagination.limit"
+            :limit="4"
+            :variant="'roundedSmall'"
+            :value="archivedCourses.pagination.currentPage"
+            @change="changePage"
+          />
+        </div>
+      </section>
+    </div>
+    <loader-2 v-else />
+  </section>
 </template>
 
 <script>
@@ -206,15 +244,16 @@ export default {
       unpublished: false,
       archived: false,
     },
+    loading: false,
   }),
   computed: {
     ...mapState({
       courses: (state) => state.courses.courses,
       courseSummary: (state) => state.courses.courseSummary,
       liveCourses: (state) => state.courses.coursesData.liveCourses,
-      unPublishedCourses: (state) => state.courses.coursesData.unPublishedCourses,
+      unPublishedCourses: (state) =>
+        state.courses.coursesData.unPublishedCourses,
       archivedCourses: (state) => state.courses.coursesData.archived,
-
     }),
   },
   created() {
@@ -227,6 +266,42 @@ export default {
       .catch((e) => console.log('e: ', e))
   },
   methods: {
+    async changePage(pagination) {
+      console.log('This is the pagination page -->', pagination)
+      this.loading = true
+      if (this.isCourses.live) {
+        try {
+          await this.$store.dispatch('courses/getLiveCourses', pagination)
+          this.loading = false
+        } catch (err) {
+          console.log(err)
+          this.loading = false
+        }
+      }
+
+      if (this.isCourses.unpublished) {
+        try {
+          await this.$store.dispatch(
+            'courses/getUnPublishedCourses',
+            pagination
+          )
+          this.loading = false
+        } catch (err) {
+          console.log(err)
+          this.loading = false
+        }
+      }
+
+      if (this.isCourses.archived) {
+        try {
+          await this.$store.dispatch('courses/getArchivedCourses', pagination)
+          this.loading = false
+        } catch (err) {
+          console.log(err)
+          this.loading = false
+        }
+      }
+    },
     switcher: function (value) {
       switch (value) {
         case 'live':
