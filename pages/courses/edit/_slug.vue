@@ -609,10 +609,7 @@
             <!-- End for Switchers -->
           </div>
           <!-- Right Add Image -->
-          <div
-            v-if="isCourseSwitch !== 0"
-            class="col-span-full lg:col-span-5 xl:col-span-4"
-          >
+          <div v-if="course" class="col-span-full lg:col-span-5 xl:col-span-4">
             <div
               class="bg-white rounded-xl border border-gray-300 shadow-hover relative min-h-full"
             >
@@ -626,6 +623,32 @@
                   }"
                 >
                   <div
+                    v-if="isCourseSwitch === 0"
+                    class="grid grid-cols-12 place-items-center h-64 py-32"
+                  >
+                    <div
+                      class="change-picture col-span-12 text-white mx-auto my-auto"
+                    >
+                      <input
+                        ref="image"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        multiple
+                        @change="setcourseImage"
+                      />
+                      <button
+                        v-if="!uploading"
+                        @click.prevent="showFileChooser('courseImage')"
+                        class="focus:outline-none"
+                      >
+                        Add Picture
+                      </button>
+                      <loader v-else color="white" />
+                    </div>
+                  </div>
+                  <div
+                    v-else
                     class="w-full h-full bg-black opacity-50 absolute top-0"
                   ></div>
                 </div>
@@ -647,18 +670,10 @@
                     </label>
                   </li>
                   <hr class="my-5" />
-                  <li class="lg:pb-8 flex flex-row justify-between">
-                    <span class="text-sm">Link: https://klasro..</span>
-
-                    <div class="flex items-center mr-5 mb-3 cursor-pointer">
-                      <img class="w-6 h-4" src="/icon/copy.svg" />
-                      <span class="text-xs">Copy</span>
-                    </div>
-                  </li>
                   <li class="lg:pb-8 flex flex-row justify-between relative">
                     <button
                       class="btn btn-primary mr-5 flex flex-row justify-between align-middle items-center"
-                      @click="$router.push(`/course/preview/${course.id}`)"
+                      @click="$router.push(`/courses/preview/${course.id}`)"
                     >
                       <span class="text-xs">Preview course</span>
                       <svg
@@ -714,7 +729,10 @@
                       : `url('/webinar-view-bg.jpg')`,
                   }"
                 >
-                  <div class="grid grid-cols-12 place-items-center h-64 py-32">
+                  <div
+                    v-if="isCourseSwitch === 0"
+                    class="grid grid-cols-12 place-items-center h-64 py-32"
+                  >
                     <div
                       class="change-picture col-span-12 text-white mx-auto my-auto"
                     >
@@ -736,6 +754,10 @@
                       <loader v-else color="white" />
                     </div>
                   </div>
+                  <div
+                    v-else
+                    class="w-full h-full bg-black opacity-50 absolute top-0"
+                  ></div>
                   <div
                     class="w-full h-full bg-black opacity-50 absolute top-0"
                   ></div>
@@ -817,6 +839,10 @@ export default {
         tags: this.course.tags,
         image: this.course.image,
         course_benefits: this.course.courseBenefits,
+      }
+
+      if (this.course.image) {
+        this.preview.image = { signedUrl: this.course.image }
       }
 
       if (this.course.introductoryVideo) {
@@ -979,7 +1005,7 @@ export default {
             title: this.course.title,
             subtitle: this.createCourse.subtitle,
             introductory_text: this.course.introductoryText,
-            introductory_video: this.course.introductoryVideo.publicUrl,
+            introductory_video: this.course.introductoryVideo.fileName,
             tags: this.course.tags,
             category_ids: this.createCourse.category_ids,
             tutor_email: this.createCourse.tutor_email,
@@ -1311,7 +1337,7 @@ export default {
       try {
         this.uploading = true
         const { data, message } = await this.$axios.$post(
-          `https://api.staging.klasroom.com/v1/uploads`,
+          `https://streaming.staging.klasroom.com/v1/uploads`,
           formData,
           {
             headers: getAccessTokenHeader(this.token),
@@ -1339,7 +1365,7 @@ export default {
       try {
         this.videoUploading = true
         const { data, message } = await this.$axios.$post(
-          `https://api.staging.klasroom.com/v1/uploads`,
+          `https://streaming.staging.klasroom.com/v1/uploads`,
           formData,
           {
             headers: getAccessTokenHeader(this.token),

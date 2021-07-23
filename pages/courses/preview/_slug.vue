@@ -331,9 +331,11 @@ export default {
       )
       console.log('course: ', data)
 
-      const { lessons, gradCriteria, price, promotions, ...courseData } = data
+      const { lessons, gradCriteria, price, promotions } = data
 
-      this.course = courseData
+      this.course = data
+
+      console.log('introductoryVideo: ', this.course.introductoryVideo.fileName)
 
       // this.createCourse = {
       //   title: this.course.title,
@@ -446,8 +448,25 @@ export default {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
     }
+    setTimeout(() => {
+      this.playDashVideos()
+    }, 5000)
   },
   methods: {
+    playDashVideos() {
+      // NodeList of video-js elements
+      console.log('playDashVideos')
+      const dashVideos = document.querySelectorAll('.video-js')
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.src({
+          src,
+          type,
+        })
+      }
+    },
     getNextTitle(pageCourse) {
       console.log('pageCourse: ', pageCourse)
       console.log('lessons: ', this.lessons)
