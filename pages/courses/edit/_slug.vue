@@ -820,39 +820,17 @@ export default {
       }
 
       if (this.course.introductoryVideo) {
-        this.createCourse.introductory_video_file = {
-          name: this.course.introductoryVideo.split('/')[
-            this.course.introductoryVideo.split('/').length - 1
-          ],
-        }
-        this.createCourse.introductory_video = this.course.introductoryVideo
+        ;(this.createCourse.introductory_video_file = {
+          name: this.course.introductoryVideo.fileName,
+          type: 'intro_video',
+        }),
+          (this.createCourse.introductory_video = this.course.introductoryVideo.publicUrl)
       }
 
       if (lessons && Object.keys(lessons).length) {
         this.lessons = lessons
         this.courseParts = lessons.lessons
       }
-
-      //   // Setting Resources Data
-      //   if (resources.length) {
-      //     this.resourceId = resources
-      //     this.fileResources = [
-      //       ...resources
-      //         .filter((i) => i.resourceType === 'file')
-      //         .map((i) => {
-      //           return {
-      //             resource: i.resource.fileName,
-      //             type: i.resourceType,
-      //             name: i.resource.fileName,
-      //           }
-      //         }),
-      //     ]
-      //     this.linkResources = [
-      //       ...resources
-      //         .filter((i) => i.resourceType === 'link')
-      //         .map((i) => i.resource),
-      //     ]
-      //   }
 
       if (gradCriteria && Object.keys(gradCriteria).length) {
         this.graudationId = gradCriteria.id
@@ -878,7 +856,6 @@ export default {
         lessons: true,
         settings: true,
       }
-      // }
     } catch (err) {
       console.log(err)
     }
@@ -1002,7 +979,7 @@ export default {
             title: this.course.title,
             subtitle: this.createCourse.subtitle,
             introductory_text: this.course.introductoryText,
-            introductory_video: this.course.introductoryVideo,
+            introductory_video: this.course.introductoryVideo.publicUrl,
             tags: this.course.tags,
             category_ids: this.createCourse.category_ids,
             tutor_email: this.createCourse.tutor_email,

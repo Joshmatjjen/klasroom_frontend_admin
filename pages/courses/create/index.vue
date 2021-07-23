@@ -914,7 +914,7 @@ export default {
             title: this.course.title,
             subtitle: this.createCourse.subtitle,
             introductory_text: this.course.introductoryText,
-            introductory_video: this.course.introductoryVideo,
+            introductory_video: this.course.introductoryVideo.publicUrl,
             tags: this.course.tags,
             category_ids: this.createCourse.category_ids,
             tutor_email: this.createCourse.tutor_email,
