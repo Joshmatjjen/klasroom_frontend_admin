@@ -50,7 +50,7 @@
         styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <span
+          <div
             v-if="
               props.column.field == 'webinarTitle' ||
               props.column.field == 'courseTitle'
@@ -94,7 +94,7 @@
               <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
               <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
             </div>
-            <span
+            <div
               v-if="onDraft && props.column.field == 'courseTitle'"
               class="flex flex-row gap-10"
             >
@@ -107,11 +107,11 @@
                 >
                   Keep editing
                 </nuxt-link>
-                <img src="/delete.svg" class="cursor-pointer" />
+                <img @click="deleteItem(props.row.course.id)" src="/delete.svg" class="cursor-pointer"  />
               </div>
-            </span>
+            </div>
             <!-- Draft for webinar End -->
-          </span>
+          </div>
           <span v-else-if="props.column.field == 'tutor'">
             <span class="text-gray-700 font-semibold">{{ props.row.course.tutorName }}</span>
           </span>
@@ -159,7 +159,7 @@
                 >
                   <p>Edit course</p>
                 </nuxt-link>
-                <span @click="$emit('click')"
+                <span @click="deleteItem(props.row.course.id)"
                   class="cursor-pointer pop-up-item lg:mr-4 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                 >
                   <p>Delete</p>
@@ -190,6 +190,7 @@ export default {
     rows: { type: Array, required: false },
     onDraft: { type: Boolean, required: false },
     type: { type: String, required: false },
+    deleteItem: { type: Function, required: false },
     // more: { type: String, default: null },
   },
   name: 'webinar-table',

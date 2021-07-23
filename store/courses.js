@@ -34,6 +34,10 @@ export const mutations = {
     const catgeory = state.courseCategory.filter((x) => x.categoryId !== id)
     state.courseCategory = catgeory
   },
+  //set delete courses
+  SET_DELETE_COURSES(state, courses) { 
+    state.courses = courses
+  },
   SET_UPDATED_COURSE_CATEGORY(state, index) {
     state.courseCategory.forEach((x) => {
       if (x.categoryId === index.categoryId) {
@@ -263,7 +267,17 @@ export const actions = {
       return false
     }
   },
-
+  // delete courses 
+  async deleteCourses(vuexContext,  id ) { 
+    try {
+      const data = await this.$axios.$delete(
+        `https://api.staging.klasroom.com/v1/courses/${id}`
+      )
+      vuexContext.commit('SET_DELETE_COURSE_SUCCESS', data)
+    } catch (e) {
+      console.log('Data failed: ', e)
+    }
+  },
   async getTutorsSummary(vuexContext) {
     try {
       const { data } = await this.$axios.$get('/users/tutors/summary')
