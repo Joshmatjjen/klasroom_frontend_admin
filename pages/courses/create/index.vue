@@ -105,9 +105,17 @@
                                 <div class="py-2">
                                   <!-- introductory name -->
                                   <resource-chip
-                                    v-for="(item, key) in fileResources"
+                                    v-for="(item,
+                                    key) in createCourse.introductory_video_file
+                                      ? [
+                                          ...createCourse.introductory_video_file,
+                                        ]
+                                      : []"
                                     :key="key"
-                                    :file="{ filename: item.name }"
+                                    :file="{
+                                      filename: item.name,
+                                      type: 'intro_video',
+                                    }"
                                     :id="key"
                                     :deleteItem="deleteResItem"
                                   />
@@ -815,6 +823,7 @@ export default {
       subtitle: null,
       introductory_text: null,
       introductory_video: null,
+      introductory_video_file: null,
       tutor_email: null,
       category_ids: [],
       tags: [],
@@ -905,7 +914,7 @@ export default {
             title: this.course.title,
             subtitle: this.createCourse.subtitle,
             introductory_text: this.course.introductoryText,
-            introductory_video: this.course.introductoryVideo,
+            introductory_video: this.course.introductoryVideo.publicUrl,
             tags: this.course.tags,
             category_ids: this.createCourse.category_ids,
             tutor_email: this.createCourse.tutor_email,
@@ -1258,11 +1267,11 @@ export default {
     },
     async setIntroVideo(e) {
       console.log('Uploading__')
-      const files = e.target.files
-      console.log('files: ', files)
+      const file = e.target.files[0]
+      console.log('file: ', file)
 
       const formData = new FormData()
-      formData.append('course_resources', ...files)
+      formData.append('course_resources', file)
       formData.append('file_path', 'course_introduction/video')
       try {
         this.videoUploading = true
@@ -1274,7 +1283,7 @@ export default {
           }
         )
         console.log('uploaded: ', message, data)
-        this.fileResources = [...this.fileResources, ...files]
+        this.createCourse.introductory_video_file = file
         this.createCourse.introductory_video = data.course_resources[0].fileName
         this.videoUploading = false
       } catch (e) {
@@ -1284,6 +1293,8 @@ export default {
       }
     },
     deleteResItem(id, type) {
+      if (type === 'intro_video')
+        this.createCourse.introductory_video_file = null
       if (type === 'link')
         this.linkResources = this.linkResources.filter(
           (i, index) => index !== id
