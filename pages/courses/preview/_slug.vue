@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen mb-24">
+  <div v-if="course" class="min-h-screen mb-24">
     <section class="bg-orange-100">
       <section>
         <div
@@ -53,29 +53,18 @@
           name="Take action"
         />
         <div class="grid grid-cols-12 gap-5">
-          <div
-            v-if="!$device.isMobile"
-            class="col-span-full lg:col-span-8 xl:col-span-8"
-          >
+          <!-- v-if="!$device.isMobile" -->
+          <div class="col-span-full lg:col-span-8 xl:col-span-8">
             <div
               class="bg-white rounded-xl border border-gray-300 shadow-hover overflow-hidden relative"
             >
-              <course-view-details />
+              <course-view-details
+                :course="course"
+                :lessonId="lessonId"
+                :partId="partId"
+                :lesson="lesson"
+              />
               <div class="px-4 md:px-5 lg:px-6 pb-4">
-                <div class="mb-8">
-                  <div class="flex flex-row gap-4 text-gray-700 mt-5">
-                    <span class="text-base font-semibold my-auto mb-2"
-                      >Resources</span
-                    >
-                  </div>
-                  <div class="space-y-3">
-                    <resource-list
-                      v-for="(item, key) in []"
-                      :key="key"
-                      :resource="item"
-                    />
-                  </div>
-                </div>
                 <div class="mb-12">
                   <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
                     <span class="text-base font-semibold my-auto"
@@ -106,8 +95,8 @@
                       <span class="item-status active ml-1 align-middle" />
                     </div>
                   </div>
-                  <div class="flex">
-                    <button class="btn btn-primary">Next Lesson</button>
+                  <div @click="changeLesson('next')" class="flex">
+                    <button class="btn btn-primary">{{ nextTitle }}</button>
                   </div>
                 </div>
               </div>
@@ -118,12 +107,17 @@
               class="flex flex-col flex-1 bg-white rounded-xl border border-gray-300"
             >
               <tabs-menu v-model="tab" :tabs="tabs" />
-              <div
+              <!-- <div
                 v-if="$device.isMobile && tab === 0 && tabs.length === 5"
                 class="pb-10"
               >
-                <course-view-details />
-              </div>
+                <course-view-details
+                  :course="course"
+                  :lessonId="lessonId"
+                  :partId="partId"
+                  :lesson="lesson"
+                />
+              </div> -->
               <div
                 v-if="
                   (tab === 0 && tabs.length === 4) ||
@@ -133,7 +127,7 @@
               >
                 <div>
                   <h5 class="font-bold text-gray-700 pt-2 mb-4">
-                    How to Build Multiple Sources of Income
+                    {{ course.title }}
                   </h5>
                   <div class="mb-4">
                     <progress-bar :percentage="30" />
@@ -142,95 +136,40 @@
                   <p class="text-xs text-gray-700">12 lessons to go</p>
                 </div>
                 <hr class="mt-4" />
-                <div class="mt-6 mb-4">
-                  <h6 class="text-sm text-gray-800 font-bold mb-5">
-                    Part 1 - Understanding Money
+                <div
+                  v-for="(item, key) in lessons"
+                  :key="key"
+                  class="mt-6 mb-4"
+                >
+                  <h6
+                    @click="selectLesson(key, 'part')"
+                    class="text-sm text-gray-800 font-bold mb-5"
+                  >
+                    Part {{ key + 1 }} - {{ item.part }}
                   </h6>
                   <ul class="text-xs text-gray-700">
-                    <li class="flex flex-row leading-tight mb-4">
-                      <nuxt-link to="/"
-                        >Understanding the concept of money</nuxt-link
-                      >
-                      <span class="item-status active align-bottom ml-auto" />
+                    <li
+                      v-for="(item, key) in item.lessons"
+                      :key="key"
+                      class="flex flex-row leading-tight mb-4"
+                    >
+                      <span @click="selectLesson(key, 'lesson')">{{
+                        item.lesson
+                      }}</span>
+                      <!-- <span class="item-status active align-bottom ml-auto" /> -->
                     </li>
-                    <li class="flex flex-row leading-tight mb-4">
-                      <nuxt-link to="/"
-                        >Career vs business (or both?)</nuxt-link
-                      >
-                      <span class="item-status active align-bottom ml-auto" />
-                    </li>
-                    <li class="flex flex-row leading-tight mb-4">
-                      <nuxt-link to="/">Finding new income sources</nuxt-link>
-                      <span class="item-status active align-bottom ml-auto" />
-                    </li>
-                    <li class="flex flex-row leading-tight mb-4">
-                      <nuxt-link to="/">Starting a business</nuxt-link>
-                      <span class="item-status active align-bottom ml-auto" />
-                    </li>
-                    <li class="flex flex-row leading-tight mb-4">
+
+                    <!-- Sample lesson with start staus -->
+                    <!-- <li class="flex flex-row leading-tight mb-4">
                       <nuxt-link to="/">Residual income sources</nuxt-link>
                       <span
                         class="text-xs text-orange-500 font-semibold align-bottom ml-auto cursor-pointer"
                         >Start</span
                       >
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
                 <hr />
-                <div class="mt-6 mb-4">
-                  <h6 class="text-sm text-gray-800 font-bold mb-5">
-                    Part 2 - Creating income
-                  </h6>
-                  <ul class="text-xs text-gray-700">
-                    <li class="mb-4">
-                      <nuxt-link to="/"
-                        >Understanding the concept of money</nuxt-link
-                      >
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/"
-                        >Career vs business (or both?)
-                      </nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Finding new income sources</nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Starting a business</nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Residual income sources</nuxt-link>
-                    </li>
-                  </ul>
-                </div>
-                <hr />
-                <div class="pt-6 mb-4">
-                  <h6 class="text-sm text-gray-800 font-bold mb-5">
-                    Part 2 - Creating income
-                  </h6>
-                  <ul class="text-xs text-gray-700">
-                    <li class="mb-4">
-                      <nuxt-link to="/"
-                        >Part 3 - Maximizing profits, minimizing
-                        stress</nuxt-link
-                      >
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/"
-                        >Career vs business (or both?)
-                      </nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Finding new income sources</nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Starting a business</nuxt-link>
-                    </li>
-                    <li class="mb-4">
-                      <nuxt-link to="/">Residual income sources</nuxt-link>
-                    </li>
-                  </ul>
-                </div>
               </div>
               <div
                 v-if="
@@ -362,10 +301,13 @@
       </div>
     </section>
   </div>
+  <loader-2 v-else />
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Swal from 'sweetalert2'
+import { getAccessTokenHeader } from '~/utils'
 
 const courses = require('@/static/json/latest-courses.json')
 const videos = require('@/static/json/videos-list.json')
@@ -376,17 +318,74 @@ const students = require('@/static/json/students.json')
 
 export default {
   middleware: ['check-auth', 'auth'],
-  fetch({ store }) {
-    store.commit('app/SET_DARK_MENU', true)
-    store.commit('app/SET_TITLE', 'Courses')
+  async fetch() {
+    this.$store.commit('app/SET_DARK_MENU', true)
+    this.$store.commit('app/SET_TITLE', 'Courses')
+    // this.location = location.origin
+    try {
+      const { data } = await this.$axios.$get(
+        `https://api.staging.klasroom.com/v1/courses/${this.$route.params.slug}`,
+        {
+          headers: getAccessTokenHeader(this.token),
+        }
+      )
+      console.log('course: ', data)
+
+      const { lessons, gradCriteria, price, promotions, ...courseData } = data
+
+      this.course = courseData
+
+      // this.createCourse = {
+      //   title: this.course.title,
+      //   subtitle: this.course.subtitle,
+      //   introductory_text: this.course.introductoryText,
+      //   introductory_video: null,
+      //   introductory_video_file: null,
+      //   tutor_email: this.course.tutorEmail,
+      //   category_ids: this.course.categories,
+      //   tags: this.course.tags,
+      //   image: this.course.image,
+      //   course_benefits: this.course.courseBenefits,
+      // }
+
+      if (lessons && Object.keys(lessons).length) {
+        this.lessons = lessons.lessons
+        // TODO Check for users last viewed lesson later
+        this.lesson = this.lessons[0]
+        this.getNextTitle(this.lesson)
+      }
+
+      if (gradCriteria && Object.keys(gradCriteria).length) {
+        this.gradCriteria = gradCriteria
+      }
+      if (price && Object.keys(price).length) {
+        this.price = price.price
+      }
+      if (promotions && Object.keys(promotions).length) {
+        this.promotions = promotions
+      }
+    } catch (err) {
+      console.log(err)
+    }
   },
+  fetchOnServer: false,
   data: () => ({
     home: 'home',
     videos,
-    course: courses[0],
+    course: null,
     courses: _.take(courses, 3),
     youLearn,
     reviews,
+
+    lessonId: 0,
+    partId: 0,
+    lessons: null,
+    lesson: null,
+    gradCriteria: null,
+    price: null,
+    promotions: null,
+    nextTitle: 'Next Lesson',
+
     tab: 0,
     tabs: ['Lessons', 'Chat', 'Assignment', 'Resources'],
     isCourses: {
@@ -439,6 +438,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
+      token: (state) => state.auth.token,
       profileImage: (state) => state.auth.profileImage,
     }),
   },
@@ -448,6 +448,53 @@ export default {
     }
   },
   methods: {
+    getNextTitle(pageCourse) {
+      console.log('pageCourse: ', pageCourse)
+      console.log('lessons: ', this.lessons)
+      if (this.lessonId + 1 < pageCourse.lessons.length)
+        this.nextTitle = 'Next Lesson'
+      else if (this.partId + 1 < this.lessons.length) {
+        this.nextTitle = 'Next Part'
+      } else this.nextTitle = 'Course End'
+    },
+    changeLesson(type) {
+      try {
+        if (this.lesson) {
+          if (type === 'next') {
+            // Check if next lesson exit
+            if (this.lesson.lessons[this.lessonId + 1]) {
+              this.lessonId += 1
+
+              this.getNextTitle(this.lesson)
+              return
+            } else if (this.lessons[this.partId + 1]) {
+              this.lesson = this.lessons[this.partId + 1]
+              this.partId += 1
+              this.lessonId = 0
+
+              this.getNextTitle(this.lesson)
+              return
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    selectLesson(id, type) {
+      if (type === 'part') {
+        this.lesson = this.lessons[id]
+        this.partId = id
+        this.lessonId = 0
+
+        this.getNextTitle(this.lesson)
+      }
+      if (type === 'lesson') {
+        this.lessonId = id
+
+        this.getNextTitle(this.lesson)
+      }
+    },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')
       this.$store.commit('app/SET_VIEW_DATA', {

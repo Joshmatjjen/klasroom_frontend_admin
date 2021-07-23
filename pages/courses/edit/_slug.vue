@@ -105,9 +105,17 @@
                                 <div class="py-2">
                                   <!-- introductory name -->
                                   <resource-chip
-                                    v-for="(item, key) in fileResources"
+                                    v-for="(item,
+                                    key) in createCourse.introductory_video_file
+                                      ? [
+                                          ...createCourse.introductory_video_file,
+                                        ]
+                                      : []"
                                     :key="key"
-                                    :file="{ filename: item.name }"
+                                    :file="{
+                                      filename: item.name,
+                                      type: 'intro_video',
+                                    }"
                                     :id="key"
                                     :deleteItem="deleteResItem"
                                   />
@@ -802,12 +810,22 @@ export default {
         title: this.course.title,
         subtitle: this.course.subtitle,
         introductory_text: this.course.introductoryText,
-        introductory_video: this.course.introductoryVideo,
+        introductory_video: null,
+        introductory_video_file: null,
         tutor_email: this.course.tutorEmail,
         category_ids: this.course.categories,
         tags: this.course.tags,
         image: this.course.image,
         course_benefits: this.course.courseBenefits,
+      }
+
+      if (this.course.introductoryVideo) {
+        this.createCourse.introductory_video_file = {
+          name: this.course.introductoryVideo.split('/')[
+            this.course.introductoryVideo.split('/').length - 1
+          ],
+        }
+        this.createCourse.introductory_video = this.course.introductoryVideo
       }
 
       if (lessons && Object.keys(lessons).length) {
@@ -893,6 +911,7 @@ export default {
       subtitle: null,
       introductory_text: null,
       introductory_video: null,
+      introductory_video_file: null,
       tutor_email: null,
       category_ids: [],
       tags: [],
@@ -1097,9 +1116,7 @@ export default {
 
             if (this.course) {
               const { data } = await this.$axios.$put(
-                `https://api.staging.klasroom.com/v1/courses/${
-                  this.course.id
-                }?publish_now=${false}`,
+                `https://api.staging.klasroom.com/v1/courses/${this.course.id}`,
                 resData,
                 {
                   headers: getAccessTokenHeader(this.token),
@@ -1336,11 +1353,11 @@ export default {
     },
     async setIntroVideo(e) {
       console.log('Uploading__')
-      const files = e.target.files
-      console.log('files: ', files)
+      const file = e.target.files[0]
+      console.log('file: ', file)
 
       const formData = new FormData()
-      formData.append('course_resources', ...files)
+      formData.append('course_resources', file)
       formData.append('file_path', 'course_introduction/video')
       try {
         this.videoUploading = true
@@ -1352,7 +1369,7 @@ export default {
           }
         )
         console.log('uploaded: ', message, data)
-        this.fileResources = [...this.fileResources, ...files]
+        this.createCourse.introductory_video_file = file
         this.createCourse.introductory_video = data.course_resources[0].fileName
         this.videoUploading = false
       } catch (e) {
@@ -1362,6 +1379,8 @@ export default {
       }
     },
     deleteResItem(id, type) {
+      if (type === 'intro_video')
+        this.createCourse.introductory_video_file = null
       if (type === 'link')
         this.linkResources = this.linkResources.filter(
           (i, index) => index !== id

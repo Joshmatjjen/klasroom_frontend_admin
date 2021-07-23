@@ -16,7 +16,10 @@
         <!-- <button class="flex items-center mr-5">
           <img class="w-6 h-6" src="/icon/edit.svg" />
         </button> -->
-        <button class="items-center" @click="deleteItem(id)">
+        <button
+          class="items-center"
+          @click="deleteItem(id, file ? file.type : null)"
+        >
           <img class="w-6 h-6" src="/icon/delete.svg" />
         </button>
       </div>
