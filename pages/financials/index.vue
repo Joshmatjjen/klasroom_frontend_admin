@@ -40,19 +40,12 @@
         </div>
         <!-- </div> -->
       </section>
-      <section class="mt-10">
-        <sales
-          :dataAll="{ data: [] }"
-          :dataCourses="{ data: [] }"
-          :dataWebinars="{ data: [] }"
-        />
-      </section>
 
       <section class="mt-10">
         <sales
-          :dataAll="{ data: [] }"
-          :dataCourses="{ data: [] }"
-          :dataWebinars="{ data: [] }"
+          :dataAll="allSales"
+          :dataCourses="courseSales"
+          :dataWebinars="webinarSales"
         />
       </section>
 
@@ -160,7 +153,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      courses: (state) => state.courses.courses,
       financeSummary: (state) => state.financials.financeSummary,
       allSales: (state) => state.financials.sales.all,
       courseSales: (state) => state.financials.sales.courses,

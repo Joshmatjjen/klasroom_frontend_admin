@@ -11,7 +11,7 @@
             <div class="flex flex-row justify-between px-5">
               <section-switcher
                 v-model="tab"
-                :tabs="[`All`, `Courses`, `Webinars`, `Plans`]"
+                :tabs="[`All`, `Courses`, `Webinars`]"
               />
               <div
                 class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"
@@ -35,7 +35,7 @@
                 </div> -->
               </div>
             </div>
-            <!-- <section v-if="dataAll && tab === 0">
+            <section v-if="dataAll && tab === 0">
               <list-table-2
                 :columns="allSalesColumns"
                 :rows="dataAll ? dataAll.data : []"
@@ -43,8 +43,8 @@
                 :total="124322"
                 route="/people/students/"
               />
-            </section> -->
-            <!-- <section v-if="dataCourses && tab === 1">
+            </section>
+            <section v-if="dataCourses && tab === 1">
               <list-table-2
                 :columns="allSalesColumns"
                 :rows="dataCourses ? dataCourses.data : []"
@@ -61,7 +61,7 @@
                 :total="124322"
                 route="/people/students/"
               />
-            </section> -->
+            </section>
             <!-- <list-table-2
               v-if="tab === 1"
               :columns="allSalesColumns"
@@ -71,7 +71,7 @@
               route="/people/students/"
             /> -->
 
-            <list-table-2
+            <!-- <list-table-2
               v-if="
                 (dataAll && tab === 0) ||
                 (dataCourses && tab === 1) ||
@@ -90,7 +90,7 @@
               type="Students"
               :total="124322"
               route="/people/students/"
-            />
+            /> -->
           </div>
         </div>
       </div>
