@@ -962,21 +962,6 @@ export default {
     gotoCourses(type) {
       this.$router.push(`/courses`)
     },
-    playDashVideos() {
-      // NodeList of video-js elements
-      const dashVideos = document.querySelectorAll('.video-js')
-      for (let video of dashVideos) {
-        console.log('dashVideos id: ', video.id, video.dataset)
-        const player = videojs(video)
-        const { src, type } = video.dataset
-        player.reset()
-        player.src({
-          src,
-          type,
-        })
-        // player.play()
-      }
-    },
     addTag() {
       this.createCourse.tags.push('#' + this.newTag)
       this.newTag = ''

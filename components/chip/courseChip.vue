@@ -113,12 +113,6 @@ export default {
   data: () => ({
     collapsedPartIds: [],
   }),
-  watch: {
-    async collapsedPartIds(value) {
-      console.log('collapsedPartIds: ', value)
-      // await this.$nextTick()
-    },
-  },
   methods: {
     addLesson() {
       this.item.lessons = [

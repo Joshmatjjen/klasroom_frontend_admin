@@ -220,6 +220,8 @@ export default {
     editorOption() {
       const self = this
 
+      console.log('self: ', self)
+
       return {
         modules: {
           // ImageResize: {},
@@ -243,6 +245,9 @@ export default {
             start: () => {}, // Optional parameters Custom start upload trigger event
             end: (res) => {
               console.log('ended: ', res)
+              setTimeout(() => {
+                self.playDashVideos()
+              }, 5000)
             }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
             error: () => {}, // Optional parameters Customize events triggered by network errors
             change: (xhr, formData) => {
@@ -278,9 +283,9 @@ export default {
             },
             end: () => {
               console.log('ended')
-              // setTimeout(() => {
-              //   self.playDashVideos()
-              // }, 10000)
+              setTimeout(() => {
+                self.playDashVideos()
+              }, 5000)
             }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
             response: (res) => {
               // video uploaded path
@@ -336,6 +341,22 @@ export default {
       if (this.collapsedPartIds.find((i) => i === id) !== undefined) {
         this.collapsedPartIds = this.collapsedPartIds.filter((i) => i !== id)
       } else this.collapsedPartIds = [...this.collapsedPartIds, id]
+    },
+
+    playDashVideos() {
+      // NodeList of video-js elements
+      const dashVideos = document.querySelectorAll('.video-js')
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.reset()
+        player.src({
+          src,
+          type,
+        })
+        // player.play()
+      }
     },
   },
 }
