@@ -12,7 +12,7 @@
     <div
       class="flex flex-row rounded-3xl items-center align-middle justify-center text-xs md:text-sm text-white md:text-rightmr-5"
     >
-      <nuxt-link :to="`/webinars/edit/` + id">
+      <nuxt-link :to="link + id">
         <button
           class="btn2 btn2-primary text-xs md:text-sm py-2 md:py-3 w-24 md:w-32 items-center mr-1 md:mr-5"
         >
@@ -68,6 +68,7 @@ export default {
     desc: { type: String, required: false },
     name: { type: String, required: false },
     id: { type: String, required: false },
+    link: { type: String, required: false },
   },
   // computed: {
   //   view_route() {

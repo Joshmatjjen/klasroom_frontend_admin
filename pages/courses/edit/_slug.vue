@@ -196,10 +196,16 @@
                                 <div class="mt-3 flex">
                                   <p
                                     class="mr-2"
-                                    v-for="tag in createCourse.tags"
-                                    :key="tag"
+                                    v-for="(tag, key) in createCourse.tags"
+                                    :key="key"
                                   >
-                                    {{ tag }}
+                                    {{ tag
+                                    }}<sup
+                                      class="ml-1 rounded inline cursor-pointer bg-red-500 p-1 text-white"
+                                      style="font-size: 0.5rem"
+                                      @click="removeTag(key)"
+                                      >X</sup
+                                    >
                                   </p>
                                 </div>
                               </div>
@@ -835,10 +841,15 @@ export default {
         introductory_video: null,
         introductory_video_file: null,
         tutor_email: this.course.tutorEmail,
-        category_ids: this.course.categories,
-        tags: this.course.tags,
+        category_ids: this.course.categories || [],
+        tags: this.course.tags || [],
         image: this.course.image,
-        course_benefits: this.course.courseBenefits,
+        course_benefits: this.course.courseBenefits || [
+          {
+            title: '',
+            description: '',
+          },
+        ],
       }
 
       if (this.course.image) {
@@ -846,11 +857,11 @@ export default {
       }
 
       if (this.course.introductoryVideo) {
-        ;(this.createCourse.introductory_video_file = {
+        this.createCourse.introductory_video_file = {
           name: this.course.introductoryVideo.fileName,
           type: 'intro_video',
-        }),
-          (this.createCourse.introductory_video = this.course.introductoryVideo.publicUrl)
+        }
+        this.createCourse.introductory_video = this.course.introductoryVideo.fileName
       }
 
       if (lessons && Object.keys(lessons).length) {
@@ -1054,16 +1065,22 @@ export default {
         console.log('dashVideos id: ', video.id, video.dataset)
         const player = videojs(video)
         const { src, type } = video.dataset
+        player.reset()
         player.src({
           src,
           type,
         })
+        // player.play()
       }
     },
-    // player.play()
     addTag() {
       this.createCourse.tags.push('#' + this.newTag)
       this.newTag = ''
+    },
+    removeTag(id) {
+      this.createCourse.tags = this.createCourse.tags.filter(
+        (i, index) => index !== id
+      )
     },
     saveContent() {
       console.log(this.content)

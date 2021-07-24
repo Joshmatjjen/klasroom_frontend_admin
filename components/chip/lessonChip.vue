@@ -1,15 +1,27 @@
 <template>
   <!-- Lessons -->
-  <div class="form-group mb-5">
-    <label :for="`input-lesson-${id}`"
-      >{{ 'Lesson ' + (id + 1) }}
-      <img
-        class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
-        src="/icon/delete.svg"
-        @click="deleteItem(id)"
-        v-if="id > 1"
-      />
-    </label>
+  <div
+    class="form-group mb-5"
+    :class="
+      collapsedPartIds.find((i) => i === id) !== undefined
+        ? 'h-10 overflow-hidden border-b border-dashed'
+        : ''
+    "
+  >
+    <div class="flex justify-between items-center">
+      <label :for="`input-lesson-${id}`"
+        >{{ 'Lesson ' + (id + 1) }}
+        <img
+          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
+          src="/icon/delete.svg"
+          @click="deleteItem(id)"
+          v-if="id > 1"
+        />
+      </label>
+      <span @click="collapsedPart(id)" class="collapse text-xs mb-3"
+        >Collapse</span
+      >
+    </div>
     <div>
       <input
         :id="`input-lesson-${id}`"
@@ -175,6 +187,9 @@ export default {
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
   },
+  data: () => ({
+    collapsedPartIds: [],
+  }),
   computed: {
     _lesson: {
       get: function () {
@@ -205,6 +220,8 @@ export default {
     editorOption() {
       const self = this
 
+      console.log('self: ', self)
+
       return {
         modules: {
           // ImageResize: {},
@@ -228,6 +245,9 @@ export default {
             start: () => {}, // Optional parameters Custom start upload trigger event
             end: (res) => {
               console.log('ended: ', res)
+              setTimeout(() => {
+                self.playDashVideos()
+              }, 5000)
             }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
             error: () => {}, // Optional parameters Customize events triggered by network errors
             change: (xhr, formData) => {
@@ -263,9 +283,9 @@ export default {
             },
             end: () => {
               console.log('ended')
-              // setTimeout(() => {
-              //   self.playDashVideos()
-              // }, 10000)
+              setTimeout(() => {
+                self.playDashVideos()
+              }, 5000)
             }, // Optional parameters Customize the event triggered by the end of upload, regardless of success or failure
             response: (res) => {
               // video uploaded path
@@ -316,6 +336,28 @@ export default {
       //     this.playDashVideos()
       //   }, 10000)
     },
+    collapsedPart(id) {
+      console.log(this.collapsedPartIds.find((i) => i === id))
+      if (this.collapsedPartIds.find((i) => i === id) !== undefined) {
+        this.collapsedPartIds = this.collapsedPartIds.filter((i) => i !== id)
+      } else this.collapsedPartIds = [...this.collapsedPartIds, id]
+    },
+
+    playDashVideos() {
+      // NodeList of video-js elements
+      const dashVideos = document.querySelectorAll('.video-js')
+      for (let video of dashVideos) {
+        console.log('dashVideos id: ', video.id, video.dataset)
+        const player = videojs(video)
+        const { src, type } = video.dataset
+        player.reset()
+        player.src({
+          src,
+          type,
+        })
+        // player.play()
+      }
+    },
   },
 }
 </script>
@@ -347,5 +389,14 @@ export default {
   top: 8px;
   background: #0797ce;
   position: absolute;
+}
+.collapse {
+  background-image: url('/icon/dash-user-drop.svg');
+  color: rgba(113, 128, 150, 1);
+  background-repeat: no-repeat;
+  background-position: top 50% right 8px;
+  padding: 5px;
+  @apply border border-gray-400 rounded-xl pr-12;
+  @apply align-bottom;
 }
 </style>

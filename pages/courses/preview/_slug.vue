@@ -49,8 +49,14 @@
           </div>
         </div>
         <edit-chip
-          desc="This course has not been approved and is not live for purchase. Click “Take action” to publish."
-          name="Take action"
+          :desc="
+            !course.isActive
+              ? 'This course has not been approved and is not live for purchase. Click “Take action” to publish.'
+              : `This is a preview of your course. To make changes, please click “Edit course`
+          "
+          :name="!course.isActive ? 'Take action' : 'Edit course'"
+          link="/courses/edit/"
+          :id="$route.params.slug"
         />
         <div class="grid grid-cols-12 gap-5">
           <!-- v-if="!$device.isMobile" -->
@@ -122,7 +128,12 @@
                     </div>
                   </div>
                   <div @click="changeLesson('next')" class="flex">
-                    <button class="btn btn-primary">{{ nextTitle }}</button>
+                    <button
+                      class="btn"
+                      :class="nextTitle === 'End' ? 'btn-light' : 'btn-primary'"
+                    >
+                      {{ nextTitle }}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -165,7 +176,7 @@
                 <div class="mt-6 mb-4">
                   <h6
                     @click="selectLesson(null, 'intro')"
-                    class="text-sm text-gray-800 font-bold mb-5"
+                    class="cursor-pointer text-sm text-gray-800 font-bold mb-5"
                   >
                     Introduction
                   </h6>
@@ -178,7 +189,7 @@
                 >
                   <h6
                     @click="selectLesson(key, 'part')"
-                    class="text-sm text-gray-800 font-bold mb-5"
+                    class="cursor-pointer text-sm text-gray-800 font-bold mb-5"
                   >
                     Part {{ key + 1 }} - {{ item.part }}
                   </h6>
@@ -186,7 +197,7 @@
                     <li
                       v-for="(item, key) in item.lessons"
                       :key="key"
-                      class="flex flex-row leading-tight mb-4"
+                      class="flex flex-row leading-tight mb-4 cursor-pointer"
                     >
                       <span @click="selectLesson(key, 'lesson')">{{
                         item.lesson
@@ -494,9 +505,10 @@ export default {
       console.log('playDashVideos')
       const dashVideos = document.querySelectorAll('.video-js')
       for (let video of dashVideos) {
-        console.log('dashVideos id: ', video.id, video.dataset)
+        // console.log('dashVideos id: ', video.id, video.dataset)
         const player = videojs(video)
         const { src, type } = video.dataset
+        player.reset()
         player.src({
           src,
           type,
@@ -510,7 +522,7 @@ export default {
         this.nextTitle = 'Next Lesson'
       else if (this.partId + 1 < this.lessons.length) {
         this.nextTitle = 'Next Part'
-      } else this.nextTitle = 'Course End'
+      } else this.nextTitle = 'End'
     },
     changeLesson(type) {
       try {
@@ -553,7 +565,9 @@ export default {
       } else {
         this.showIntro = true
       }
-      this.playDashVideos()
+      setTimeout(() => {
+        this.playDashVideos()
+      }, 2000)
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

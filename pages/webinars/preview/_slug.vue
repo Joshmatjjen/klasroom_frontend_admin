@@ -33,6 +33,7 @@
             desc='This is a preview of your webinar. To make changes, please click "Edit Webinar"'
             name="Edit Webinar"
             :id="$route.params.slug"
+            link="/webinars/edit/"
           />
         </section>
 
