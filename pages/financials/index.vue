@@ -57,7 +57,7 @@
       </section>
 
       <section class="mt-10">
-        <payout :data="{ data: [] }" />
+        <payout :data="payouts" />
       </section>
     </div>
     <loader-2 v-else />
@@ -165,6 +165,7 @@ export default {
       allSales: (state) => state.financials.sales.all,
       courseSales: (state) => state.financials.sales.courses,
       webinarSales: (state) => state.financials.sales.webinars,
+      payouts: (state) => state.financials.payouts,
       // liveCourses: (state) => state.financials.coursesData.liveCourses,
     }),
   },
