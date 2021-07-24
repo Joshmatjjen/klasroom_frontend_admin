@@ -2,7 +2,15 @@
   <div class="px-4 md:px-5 lg:px-6 py-4">
     <!-- Part -->
     <div class="form-group mb-5">
-      <label for="input-name">Part {{ id + 1 }}</label>
+      <label for="input-name"
+        >Part {{ id + 1 }}
+        <img
+          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
+          src="/icon/delete.svg"
+          @click="deleteItem(id)"
+          v-if="id > 0"
+        />
+      </label>
       <div>
         <input
           id="input-name"
