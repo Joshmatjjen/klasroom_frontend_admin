@@ -1,15 +1,27 @@
 <template>
   <!-- Lessons -->
-  <div class="form-group mb-5">
-    <label :for="`input-lesson-${id}`"
-      >{{ 'Lesson ' + (id + 1) }}
-      <img
-        class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
-        src="/icon/delete.svg"
-        @click="deleteItem(id)"
-        v-if="id > 1"
-      />
-    </label>
+  <div
+    class="form-group mb-5"
+    :class="
+      collapsedPartIds.find((i) => i === id) !== undefined
+        ? 'h-10 overflow-hidden border-b border-dashed'
+        : ''
+    "
+  >
+    <div class="flex justify-between items-center">
+      <label :for="`input-lesson-${id}`"
+        >{{ 'Lesson ' + (id + 1) }}
+        <img
+          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
+          src="/icon/delete.svg"
+          @click="deleteItem(id)"
+          v-if="id > 1"
+        />
+      </label>
+      <span @click="collapsedPart(id)" class="collapse text-xs mb-3"
+        >Collapse</span
+      >
+    </div>
     <div>
       <input
         :id="`input-lesson-${id}`"
@@ -175,6 +187,9 @@ export default {
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
   },
+  data: () => ({
+    collapsedPartIds: [],
+  }),
   computed: {
     _lesson: {
       get: function () {
@@ -316,6 +331,12 @@ export default {
       //     this.playDashVideos()
       //   }, 10000)
     },
+    collapsedPart(id) {
+      console.log(this.collapsedPartIds.find((i) => i === id))
+      if (this.collapsedPartIds.find((i) => i === id) !== undefined) {
+        this.collapsedPartIds = this.collapsedPartIds.filter((i) => i !== id)
+      } else this.collapsedPartIds = [...this.collapsedPartIds, id]
+    },
   },
 }
 </script>
@@ -347,5 +368,14 @@ export default {
   top: 8px;
   background: #0797ce;
   position: absolute;
+}
+.collapse {
+  background-image: url('/icon/dash-user-drop.svg');
+  color: rgba(113, 128, 150, 1);
+  background-repeat: no-repeat;
+  background-position: top 50% right 8px;
+  padding: 5px;
+  @apply border border-gray-400 rounded-xl pr-12;
+  @apply align-bottom;
 }
 </style>

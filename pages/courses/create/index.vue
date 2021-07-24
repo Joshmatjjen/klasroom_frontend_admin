@@ -196,10 +196,16 @@
                                 <div class="mt-3 flex">
                                   <p
                                     class="mr-2"
-                                    v-for="tag in createCourse.tags"
-                                    :key="tag"
+                                    v-for="(tag, key) in createCourse.tags"
+                                    :key="key"
                                   >
-                                    {{ tag }}
+                                    {{ tag
+                                    }}<sup
+                                      class="ml-1 rounded inline cursor-pointer bg-red-500 p-1 text-white"
+                                      style="font-size: 0.5rem"
+                                      @click="removeTag(key)"
+                                      >X</sup
+                                    >
                                   </p>
                                 </div>
                               </div>
@@ -963,16 +969,22 @@ export default {
         console.log('dashVideos id: ', video.id, video.dataset)
         const player = videojs(video)
         const { src, type } = video.dataset
+        player.reset()
         player.src({
           src,
           type,
         })
+        // player.play()
       }
     },
-    // player.play()
     addTag() {
       this.createCourse.tags.push('#' + this.newTag)
       this.newTag = ''
+    },
+    removeTag(id) {
+      this.createCourse.tags = this.createCourse.tags.filter(
+        (i, index) => index !== id
+      )
     },
     saveContent() {
       console.log(this.content)

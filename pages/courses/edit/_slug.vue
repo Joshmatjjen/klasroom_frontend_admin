@@ -861,7 +861,7 @@ export default {
           name: this.course.introductoryVideo.fileName,
           type: 'intro_video',
         }
-        this.createCourse.introductory_video = this.course.introductoryVideo.publicUrl
+        this.createCourse.introductory_video = this.course.introductoryVideo.fileName
       }
 
       if (lessons && Object.keys(lessons).length) {
@@ -1065,13 +1065,14 @@ export default {
         console.log('dashVideos id: ', video.id, video.dataset)
         const player = videojs(video)
         const { src, type } = video.dataset
+        player.reset()
         player.src({
           src,
           type,
         })
+        // player.play()
       }
     },
-    // player.play()
     addTag() {
       this.createCourse.tags.push('#' + this.newTag)
       this.newTag = ''

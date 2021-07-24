@@ -1,53 +1,66 @@
 <template>
   <div class="px-4 md:px-5 lg:px-6 py-4">
     <!-- Part -->
-    <div class="form-group mb-5">
-      <label for="input-name"
-        >Part {{ id + 1 }}
-        <img
-          class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
-          src="/icon/delete.svg"
-          @click="deleteItem(id)"
-          v-if="id > 0"
-        />
-      </label>
-      <div>
-        <input
-          id="input-name"
-          type="text"
-          class="form-input"
-          :placeholder="`Enter part ${id + 1} name`"
-          v-model="item.part"
-          @input="checkFormError('part')"
+    <div
+      :class="
+        collapsedPartIds.find((i) => i === id) !== undefined
+          ? 'h-10 overflow-hidden border-b border-dashed'
+          : ''
+      "
+    >
+      <div class="form-group mb-5">
+        <div class="flex justify-between items-center">
+          <label for="input-name"
+            >Part {{ id + 1 }}
+            <img
+              class="w-4 h-4 inline ml-3 mb-1 cursor-pointer"
+              src="/icon/delete.svg"
+              @click="deleteItem(id)"
+              v-if="id > 0"
+            />
+          </label>
+          <span @click="collapsedPart(id)" class="collapse text-xs mb-3"
+            >Collapse</span
+          >
+        </div>
+        <div>
+          <input
+            id="input-name"
+            type="text"
+            class="form-input"
+            :placeholder="`Enter part ${id + 1} name`"
+            v-model="item.part"
+            @input="checkFormError('part')"
+          />
+        </div>
+      </div>
+      <hr class="mb-5" />
+
+      <div class="grid grid-cols-1 gap-x-5 gap-y-0">
+        <lesson-chip
+          v-for="(i, key) in item.lessons"
+          :key="key"
+          :id="key"
+          :lesson="i"
+          @update:lesson="
+            (value) => {
+              item.lessons[key].lesson = value
+            }
+          "
+          @update:description="
+            (value) => {
+              item.lessons[key].description = value
+            }
+          "
+          @update:content="
+            (value) => {
+              item.lessons[key].content = value
+            }
+          "
+          :deleteItem="removeLesson"
+          :checkFormError="checkFormError"
         />
       </div>
-    </div>
-    <hr class="mb-5" />
-
-    <div class="grid grid-cols-1 gap-x-5 gap-y-0">
-      <lesson-chip
-        v-for="(i, key) in item.lessons"
-        :key="key"
-        :id="key"
-        :lesson="i"
-        @update:lesson="
-          (value) => {
-            item.lessons[key].lesson = value
-          }
-        "
-        @update:description="
-          (value) => {
-            item.lessons[key].description = value
-          }
-        "
-        @update:content="
-          (value) => {
-            item.lessons[key].content = value
-          }
-        "
-        :deleteItem="removeLesson"
-        :checkFormError="checkFormError"
-      />
     </div>
     <!-- Add New Lesson Button -->
     <div
@@ -97,6 +110,15 @@ export default {
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
   },
+  data: () => ({
+    collapsedPartIds: [],
+  }),
+  watch: {
+    async collapsedPartIds(value) {
+      console.log('collapsedPartIds: ', value)
+      // await this.$nextTick()
+    },
+  },
   methods: {
     addLesson() {
       this.item.lessons = [
@@ -110,6 +132,12 @@ export default {
     },
     removeLesson(id) {
       this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
+    },
+    collapsedPart(id) {
+      console.log(this.collapsedPartIds.find((i) => i === id))
+      if (this.collapsedPartIds.find((i) => i === id) !== undefined) {
+        this.collapsedPartIds = this.collapsedPartIds.filter((i) => i !== id)
+      } else this.collapsedPartIds = [...this.collapsedPartIds, id]
     },
   },
 }
@@ -142,5 +170,14 @@ export default {
   top: 8px;
   background: #0797ce;
   position: absolute;
+}
+.collapse {
+  background-image: url('/icon/dash-user-drop.svg');
+  color: rgba(113, 128, 150, 1);
+  background-repeat: no-repeat;
+  background-position: top 50% right 8px;
+  padding: 5px;
+  @apply border border-gray-400 rounded-xl pr-12;
+  @apply align-bottom;
 }
 </style>
