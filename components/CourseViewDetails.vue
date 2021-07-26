@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- <video-frame class="rounded-t-none rounded-b-none mb-4" /> -->
-    <video
+    <!-- <video
       class="video-js vjs-default-skin rounded-t-none rounded-b-none mb-4"
       controls
       data-type="application/dash+xml"
       :data-src="course ? course.introductoryVideo.publicUrl : ''"
       style="width: 100%"
-    ></video>
+    ></video> -->
     <div class="px-4 md:px-5 lg:px-6 pt-4">
       <div>
         <h5 class="font-bold mb-3 leading-tight text-gray-700">
@@ -66,10 +66,10 @@
         </p>
 
         <div class="flex flex-col md:flex-row md:gap-4 text-gray-700 mt-5">
-          <span class="text-base font-semibold my-auto">Content</span>
+          <span class="text-base font-semibold my-auto">Lesson</span>
         </div>
 
-        <div class="space-y-3">
+        <div class="text-xs mt-4">
           <div
             v-html="lesson ? lesson.lessons[lessonId].content : '<p></p>'"
           ></div>
