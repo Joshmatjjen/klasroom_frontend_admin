@@ -645,29 +645,22 @@
                       {{ course.introductoryText }}
                     </p>
                   </li>
-                  <li>
-                    <hr class="my-5" />
-                    <label class="checkbox" @click="$router.push('/')">
-                      <span class="text-sm">Preview course</span>
-                      <input type="checkbox" value="intermediate" disabled />
-                      <span class="checkmark"></span>
-                    </label>
-                  </li>
                   <hr class="my-5" />
-                  <li class="lg:pb-8 flex flex-row justify-between">
+                  <!-- <li class="lg:pb-8 flex flex-row justify-between">
                     <span class="text-sm">Link: https://klasro..</span>
 
                     <div class="flex items-center mr-5 mb-3 cursor-pointer">
                       <img class="w-6 h-4" src="/icon/copy.svg" />
                       <span class="text-xs">Copy</span>
                     </div>
-                  </li>
+                  </li> -->
                   <li class="lg:pb-8 flex flex-row justify-between relative">
                     <button
+                      v-if="courseStates.settings"
                       class="btn btn-primary mr-5 flex flex-row justify-between align-middle items-center"
-                      @click="$router.push(`/course/preview/${course.id}`)"
+                      @click="publishOpt = !publishOpt"
                     >
-                      <span class="text-xs">Preview course</span>
+                      <span class="text-xs">Publish</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-5 w-5 ml-1"
@@ -686,12 +679,12 @@
                       class="pop-up flex flex-col gap-5 items-start px-4 py-5 justify-around pop-up absolute top-0 left-0 mt-12 ml-5 border-gray-500 bg-white rounded-lg shadow-lg"
                       :style="{ zIndex: 3 }"
                     >
-                      <a
-                        href="#"
+                      <span
+                        @click="goNext(2)"
                         class="pop-up-item lg:mr-0 md:text-gray-700 text-left text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Publish now</p>
-                      </a>
+                      </span>
                       <a
                         href="#"
                         class="pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
@@ -699,8 +692,11 @@
                         <p>Schedule for later</p>
                       </a>
                     </div>
-                    <button class="btn btn-light">
-                      <span class="text-xs">Save </span>
+                    <button
+                      @click="$router.push(`/course/preview/${course.id}`)"
+                      class="btn btn-light"
+                    >
+                      <span class="text-xs">Preview </span>
                     </button>
                   </li>
                 </ul>
@@ -765,6 +761,7 @@
                 Previous
               </button>
               <button
+                v-if="isCourseSwitch !== 2"
                 class="btn btn-sm lg:mt-0 btn-primary"
                 @click="
                   () => {
@@ -772,7 +769,7 @@
                   }
                 "
               >
-                {{ isCourseSwitch === 2 ? 'Publish Course' : 'Next' }}
+                Next
                 <loader v-if="loading" color="white" />
               </button>
             </div>

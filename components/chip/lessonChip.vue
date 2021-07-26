@@ -77,7 +77,7 @@
         :deleteItem="deleteResItem"
       />
       <div class="flex flex-row justify-center gap-5">
-        <div
+        <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
         >
@@ -97,8 +97,8 @@
           <p class="text-xs text-center font-thin text-gray-600 pl-2">
             Add lesson video
           </p>
-        </div>
-        <!-- <div
+        </div> -->
+        <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
         >
@@ -124,7 +124,7 @@
             Add assignment
           </p>
         </div>
-        <div
+        <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
         >

@@ -89,51 +89,64 @@
                   </div>
                 </div>
               </div>
-              <course-view-details
-                v-if="!showIntro"
-                :course="course"
-                :lessonId="lessonId"
-                :partId="partId"
-                :lesson="lesson"
-              />
-              <div v-if="!showIntro" class="px-4 md:px-5 lg:px-6 pb-4">
-                <div class="mb-12">
-                  <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
-                    <span class="text-base font-semibold my-auto"
-                      >Assignment</span
-                    >
-                  </div>
-                  <div class="space-y-3">
-                    <assignment-list
-                      title="Business Research"
-                      desc="Conduct a business research for a conceptual business in any industry of your ch..."
-                      link="#"
-                    />
-                  </div>
-                </div>
-                <hr class="-mx-4 md:-mx-5 lg:-mx-6" />
-                <div class="flex flex-row space-x-5 mt-5 mb-2">
-                  <div
-                    class="flex flex-row text-xs text-gray-700 gap-5 my-auto mr-auto"
-                  >
-                    <div>
-                      <span class="inline-block align-middle"
-                        >Course Video</span
+
+              <div v-else>
+                <course-view-details
+                  :course="course"
+                  :lessonId="lessonId"
+                  :partId="partId"
+                  :lesson="lesson"
+                />
+                <div class="px-4 md:px-5 lg:px-6 pb-4">
+                  <div class="mb-12">
+                    <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
+                      <span class="text-base font-semibold my-auto"
+                        >Assignment</span
                       >
-                      <span class="item-status active ml-1 align-middle" />
                     </div>
-                    <div>
-                      <span class="inline-block align-middle">Assignment</span>
-                      <span class="item-status active ml-1 align-middle" />
+                    <div class="space-y-3">
+                      <assignment-list
+                        title="Business Research"
+                        desc="Conduct a business research for a conceptual business in any industry of your ch..."
+                        link="#"
+                      />
                     </div>
                   </div>
-                  <div @click="changeLesson('next')" class="flex">
-                    <button
-                      class="btn"
-                      :class="nextTitle === 'End' ? 'btn-light' : 'btn-primary'"
+                  <hr class="-mx-4 md:-mx-5 lg:-mx-6" />
+                  <div class="flex flex-row space-x-5 mt-5 mb-2">
+                    <div
+                      class="flex flex-row text-xs text-gray-700 gap-5 my-auto mr-auto"
                     >
-                      {{ nextTitle }}
-                    </button>
+                      <div>
+                        <span class="inline-block align-middle"
+                          >Course Video</span
+                        >
+                        <span class="item-status active ml-1 align-middle" />
+                      </div>
+                      <div>
+                        <span class="inline-block align-middle"
+                          >Assignment</span
+                        >
+                        <span class="item-status active ml-1 align-middle" />
+                      </div>
+                    </div>
+                    <div
+                      @click="
+                        nextTitle !== 'End'
+                          ? changeLesson('next')
+                          : $router.push('/courses')
+                      "
+                      class="flex"
+                    >
+                      <button
+                        class="btn"
+                        :class="
+                          nextTitle === 'End' ? 'btn-light' : 'btn-primary'
+                        "
+                      >
+                        {{ nextTitle }}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -166,11 +179,12 @@
                   <h5 class="font-bold text-gray-700 pt-2 mb-4">
                     {{ course.title }}
                   </h5>
-                  <div class="mb-4">
+                  <!-- For Users -->
+                  <!-- <div class="mb-4">
                     <progress-bar :percentage="30" />
                   </div>
                   <p class="text-xs text-gray-700">6 lessons completed</p>
-                  <p class="text-xs text-gray-700">12 lessons to go</p>
+                  <p class="text-xs text-gray-700">12 lessons to go</p> -->
                 </div>
                 <hr class="mt-4" />
                 <div class="mt-6 mb-4">
@@ -556,8 +570,7 @@ export default {
         this.showIntro = false
 
         this.getNextTitle(this.lesson)
-      }
-      if (type === 'lesson') {
+      } else if (type === 'lesson') {
         this.lessonId = id
         this.showIntro = false
 
