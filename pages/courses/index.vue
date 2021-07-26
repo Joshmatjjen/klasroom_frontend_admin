@@ -78,6 +78,7 @@
                   :columns="columnLive"
                   :rows="liveCourses ? liveCourses.data : []"
                   type="live courses"
+                  :deleteItem="deleteCourse"
                 />
               </div>
             </div>
@@ -104,6 +105,7 @@
                   :columns="columnsUnpublished"
                   :rows="unPublishedCourses ? unPublishedCourses.data : []"
                   type="unpublished courses"
+                  :deleteItem="deleteCourse"
                 />
               </div>
             </div>
@@ -130,6 +132,7 @@
                   :columns="columnsArchived"
                   :rows="archivedCourses ? archivedCourses.data : []"
                   :onDraft="true"
+                  :deleteItem="deleteCourse"
                   type="archived courses"
                 />
               </div>
@@ -266,6 +269,13 @@ export default {
       .catch((e) => console.log('e: ', e))
   },
   methods: {
+    async deleteCourse(id) {
+      try {
+        await this.$store.dispatch('courses/deleteCourses', id)
+      } catch (err) { 
+        console.log(err)
+      }
+    },
     async changePage(pagination) {
       console.log('This is the pagination page -->', pagination)
       this.loading = true
