@@ -186,6 +186,7 @@
                                   placeholder="Enter tags"
                                   v-model="newTag"
                                 />
+                                <p class="mt-2" style="color: red; font-size:14px">{{tagError}}</p>
                                 <button
                                   type="button"
                                   @click="addTag"
@@ -842,6 +843,7 @@ export default {
       image: null,
     },
     newTag: '',
+    tagError: '',
     categoryArray: [],
     courseParts: [
       {
@@ -960,8 +962,15 @@ export default {
       this.$router.push(`/courses`)
     },
     addTag() {
-      this.createCourse.tags.push('#' + this.newTag)
-      this.newTag = ''
+      if(this.newTag === '') {
+        this.tagError = 'kindly add a tag' 
+        setTimeout(() => { 
+          this.tagError = ''
+        },5000)
+      } else {
+        this.createCourse.tags.push('#' + this.newTag)
+        this.newTag = ''
+      }
     },
     removeTag(id) {
       this.createCourse.tags = this.createCourse.tags.filter(
