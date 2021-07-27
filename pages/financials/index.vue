@@ -1,14 +1,12 @@
 <template>
   <section>
-    <div v-if="courseSummary && liveCourses" class="min-h-screen mb-24">
+    <div v-if="financeSummary && allSales" class="min-h-screen mb-24">
       <section class="bg-orange-100">
         <!-- <div class="container mx-auto mb-10 px-4 lg:px-0"> -->
-        <div
-          class="flex gap-5 space-y-3 md:space-y-0 pb-5 flex-row overflow-x-scroll scrollbar-thumb-orange scrollbar-thumb-rounded scrollbar-track-orange-lighter scrollbar-w-2 scrolling-touch"
-        >
+        <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
           <finance-card
-            :title="'₦122,430,000'"
-            label="Balance"
+            :title="'₦' + financeSummary.totalEarnings"
+            label="Total earnings"
             type="withdraw"
             typeText="Withdraw"
             tableType="Balance"
@@ -16,52 +14,43 @@
             :greenBalance="true"
           />
           <finance-card
-            :title="'+₦23,000'"
-            label="This week"
+            :title="financeSummary.salesNos"
+            label="Total Sales"
             type="none"
             tableType="unPublished"
             filterType="active"
             @click="switcher('unpublished')"
           />
           <finance-card
+            :title="financeSummary.payOuts"
+            label="Total Payout"
+            type="withdraw"
+            typeText="See more"
+            tableType="completions"
+            filterType="active"
+          />
+          <!-- <finance-card
             :title="'305*****72'"
             label="Bank account"
             type="withdraw"
             typeText="Edit"
             tableType="CourseSales"
             filterType="active"
-          />
-          <finance-card
-            :title="'46,500'"
-            label="Payout"
-            type="withdraw"
-            typeText="See more"
-            tableType="completions"
-            filterType="active"
-          />
-          <finance-card
-            :title="'+₦23,000'"
-            label="See more"
-            type="none"
-            typeText="Earned by tutors"
-            tableType="unPublished"
-            filterType="active"
-            @click="switcher('unpublished')"
-          />
+          /> -->
         </div>
         <!-- </div> -->
       </section>
 
       <section class="mt-10">
         <sales
-          :dataAll="{ data: [] }"
-          :dataCourses="{ data: [] }"
-          :dataWebinars="{ data: [] }"
+          :dataAll="allSales"
+          :dataCourses="courseSales"
+          :dataWebinars="webinarSales"
         />
       </section>
 
       <section class="mt-10">
-        <payout :data="{ data: [] }" />
+        <payout :data="payouts" />
       </section>
     </div>
     <loader-2 v-else />
@@ -164,17 +153,49 @@ export default {
   }),
   computed: {
     ...mapState({
-      courses: (state) => state.courses.courses,
-      courseSummary: (state) => state.courses.courseSummary,
-      liveCourses: (state) => state.courses.coursesData.liveCourses,
-      unPublishedCourses: (state) =>
-        state.courses.coursesData.unPublishedCourses,
-      archivedCourses: (state) => state.courses.coursesData.archived,
+      financeSummary: (state) => state.financials.financeSummary,
+      allSales: (state) => state.financials.sales.all,
+      courseSales: (state) => state.financials.sales.courses,
+      webinarSales: (state) => state.financials.sales.webinars,
+      payouts: (state) => state.financials.payouts,
+      // liveCourses: (state) => state.financials.coursesData.liveCourses,
     }),
   },
   created() {
     this.$store
-      .dispatch('courses/getCoursesSummary')
+      .dispatch('financials/getFinanceSummary')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceAllSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceCourseSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinanceWebinarsSales')
+      .then((res) => {
+        console.log(res)
+        this.loading = false
+      })
+      .catch((e) => console.log('e: ', e))
+
+    this.$store
+      .dispatch('financials/getFinancePayouts')
       .then((res) => {
         console.log(res)
         this.loading = false
