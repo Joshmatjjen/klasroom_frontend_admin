@@ -366,7 +366,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import { getAccessTokenHeader } from '~/utils'
 
 const courses = require('@/static/json/latest-courses.json')
