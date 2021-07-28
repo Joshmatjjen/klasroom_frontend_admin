@@ -88,7 +88,6 @@
     <purchase-modal />
     <notice-modal />
     <meeting-create-modal />
-    <publish-modal/>
   </section>
 </template>
 
