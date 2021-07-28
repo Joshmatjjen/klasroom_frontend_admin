@@ -100,7 +100,7 @@
         </div> -->
         <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
-          @click.prevent="showFileChooser"
+          @click.prevent="showModal = true"
         >
           <svg
             width="16"
@@ -123,6 +123,9 @@
           <p class="text-xs text-center font-thin text-gray-600 pl-2">
             Add assignment
           </p>
+        </div>
+        <div v-if="showModal">
+          <assignment-modal :closeModal="close" @click="addAssignment"/>
         </div>
         <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
@@ -186,9 +189,11 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
+    addAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
+    showModal: false
   }),
   computed: {
     _lesson: {
@@ -329,6 +334,9 @@ export default {
     }
   },
   methods: {
+    close() {
+      this.showModal = false
+    },
     onEditorChange({ html, quill, text }) {
       // console.log('onEditorChange: ', text)
       // if (text === '\n[uploading100%]\n')
