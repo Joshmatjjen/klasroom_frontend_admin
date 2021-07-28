@@ -270,10 +270,13 @@ export default {
   },
   methods: {
     async deleteCourse(id) {
-      try {
-        await this.$store.dispatch('courses/deleteCourses', id)
-      } catch (err) { 
-        console.log(err)
+      const response = confirm('Are you sure you want to delete this course')
+      if (response) {
+        try {
+          await this.$store.dispatch('courses/deleteCourses', id)
+        } catch (err) { 
+          console.log(err)
+        }
       }
     },
     async changePage(pagination) {

@@ -329,6 +329,7 @@
                             :deleteItem="removePart"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
+                            :createAssignment="createAssign"
                             :showFileChooser="showFileChooser"
                           />
                         </div>
@@ -681,17 +682,16 @@
                       :style="{ zIndex: 3 }"
                     >
                       <span
-                        @click="goNext(2)"
-                        class="pop-up-item lg:mr-0 md:text-gray-700 text-left text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                        @click="showModal = true"
+                        class="cursor-pointer pop-up-item lg:mr-0 md:text-gray-700 text-left text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Publish now</p>
                       </span>
-                      <a
-                        href="#"
-                        class="pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
+                      <span @click="showScheduleModal = true"
+                        class="cursor-pointer pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Schedule for later</p>
-                      </a>
+                      </span>
                     </div>
                     <button
                       @click="$router.push(`/course/preview/${course.id}`)"
@@ -778,6 +778,14 @@
         </div>
       </div>
     </section>
+    <!-- publish modal -->
+    <div v-if="showModal">
+      <publish-modal :closeModal="close" :loading="false" @click="goNext(2)"></publish-modal>
+    </div> 
+    <!-- schedule modal -->
+    <div v-if="showScheduleModal">
+      <schedule-modal :closeModal="closeSchedule"/> 
+    </div>
   </div>
 </template>
 
@@ -801,6 +809,8 @@ export default {
     courses: _.take(courses, 4),
     undoneTasks: _.take(courses, 3),
     videoUploading: false,
+    showModal: false,
+    showScheduleModal: false,
 
     content: '',
     selected: [],
@@ -912,6 +922,15 @@ export default {
     await this.getCourseCategory()
   },
   methods: {
+    createAssign() {
+      console.log('testing action for create assignment')
+    },
+    closeSchedule() {
+      this.showScheduleModal = false
+    },
+    close() {
+      this.showModal = false
+    },
     async publishCourse() {
       try {
         if (this.course) {
@@ -925,6 +944,7 @@ export default {
             tutor_email: this.createCourse.tutor_email,
             image: this.course.image,
             course_benefits: this.createCourse.course_benefits,
+            allCourse: this.graduation.allCourse,
           }
           console.log('publishCourse: ', resData)
           const { data, message } = await this.$axios.$put(
@@ -949,12 +969,13 @@ export default {
           })
 
           console.log('course data: ', data, message)
-
+          this.showModal = false
           // Publish action
           this.gotoCourses()
         }
       } catch (e) {
         console.log(e)
+        this.showModal = false
         return
       }
     },
@@ -1014,6 +1035,9 @@ export default {
     },
     remove(index) {
       this.createCourse.course_benefits.splice(index, 1)
+    },
+    publishCourseModal() {
+      this.$store.commit('app/SET_MODAL', 'publish-modal')
     },
     async goNext(isCourseSwitch) {
       switch (isCourseSwitch) {

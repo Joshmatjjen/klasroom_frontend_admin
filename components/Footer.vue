@@ -88,11 +88,13 @@
     <purchase-modal />
     <notice-modal />
     <meeting-create-modal />
+    <publish-modal/>
   </section>
 </template>
 
 <script>
 export default {
+  components: { publishModal },
   data: () => ({
     open: false,
   }),
