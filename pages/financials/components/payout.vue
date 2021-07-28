@@ -6,18 +6,18 @@
         <p class="text-base font-extrabold mb-3">Payout</p>
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-12">
-            <no-option-table
+            <option-table
               :columns="activityLogColumns"
               :rows="data ? data.data : []"
               type="Activity Log"
-              :total="data.pagination ? data.pagination.count : 0"
+              :total="data && data.pagination ? data.pagination.count : 0"
               route="/people/students/"
             />
           </div>
         </div>
       </div>
     </section>
-    <!-- <section v-if="data && data.pagination">
+    <section v-if="data && data.pagination">
       <t-pagination
         :total-items="data.pagination.count"
         :per-page="data.pagination.limit"
@@ -26,7 +26,7 @@
         :value="data.pagination.currentPage"
         @change="changePage"
       />
-    </section> -->
+    </section>
   </div>
 </template>
 
@@ -110,9 +110,9 @@ export default {
     },
     changePage(pagination) {
       this.$store
-        .dispatch('people/getActivityLog', { id: this.id, pagination })
+        .dispatch('financials/getFinancePayouts', pagination)
         .then((res) => {
-          console.log('DAta In Auditing', res)
+          // console.log('getFinancePayouts', res)
           this.loading = false
           // this.settings = res
           if (res) {

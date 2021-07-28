@@ -74,17 +74,6 @@
                   }}</span>
                 </div>
               </div>
-              <!-- Draft for webinar Start -->
-              <!-- <div
-              v-if="onDraft && props.column.field == 'name'"
-              class="flex flex-row gap-5 items-center justify-end relative"
-            >
-              <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
-              <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
-              <div class="bg-gray-300 w-16 h-5 rounded-xl"></div>
-            </div> -->
-
-              <!-- Draft for webinar End -->
             </span>
 
             <span v-else-if="props.column.field == 'title'">
