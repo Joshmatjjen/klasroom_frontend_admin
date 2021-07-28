@@ -94,7 +94,6 @@
 
 <script>
 export default {
-  components: { publishModal },
   data: () => ({
     open: false,
   }),
