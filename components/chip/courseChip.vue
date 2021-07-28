@@ -58,6 +58,7 @@
             }
           "
           :deleteItem="removeLesson"
+          :addAssignment="createAssignment"
           :checkFormError="checkFormError"
         />
       </div>
@@ -109,6 +110,7 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
+    createAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
