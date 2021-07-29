@@ -61,8 +61,11 @@
       </no-ssr>
     </div>
 
-    <div class="px-4 md:px-5 lg:px-6 mt-4">
-      <resource-chip
+    <div class="mt-5">
+      <label :for="`assignment-list-${id}`"
+        >{{ 'Lesson ' + (id + 1) + ' assignments' }}
+      </label>
+      <!-- <resource-chip
         v-for="(item, key) in fileResources"
         :key="key"
         :file="{ filename: item.name }"
@@ -75,8 +78,14 @@
         :link="item"
         :id="key"
         :deleteItem="deleteResItem"
+      /> -->
+      <assignment-list
+        v-for="(item, key) in lesson.assignments"
+        :key="key"
+        :title="item.title"
+        :desc="item.description"
       />
-      <div class="flex flex-row justify-center gap-5">
+      <div class="flex flex-row justify-center gap-5 mt-4">
         <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
@@ -125,7 +134,11 @@
           </p>
         </div>
         <div v-if="showModal">
-          <assignment-modal :closeModal="close" @click="addAssignment"/>
+          <assignment-modal
+            :id="id"
+            :closeModal="close"
+            :updateAssignment="updateAssignment"
+          />
         </div>
         <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
@@ -174,6 +187,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Swal from 'sweetalert2'
 import {
   container,
@@ -189,13 +203,17 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
-    addAssignment: { type: Function, required: false },
+    updateAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
-    showModal: false
+    showModal: false,
   }),
   computed: {
+    ...mapState({
+      showLogin: (state) => state.app.loginModal,
+      coursesCategories: (state) => state.app.coursesCategories,
+    }),
     _lesson: {
       get: function () {
         return this.lesson.lesson

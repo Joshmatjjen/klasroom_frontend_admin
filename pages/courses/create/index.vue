@@ -186,7 +186,12 @@
                                   placeholder="Enter tags"
                                   v-model="newTag"
                                 />
-                                <p class="mt-2" style="color: red; font-size:14px">{{tagError}}</p>
+                                <p
+                                  class="mt-2"
+                                  style="color: red; font-size: 14px"
+                                >
+                                  {{ tagError }}
+                                </p>
                                 <button
                                   type="button"
                                   @click="addTag"
@@ -329,7 +334,6 @@
                             :deleteItem="removePart"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
-                            :createAssignment="createAssign"
                             :showFileChooser="showFileChooser"
                           />
                         </div>
@@ -687,7 +691,8 @@
                       >
                         <p>Publish now</p>
                       </span>
-                      <span @click="showScheduleModal = true"
+                      <span
+                        @click="showScheduleModal = true"
                         class="cursor-pointer pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Schedule for later</p>
@@ -780,11 +785,15 @@
     </section>
     <!-- publish modal -->
     <div v-if="showModal">
-      <publish-modal :closeModal="close" :loading="false" @click="goNext(2)"></publish-modal>
-    </div> 
+      <publish-modal
+        :closeModal="close"
+        :loading="false"
+        @click="goNext(2)"
+      ></publish-modal>
+    </div>
     <!-- schedule modal -->
     <div v-if="showScheduleModal">
-      <schedule-modal :closeModal="closeSchedule"/> 
+      <schedule-modal :closeModal="closeSchedule" />
     </div>
   </div>
 </template>
@@ -863,11 +872,13 @@ export default {
             lesson: '',
             description: '',
             content: '',
+            assignments: [],
           },
           {
             lesson: '',
             description: '',
             content: '',
+            assignments: [],
           },
         ],
       },
@@ -922,9 +933,6 @@ export default {
     await this.getCourseCategory()
   },
   methods: {
-    createAssign() {
-      console.log('testing action for create assignment')
-    },
     closeSchedule() {
       this.showScheduleModal = false
     },
@@ -983,11 +991,11 @@ export default {
       this.$router.push(`/courses`)
     },
     addTag() {
-      if(this.newTag === '') {
-        this.tagError = 'kindly add a tag' 
-        setTimeout(() => { 
+      if (this.newTag === '') {
+        this.tagError = 'kindly add a tag'
+        setTimeout(() => {
           this.tagError = ''
-        },5000)
+        }, 5000)
       } else {
         this.createCourse.tags.push('#' + this.newTag)
         this.newTag = ''
@@ -1341,11 +1349,13 @@ export default {
               lesson: '',
               description: '',
               content: '',
+              assignments: [],
             },
             {
               lesson: '',
               description: '',
               content: '',
+              assignments: [],
             },
           ],
         },

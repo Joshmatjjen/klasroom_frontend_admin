@@ -57,8 +57,13 @@
               item.lessons[key].content = value
             }
           "
+          @update:assignments="
+            (value) => {
+              item.lessons[key].assignments = value
+            }
+          "
           :deleteItem="removeLesson"
-          :addAssignment="createAssignment"
+          :updateAssignment="updateAssignment"
           :checkFormError="checkFormError"
         />
       </div>
@@ -110,7 +115,6 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
-    createAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
@@ -123,11 +127,33 @@ export default {
           lesson: '',
           description: '',
           content: '',
+          assignments: [],
         },
       ]
     },
     removeLesson(id) {
       this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
+    },
+    updateAssignment(id, type, item) {
+      switch (type) {
+        case 'add':
+          console.log(
+            'add: ',
+            this.item.lessons.find((i, index) => index == id)
+          )
+          if (this.item.lessons.find((i, index) => index == id).assignments)
+            this.item.lessons
+              .find((i, index) => index == id)
+              .assignments.push(item)
+          else
+            this.item.lessons.find((i, index) => index == id).assignments = [
+              item,
+            ]
+          break
+
+        default:
+          break
+      }
     },
     collapsedPart(id) {
       console.log(this.collapsedPartIds.find((i) => i === id))
