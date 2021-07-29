@@ -255,10 +255,7 @@ export default {
           (this.tab === 0 && 'financials/getFinanceAllSales') ||
             (this.tab === 1 && 'financials/getFinanceCourseSales') ||
             (this.tab === 2 && 'financials/getFinanceWebinarsSales'),
-          {
-            id: this.$route.params.slug.split('-')[1],
-            pagination,
-          }
+          pagination
         )
         .then((res) => {
           console.log(res)
