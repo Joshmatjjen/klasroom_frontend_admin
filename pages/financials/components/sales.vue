@@ -97,7 +97,7 @@
     </section>
 
     <section v-if="dataAll && dataCourses && dataWebinars">
-      <!-- <t-pagination
+      <t-pagination
         :total-items="
           (tab === 0 && dataAll.pagination.count) ||
           (tab === 1 && dataCourses.pagination.count) ||
@@ -116,7 +116,7 @@
           (tab === 2 && dataWebinars.pagination.currentPage)
         "
         @change="changePage"
-      /> -->
+      />
     </section>
   </div>
 </template>
@@ -205,10 +205,7 @@ export default {
         )
         if (newValue === 0) {
           this.$store
-            .dispatch('people/getTutorAllSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
+            .dispatch('financials/getFinanceAllSales', 1)
             .then((res) => {
               console.log('DAta In Auditing', res)
               this.loading = false
@@ -221,10 +218,7 @@ export default {
         } else if (newValue === 1) {
           // Course sales
           this.$store
-            .dispatch('people/getTutorCourseSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
+            .dispatch('financials/getFinanceCourseSales', 1)
             .then((res) => {
               console.log('DAta In Auditing', res)
               this.loading = false
@@ -237,10 +231,7 @@ export default {
         } else if (newValue === 2) {
           // Webinar sales
           this.$store
-            .dispatch('people/getTutorWebinarsSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
+            .dispatch('financials/getFinanceWebinarsSales', 1)
             .then((res) => {
               console.log('DAta In Auditing', res)
               this.loading = false
@@ -261,9 +252,9 @@ export default {
     changePage(pagination) {
       this.$store
         .dispatch(
-          (this.tab === 0 && 'people/getTutorAllSales') ||
-            (this.tab === 1 && 'people/getTutorCourseSales') ||
-            (this.tab === 2 && 'people/getTutorWebinarsSales'),
+          (this.tab === 0 && 'financials/getFinanceAllSales') ||
+            (this.tab === 1 && 'financials/getFinanceCourseSales') ||
+            (this.tab === 2 && 'financials/getFinanceWebinarsSales'),
           {
             id: this.$route.params.slug.split('-')[1],
             pagination,

@@ -100,9 +100,9 @@ export default {
     }),
   },
   mounted() {
-    if (this.$device.isMobile) {
-      this.tabs.unshift('Home')
-    }
+    // if (this.$device.isMobile) {
+    //   this.tabs.unshift('Home')
+    // }
   },
   methods: {
     toggleActionOpt() {
