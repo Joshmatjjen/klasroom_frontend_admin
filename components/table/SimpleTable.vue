@@ -50,7 +50,10 @@
         styleClass="vgt-table vgt-wrap vgt-right-align striped"
       >
         <template slot="table-row" slot-scope="props">
-          <nuxt-link :to="'/courses/view/' + props.row.title" class="relative">
+          <nuxt-link
+            :to="'/courses/preview/' + props.row.title"
+            class="relative"
+          >
             <span
               v-if="
                 props.column.field == 'webinarTitle' ||
