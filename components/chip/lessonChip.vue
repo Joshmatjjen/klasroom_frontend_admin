@@ -84,6 +84,7 @@
         :key="key"
         :title="item.title"
         :desc="item.description"
+        :edit="true"
       />
       <div class="flex flex-row justify-center gap-5 mt-4">
         <!-- <div
