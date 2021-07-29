@@ -44,22 +44,22 @@
           :lesson="i"
           @update:lesson="
             (value) => {
-              item.lessons[key].lesson = value
+              i.lesson = value
             }
           "
           @update:description="
             (value) => {
-              item.lessons[key].description = value
+              i.description = value
             }
           "
           @update:content="
             (value) => {
-              item.lessons[key].content = value
+              i.content = value
             }
           "
           @update:assignments="
             (value) => {
-              item.lessons[key].assignments = value
+              i.assignments = value
             }
           "
           :deleteItem="removeLesson"
@@ -132,23 +132,25 @@ export default {
       ]
     },
     removeLesson(id) {
-      this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
+      this.item.lessons = this.item.lessons.filter((_i, index) => index !== id)
     },
     updateAssignment(id, type, item) {
       switch (type) {
         case 'add':
-          console.log(
-            'add: ',
-            this.item.lessons.find((i, index) => index == id)
-          )
-          if (this.item.lessons.find((i, index) => index == id).assignments)
+          if (this.item.lessons.find((_i, index) => index == id).assignments)
             this.item.lessons
               .find((i, index) => index == id)
               .assignments.push(item)
           else
-            this.item.lessons.find((i, index) => index == id).assignments = [
+            this.item.lessons.find((_i, index) => index == id).assignments = [
               item,
             ]
+          break
+
+        case 'remove':
+          this.item.lessons
+            .find((_i, index) => index == id)
+            .assignments.splice(item, 1)
           break
 
         default:

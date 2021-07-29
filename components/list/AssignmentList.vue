@@ -7,7 +7,12 @@
       <p class="text-xs md:truncate">{{ desc }}</p>
     </div>
     <button class="text-sm py-4 px-5 text-gray-700 focus:outline-none">
-      <img v-if="edit" class="w-6 h-6 mx-auto" src="/icon/delete.svg" />
+      <img
+        @click="deleteAssignment(id)"
+        v-if="edit"
+        class="w-6 h-6 mx-auto"
+        src="/icon/delete.svg"
+      />
       <span v-else>See more</span>
     </button>
   </div>
@@ -16,9 +21,11 @@
 <script>
 export default {
   props: {
+    id: { type: Number, required: true },
     title: { type: String, required: true },
     desc: { type: String, required: true },
     edit: { type: Boolean, required: false },
+    deleteAssignment: { type: Function, required: false },
   },
   mounted() {
     console.log('edit: ', this.edit)

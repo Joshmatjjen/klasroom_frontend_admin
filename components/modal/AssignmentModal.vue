@@ -83,7 +83,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex text-center pt-8 pb-4 sm:pb-4">
+                <div v-if="!data" class="flex text-center pt-8 pb-4 sm:pb-4">
                   <span class="flex mx-auto">
                     <button
                       @click.prevent="addAssignment"
@@ -120,6 +120,7 @@ export default {
     updateAssignment: { type: Function, required: false },
     loading: { type: Boolean, required: false },
     id: { type: Number, required: false },
+    data: { type: Number, required: false },
   },
   computed: {},
   methods: {
@@ -127,6 +128,14 @@ export default {
       this.updateAssignment(this.id, 'add', this.formData)
       this.closeModal()
     },
+  },
+  mounted() {
+    this.data
+      ? (this.formData = this.data)
+      : {
+          title: '',
+          description: '',
+        }
   },
 }
 </script>

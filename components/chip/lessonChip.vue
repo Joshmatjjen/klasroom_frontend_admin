@@ -81,10 +81,12 @@
       /> -->
       <assignment-list
         v-for="(item, key) in lesson.assignments"
-        :key="key"
+        :key="item"
+        :id="key"
         :title="item.title"
         :desc="item.description"
         :edit="true"
+        :deleteAssignment="deleteAssignment"
       />
       <div class="flex flex-row justify-center gap-5 mt-4">
         <!-- <div
@@ -239,6 +241,14 @@ export default {
         this.$emit('update:content', newValue)
       },
     },
+    _assignments: {
+      get: function () {
+        return this.lesson.assignments
+      },
+      set: function (newValue) {
+        this.$emit('update:assignments', newValue)
+      },
+    },
 
     // Rich text box parameter settings
     editorOption() {
@@ -355,6 +365,12 @@ export default {
   methods: {
     close() {
       this.showModal = false
+    },
+    deleteAssignment(id) {
+      this.updateAssignment(this.id, 'remove', id)
+
+      // Vue instance will force update the component.
+      this.$forceUpdate()
     },
     onEditorChange({ html, quill, text }) {
       // console.log('onEditorChange: ', text)
