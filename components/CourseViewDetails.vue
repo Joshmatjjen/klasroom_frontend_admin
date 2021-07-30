@@ -74,6 +74,26 @@
             v-html="lesson ? lesson.lessons[lessonId].content : '<p></p>'"
           ></div>
         </div>
+
+        <div class="flex flex-col md:flex-row md:gap-4 text-gray-700 mt-5">
+          <span class="text-base font-semibold my-auto">Assignment</span>
+        </div>
+
+        <div
+          v-if="lesson && lesson.lessons[lessonId].assignments"
+          class="text-xs mt-4"
+        >
+          <assignment-list
+            v-for="(item, key) in lesson.lessons[lessonId].assignments"
+            :key="item"
+            :id="key"
+            :title="item.title"
+            :desc="item.description"
+            :edit="false"
+            :setAssignmentData="setAssignmentData"
+          />
+        </div>
+        <assignment-modal v-if="showModal" :closeModal="close" :data="data" />
       </div>
     </div>
   </div>
@@ -88,13 +108,20 @@ export default {
     partId: { type: Number, required: false },
   },
 
-  // data: () => ({
-  //   part: 0,
-  //   lesson: 0,
-  // }),
+  data: () => ({
+    showModal: false,
+    data: null,
+  }),
 
-  // methods: {
-
-  // },
+  methods: {
+    close() {
+      this.showModal = false
+      this.data = null
+    },
+    setAssignmentData(data) {
+      this.data = data
+      this.showModal = true
+    },
+  },
 }
 </script>

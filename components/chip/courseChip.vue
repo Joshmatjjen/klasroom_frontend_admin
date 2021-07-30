@@ -44,21 +44,26 @@
           :lesson="i"
           @update:lesson="
             (value) => {
-              item.lessons[key].lesson = value
+              i.lesson = value
             }
           "
           @update:description="
             (value) => {
-              item.lessons[key].description = value
+              i.description = value
             }
           "
           @update:content="
             (value) => {
-              item.lessons[key].content = value
+              i.content = value
+            }
+          "
+          @update:assignments="
+            (value) => {
+              i.assignments = value
             }
           "
           :deleteItem="removeLesson"
-          :addAssignment="createAssignment"
+          :updateAssignment="updateAssignment"
           :checkFormError="checkFormError"
         />
       </div>
@@ -110,7 +115,6 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
-    createAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
@@ -123,11 +127,35 @@ export default {
           lesson: '',
           description: '',
           content: '',
+          assignments: [],
         },
       ]
     },
     removeLesson(id) {
-      this.item.lessons = this.item.lessons.filter((i, index) => index !== id)
+      this.item.lessons = this.item.lessons.filter((_i, index) => index !== id)
+    },
+    updateAssignment(id, type, item) {
+      switch (type) {
+        case 'add':
+          if (this.item.lessons.find((_i, index) => index == id).assignments)
+            this.item.lessons
+              .find((i, index) => index == id)
+              .assignments.push(item)
+          else
+            this.item.lessons.find((_i, index) => index == id).assignments = [
+              item,
+            ]
+          break
+
+        case 'remove':
+          this.item.lessons
+            .find((_i, index) => index == id)
+            .assignments.splice(item, 1)
+          break
+
+        default:
+          break
+      }
     },
     collapsedPart(id) {
       console.log(this.collapsedPartIds.find((i) => i === id))

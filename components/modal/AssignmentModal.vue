@@ -48,7 +48,7 @@
                 id="modal-headline"
                 class="text-xl text-center sm:text-4xl leading-none font-bold text-gray-800 mb-4"
               >
-               Create assignment
+                {{ data ? 'View assignment' : 'Create assignment' }}
               </h2>
             </div>
             <div class="mt-3 sm:mt-0 sm:ml-0">
@@ -58,38 +58,39 @@
               <form id="signup-form">
                 <hr class="mt-3 mb-5" />
                 <div class="">
-                    <div class="form-group mb-5">
+                  <div class="form-group mb-5">
                     <label for="input-name">Assignment title</label>
                     <div>
-                        <input
+                      <input
                         id="input-name"
                         type="text"
                         class="form-input"
+                        v-model="formData.title"
                         placeholder="Enter assignment title here"
-                        />
+                      />
                     </div>
-                    </div>
-                    <div class="form-group mb-5">
-                    <label for="input-name">Assignment description</label
-                    >
+                  </div>
+                  <div class="form-group mb-5">
+                    <label for="input-name">Assignment description</label>
                     <div>
-                        <textarea
+                      <textarea
                         id="input-text"
                         type="text"
                         class="form-input"
+                        v-model="formData.description"
                         placeholder="Anyone who lived in the time of legends such as Henry Ford, Alexander Graham Bell, Thomas Edison and Albert Einstein could be forgiven for thinking everything that can be invented already has been invented."
-                        />
+                      />
                     </div>
-                    </div>
+                  </div>
                 </div>
-                <div class="flex text-center pt-8 pb-4 sm:pb-4">
+                <div v-if="!data" class="flex text-center pt-8 pb-4 sm:pb-4">
                   <span class="flex mx-auto">
                     <button
-                      @click.prevent="$emit('click')"
+                      @click.prevent="addAssignment"
                       type="button"
                       class="btn btn-primary shadow"
                     >
-                    Add assignment
+                      Add assignment
                       <loader v-if="loading" color="white" />
                     </button>
                   </span>
@@ -109,15 +110,32 @@ export default {
   data: () => ({
     isActive: false,
     // loading: false,
+    formData: {
+      title: '',
+      description: '',
+    },
   }),
   props: {
     closeModal: { type: Function, required: false },
-    loading: {type: Boolean, required: false}
+    updateAssignment: { type: Function, required: false },
+    loading: { type: Boolean, required: false },
+    id: { type: Number, required: false },
+    data: { type: Number, required: false },
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
+    addAssignment() {
+      this.updateAssignment(this.id, 'add', this.formData)
+      this.closeModal()
+    },
+  },
+  mounted() {
+    this.data
+      ? (this.formData = this.data)
+      : {
+          title: '',
+          description: '',
+        }
   },
 }
 </script>
