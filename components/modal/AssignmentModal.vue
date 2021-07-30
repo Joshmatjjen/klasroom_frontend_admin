@@ -48,7 +48,7 @@
                 id="modal-headline"
                 class="text-xl text-center sm:text-4xl leading-none font-bold text-gray-800 mb-4"
               >
-                Create assignment
+                {{ data ? 'View assignment' : 'Create assignment' }}
               </h2>
             </div>
             <div class="mt-3 sm:mt-0 sm:ml-0">

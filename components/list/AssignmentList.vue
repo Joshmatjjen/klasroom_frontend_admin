@@ -13,7 +13,9 @@
         class="w-6 h-6 mx-auto"
         src="/icon/delete.svg"
       />
-      <span v-else>See more</span>
+      <span v-else @click="setAssignmentData({ title, description: desc })"
+        >See more</span
+      >
     </button>
   </div>
 </template>
@@ -26,10 +28,11 @@ export default {
     desc: { type: String, required: true },
     edit: { type: Boolean, required: false },
     deleteAssignment: { type: Function, required: false },
+    setAssignmentData: { type: Function, required: false },
   },
-  mounted() {
-    console.log('edit: ', this.edit)
-  },
+  // mounted() {
+  //   console.log('edit: ', this.edit)
+  // },
 }
 </script>
 
