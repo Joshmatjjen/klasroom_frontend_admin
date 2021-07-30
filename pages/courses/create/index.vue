@@ -793,7 +793,10 @@
     </div>
     <!-- schedule modal -->
     <div v-if="showScheduleModal">
-      <schedule-modal :closeModal="closeSchedule" />
+      <schedule-modal
+        :publishCourse="publishCourse"
+        :closeModal="closeSchedule"
+      />
     </div>
   </div>
 </template>
@@ -939,7 +942,7 @@ export default {
     close() {
       this.showModal = false
     },
-    async publishCourse() {
+    async publishCourse(dateTime) {
       try {
         if (this.course) {
           const resData = {
@@ -956,9 +959,11 @@ export default {
           }
           console.log('publishCourse: ', resData)
           const { data, message } = await this.$axios.$put(
-            `https://api.staging.klasroom.com/v1/courses/${
-              this.course.id
-            }?publish_now=${true}`,
+            `https://api.staging.klasroom.com/v1/courses/${this.course.id}?${
+              dateTime
+                ? `schedule=true&date=${dateTime.date}&time=${dateTime.time}`
+                : 'publish_now=true'
+            }`,
             resData,
             {
               headers: getAccessTokenHeader(this.token),
@@ -1267,9 +1272,8 @@ export default {
       if (type === 'courseImage') this.$refs.image.click()
       else this.$refs.input.click()
     },
-    checkFormError(type) {
-      if (type === 'lesson') this.coursePartsError = false
-      else if (type === 'co_host') this.coHostFormError = false
+    checkFormError() {
+      this.coursePartsError = false
     },
     async setcourseImage(e) {
       console.log('Uploading__')
