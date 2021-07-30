@@ -29,7 +29,7 @@
         class="form-input"
         :placeholder="`Enter lesson ${id + 1} name`"
         v-model="_lesson"
-        @input="checkFormError('lesson')"
+        @input="checkFormError()"
       />
     </div>
     <div class="mt-5">
@@ -42,7 +42,7 @@
         class="form-textarea"
         v-model="_description"
         placeholder="Anyone who lived in the time of legends such as Henry Ford, Alexander Graham Bell, Thomas Edison and Albert Einstein could be forgiven for thinking everything that can be invented already has been invented. Of course, if we’d stopped there, we wouldn’t have the computer or the internet. The past century of our history stands as a testament to human ingenuity and our persistence to make things better."
-        @input="checkFormError('description')"
+        @input="checkFormError()"
       />
     </div>
 
@@ -56,7 +56,7 @@
           v-model="_content"
           :options="editorOption"
           @change="onEditorChange($event)"
-          @input="checkFormError('content')"
+          @input="checkFormError()"
         ></quill-editor>
       </no-ssr>
     </div>

@@ -48,7 +48,7 @@
                 id="modal-headline"
                 class="text-xl text-center sm:text-4xl leading-none font-bold text-gray-800 mb-4"
               >
-               Schedule for Later
+                Schedule for Later
               </h2>
             </div>
             <div class="mt-3 sm:mt-0 sm:ml-0">
@@ -58,41 +58,55 @@
               <form id="signup-form">
                 <hr class="mt-3 mb-5" />
                 <p class="text-xs text-center text-gray-700">
-                  When do you want your course to be published? Please enter the date and time below
+                  When do you want your course to be published? Please enter the
+                  date and time below
                 </p>
                 <div class="">
-                    <div class="form-group mb-5">
+                  <div class="form-group mb-5">
                     <label for="input-name">Date</label>
                     <div>
-                        <input
+                      <input
                         id="input-name"
                         type="date"
                         class="form-input"
+                        v-model="scheduleForm.date"
                         placeholder="Enter webinar date"
-                        />
+                        @input="checkScheduleFormError('date')"
+                      />
                     </div>
-                    </div>
-                    <div class="form-group mb-5">
-                    <label for="input-name">Time</label
+                    <span
+                      v-if="scheduleFormError.find((i) => i === 'date')"
+                      class="text-sm text-red-700"
+                      >Date is required</span
                     >
+                  </div>
+                  <div class="form-group mb-5">
+                    <label for="input-name">Time</label>
                     <div>
-                        <input
+                      <input
                         id="input-name"
                         type="time"
                         class="form-input"
+                        v-model="scheduleForm.time"
                         placeholder="Enter webinar startTime"
-                        />
+                        @input="checkScheduleFormError('time')"
+                      />
                     </div>
-                    </div>
+                    <span
+                      v-if="scheduleFormError.find((i) => i === 'time')"
+                      class="text-sm text-red-700"
+                      >Time is required</span
+                    >
+                  </div>
                 </div>
                 <div class="flex text-center pt-8 pb-4 sm:pb-4">
                   <span class="flex mx-auto">
                     <button
-                      @click.prevent="$emit('click')"
+                      @click.prevent="publish"
                       type="button"
                       class="btn btn-primary shadow"
                     >
-                    Schedule Publishing
+                      Schedule Publishing
                       <loader v-if="loading" color="white" />
                     </button>
                   </span>
@@ -108,19 +122,44 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   data: () => ({
     isActive: false,
-    // loading: false,
+    scheduleForm: {
+      time: '',
+      date: '',
+    },
+    scheduleFormError: [],
   }),
   props: {
     closeModal: { type: Function, required: false },
-    loading: {type: Boolean, required: false}
+    publishCourse: { type: Function, required: false },
+    loading: { type: Boolean, required: false },
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
+    checkScheduleFormError(value) {
+      this.scheduleFormError = this.scheduleFormError.filter((i) => i !== value)
+    },
+    publish() {
+      const { date, time } = this.scheduleForm
+
+      for (let i in this.scheduleForm) {
+        if (this.scheduleForm[i].length === 0) {
+          this.scheduleFormError.push(i)
+        }
+      }
+
+      if (!this.scheduleFormError.length) {
+        const _date = moment(date).format('YYYY-MM-DD')
+        const dateTime = { date: _date, time }
+        console.log('dateTime: ', dateTime)
+        this.publishCourse(dateTime)
+        this.closeModal()
+      }
+    },
   },
 }
 </script>
