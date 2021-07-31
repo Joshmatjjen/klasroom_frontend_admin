@@ -617,3 +617,15 @@ table.vgt-table {
 .ql-snow .ql-tooltip {
   left: 0 !important;
 }
+
+.datepicker-box input:first-child {
+  background-image: url('/form/date.svg');
+  background-repeat: no-repeat;
+  background-position: top 10px right 10px;
+  background-size: 16px;
+}
+@media only screen and (max-width: 640px) {
+  .datepicker-box input:first-child {
+    background-position: top 10px right 10px;
+  }
+}

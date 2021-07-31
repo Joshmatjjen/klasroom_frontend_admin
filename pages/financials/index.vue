@@ -42,6 +42,14 @@
       </section>
 
       <section class="mt-10">
+        <financials
+          :dataAll="allSales"
+          :dataCourses="courseSales"
+          :dataWebinars="webinarSales"
+        />
+      </section>
+
+      <section class="mt-10">
         <sales
           :dataAll="allSales"
           :dataCourses="courseSales"
@@ -60,10 +68,11 @@
 <script>
 import { mapState } from 'vuex'
 import Loader2 from '~/components/loader/Loader2.vue'
+import financials from './components/financials.vue'
 import sales from './components/sales.vue'
 import payout from './components/payout.vue'
 export default {
-  components: { Loader2, sales, payout },
+  components: { Loader2, financials, sales, payout },
   middleware: ['check-auth', 'auth'],
   async fetch() {
     this.$store.commit('app/SET_TITLE', 'Financials')
