@@ -25,7 +25,14 @@
                   :series="series"
                 ></apexchart>
               </div>
-              <div class="metrics w-3/12">Metrics</div>
+              <div class="metrics w-3/12 flex flex-col pt-10">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
             </section>
           </div>
         </div>
