@@ -15,8 +15,10 @@
               />
             </div>
             <hr class="border-gray-300 mx-4 md:mx-0" />
-            <section class="flex flex-row">
-              <div class="chart w-3/4">
+
+            <!-- All -->
+            <section v-if="tab === 0" class="flex flex-row">
+              <div class="chart w-4/6">
                 <apexchart
                   width="100%"
                   height="250"
@@ -25,7 +27,49 @@
                   :series="series"
                 ></apexchart>
               </div>
-              <div class="metrics w-3/12 flex flex-col pt-10">
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
+            </section>
+
+            <!-- Courses -->
+            <section v-if="tab === 1" class="flex flex-row">
+              <div class="chart w-4/6">
+                <apexchart
+                  width="100%"
+                  height="250"
+                  type="bar"
+                  :options="courseOptions"
+                  :series="courseSeries"
+                ></apexchart>
+              </div>
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
+            </section>
+
+            <!-- Webinars -->
+            <section v-if="tab === 2" class="flex flex-row">
+              <div class="chart w-4/6">
+                <apexchart
+                  width="100%"
+                  height="250"
+                  type="bar"
+                  :options="webinarOptions"
+                  :series="webinarSeries"
+                ></apexchart>
+              </div>
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
                 <p class="text-xs pb-5">
                   The data being shown is for Sep. 2020 - Oct. 2020.
                 </p>
@@ -101,6 +145,94 @@ export default {
       {
         name: 'Webinar sales',
         data: [30, 40, 45, 50, 49, 60, 70, 91],
+      },
+    ],
+    courseOptions: {
+      chart: {
+        id: 'courses',
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ['#F99E42'],
+      dataLabels: {
+        enabled: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '20%',
+          endingShape: 'rounded',
+          borderRadius: 5,
+        },
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+        // dashArray: [0, 8, 5]
+      },
+      fill: {
+        opacity: 1,
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      legend: {
+        show: false,
+      },
+    },
+    courseSeries: [
+      {
+        name: 'Sales',
+        data: [3, 30, 24, 56, 49, 70, 30, 71],
+      },
+    ],
+    webinarOptions: {
+      chart: {
+        id: 'webinars',
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ['#0797CE'],
+      dataLabels: {
+        enabled: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '20%',
+          endingShape: 'rounded',
+          borderRadius: 5,
+        },
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+        // dashArray: [0, 8, 5]
+      },
+      fill: {
+        opacity: 1,
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      legend: {
+        show: false,
+      },
+    },
+    webinarSeries: [
+      {
+        name: 'Sales',
+        data: [3, 30, 24, 56, 49, 70, 30, 71],
       },
     ],
   }),
