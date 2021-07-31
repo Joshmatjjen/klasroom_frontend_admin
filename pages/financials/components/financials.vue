@@ -3,7 +3,16 @@
     <!-- Activity Log -->
     <section>
       <div class="container mx-auto mb-10 px-2 lg:px-0">
-        <p class="text-base font-extrabold mb-3">Financials</p>
+        <div class="flex flex-row justify-between items-center">
+          <p class="text-base font-extrabold mb-3">Financials</p>
+          <t-datepicker
+            class="w-64 mb-3"
+            v-model="date"
+            range
+            :clearable="false"
+            userFormat="M. j, Y"
+          />
+        </div>
         <div
           class="grid grid-cols-12 gap-4 bg-white rounded-xl border border-gray-300 shadow-hover relative"
         >
@@ -233,6 +242,17 @@ export default {
       {
         name: 'Sales',
         data: [3, 30, 24, 56, 49, 70, 30, 71],
+      },
+    ],
+    date: ['2021-07-19', '2021-07-30'],
+    highlightDates: [
+      // A formatted date
+      '2021-07-19',
+      // A date object ('1987-03-25',)
+      // new Date(2021, 07, 19),
+      // Disable mondays
+      function (date) {
+        return date.getDay() === 1
       },
     ],
   }),
