@@ -66,6 +66,7 @@ export default {
     { src: '~plugins/validate', mode: 'client' },
     // { src: '~plugins/vue-tailwind-pagination', mode: 'client', ssr: false },
     { src: '~plugins/datepicker', mode: 'client' },
+    { src: '~plugins/apexchart', mode: 'client' },
     { src: '~plugins/vue-select', mode: 'client' },
     { src: '~plugins/vue-link-prevue', mode: 'client' },
     // { src: '~plugins/vue-video-player', mode: 'client' },
