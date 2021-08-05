@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen mb-12">
+  <div v-if="course" class="min-h-screen mb-12">
     <section class="bg-orange-100">
       <div class="container sm:mx-0 lg:mx-auto px-4 lg:px-0">
         <div class="grid grid-cols-12 gap-5">
@@ -326,7 +326,6 @@
                             :id="key"
                             :item="item"
                             :deleteItem="removePart"
-                            :createAssignment="createAssign"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
                           />
@@ -701,7 +700,8 @@
                       >
                         <p>Publish now</p>
                       </span>
-                      <span @click="showScheduleModal = true"
+                      <span
+                        @click="showScheduleModal = true"
                         class="cursor-pointer pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Schedule for later</p>
@@ -801,13 +801,21 @@
     </section>
     <!-- publish modal -->
     <div v-if="showModal">
-      <publish-modal :closeModal="close" :loading="false" @click="goNext(2)"></publish-modal>
-    </div> 
+      <publish-modal
+        :closeModal="close"
+        :loading="false"
+        @click="goNext(2)"
+      ></publish-modal>
+    </div>
     <!-- schedule modal -->
     <div v-if="showScheduleModal">
-      <schedule-modal :closeModal="closeSchedule"/> 
+      <schedule-modal
+        :publishCourse="publishCourse"
+        :closeModal="closeSchedule"
+      />
     </div>
   </div>
+  <loader-2 v-else />
 </template>
 
 <script>
@@ -815,12 +823,13 @@ import { mapState } from 'vuex'
 import Swal from 'sweetalert2'
 import UserChip from '~/components/chip/UserChip.vue'
 import { getAccessTokenHeader } from '~/utils'
+import Loader2 from '~/components/loader/Loader2.vue'
 // import PollChip from '~/components/chip/PollChip.vue'
 
 const courses = require('@/static/json/courses.json')
 
 export default {
-  components: { UserChip },
+  components: { UserChip, Loader2 },
   layout: 'dashboard',
   middleware: ['check-auth', 'auth'],
 
@@ -1018,16 +1027,13 @@ export default {
     await this.getCourseCategory()
   },
   methods: {
-    createAssign() {
-      console.log('testing action for create assignment')
-    },
     close() {
       this.showModal = false
     },
     closeSchedule() {
       this.showScheduleModal = false
     },
-    async publishCourse() {
+    async publishCourse(dateTime) {
       try {
         if (this.course) {
           const resData = {
@@ -1044,9 +1050,11 @@ export default {
           console.log('publishCourse: ', resData)
           this.loading = true
           const { data, message } = await this.$axios.$put(
-            `https://api.staging.klasroom.com/v1/courses/${
-              this.course.id
-            }?publish_now=${true}`,
+            `https://api.staging.klasroom.com/v1/courses/${this.course.id}?${
+              dateTime
+                ? `schedule=true&date=${dateTime.date}&time=${dateTime.time}`
+                : 'publish_now=true'
+            }`,
             resData,
             {
               headers: getAccessTokenHeader(this.token),
@@ -1358,9 +1366,8 @@ export default {
       if (type === 'courseImage') this.$refs.image.click()
       else this.$refs.input.click()
     },
-    checkFormError(type) {
-      if (type === 'lesson') this.coursePartsError = false
-      else if (type === 'co_host') this.coHostFormError = false
+    checkFormError() {
+      this.coursePartsError = false
     },
     async setcourseImage(e) {
       console.log('Uploading__')

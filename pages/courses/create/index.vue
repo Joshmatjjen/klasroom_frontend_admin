@@ -186,7 +186,12 @@
                                   placeholder="Enter tags"
                                   v-model="newTag"
                                 />
-                                <p class="mt-2" style="color: red; font-size:14px">{{tagError}}</p>
+                                <p
+                                  class="mt-2"
+                                  style="color: red; font-size: 14px"
+                                >
+                                  {{ tagError }}
+                                </p>
                                 <button
                                   type="button"
                                   @click="addTag"
@@ -329,7 +334,6 @@
                             :deleteItem="removePart"
                             :courseParts="courseParts"
                             :checkFormError="checkFormError"
-                            :createAssignment="createAssign"
                             :showFileChooser="showFileChooser"
                           />
                         </div>
@@ -687,7 +691,8 @@
                       >
                         <p>Publish now</p>
                       </span>
-                      <span @click="showScheduleModal = true"
+                      <span
+                        @click="showScheduleModal = true"
                         class="cursor-pointer pop-up-item lg:mr-0 md:text-gray-700 text-sm font-normal hover:text-gray-900 md:bg-transparent block md:inline-block mb-5 md:mb-0"
                       >
                         <p>Schedule for later</p>
@@ -780,11 +785,18 @@
     </section>
     <!-- publish modal -->
     <div v-if="showModal">
-      <publish-modal :closeModal="close" :loading="false" @click="goNext(2)"></publish-modal>
-    </div> 
+      <publish-modal
+        :closeModal="close"
+        :loading="false"
+        @click="goNext(2)"
+      ></publish-modal>
+    </div>
     <!-- schedule modal -->
     <div v-if="showScheduleModal">
-      <schedule-modal :closeModal="closeSchedule"/> 
+      <schedule-modal
+        :publishCourse="publishCourse"
+        :closeModal="closeSchedule"
+      />
     </div>
   </div>
 </template>
@@ -863,11 +875,13 @@ export default {
             lesson: '',
             description: '',
             content: '',
+            assignments: [],
           },
           {
             lesson: '',
             description: '',
             content: '',
+            assignments: [],
           },
         ],
       },
@@ -922,16 +936,13 @@ export default {
     await this.getCourseCategory()
   },
   methods: {
-    createAssign() {
-      console.log('testing action for create assignment')
-    },
     closeSchedule() {
       this.showScheduleModal = false
     },
     close() {
       this.showModal = false
     },
-    async publishCourse() {
+    async publishCourse(dateTime) {
       try {
         if (this.course) {
           const resData = {
@@ -948,9 +959,11 @@ export default {
           }
           console.log('publishCourse: ', resData)
           const { data, message } = await this.$axios.$put(
-            `https://api.staging.klasroom.com/v1/courses/${
-              this.course.id
-            }?publish_now=${true}`,
+            `https://api.staging.klasroom.com/v1/courses/${this.course.id}?${
+              dateTime
+                ? `schedule=true&date=${dateTime.date}&time=${dateTime.time}`
+                : 'publish_now=true'
+            }`,
             resData,
             {
               headers: getAccessTokenHeader(this.token),
@@ -983,11 +996,11 @@ export default {
       this.$router.push(`/courses`)
     },
     addTag() {
-      if(this.newTag === '') {
-        this.tagError = 'kindly add a tag' 
-        setTimeout(() => { 
+      if (this.newTag === '') {
+        this.tagError = 'kindly add a tag'
+        setTimeout(() => {
           this.tagError = ''
-        },5000)
+        }, 5000)
       } else {
         this.createCourse.tags.push('#' + this.newTag)
         this.newTag = ''
@@ -1259,9 +1272,8 @@ export default {
       if (type === 'courseImage') this.$refs.image.click()
       else this.$refs.input.click()
     },
-    checkFormError(type) {
-      if (type === 'lesson') this.coursePartsError = false
-      else if (type === 'co_host') this.coHostFormError = false
+    checkFormError() {
+      this.coursePartsError = false
     },
     async setcourseImage(e) {
       console.log('Uploading__')
@@ -1341,11 +1353,13 @@ export default {
               lesson: '',
               description: '',
               content: '',
+              assignments: [],
             },
             {
               lesson: '',
               description: '',
               content: '',
+              assignments: [],
             },
           ],
         },

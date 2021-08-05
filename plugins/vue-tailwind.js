@@ -299,10 +299,10 @@ const settings = {
         leaveToClass: 'opacity-0 scale-95',
         inlineWrapper: '',
         inlineViews: 'rounded bg-white border mt-1 inline-flex',
-        inputWrapper: '',
+        inputWrapper: 'datepicker-box',
         input: 'text-black placeholder-gray-400 border-gray-300',
         clearButton:
-          'hover:bg-gray-100 rounded transition duration-100 ease-in-out text-gray-600',
+          'hover:bg-gray-100 bg-gray-100 rounded transition duration-100 ease-in-out text-gray-600 hover:text-red-600',
         clearButtonIcon: '',
         viewGroup: '',
         view: '',

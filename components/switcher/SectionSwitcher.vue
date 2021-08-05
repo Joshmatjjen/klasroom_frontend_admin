@@ -19,7 +19,7 @@
         <p class="text-xs text-gray-700">{{ tab }}</p>
       </button>
     </div>
-    <hr class="border-gray-300 mx-4 md:mx-0" />
+    <!-- <hr class="border-gray-300 mx-4 md:mx-0" /> -->
   </div>
 </template>
 

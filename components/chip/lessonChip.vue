@@ -29,7 +29,7 @@
         class="form-input"
         :placeholder="`Enter lesson ${id + 1} name`"
         v-model="_lesson"
-        @input="checkFormError('lesson')"
+        @input="checkFormError()"
       />
     </div>
     <div class="mt-5">
@@ -42,7 +42,7 @@
         class="form-textarea"
         v-model="_description"
         placeholder="Anyone who lived in the time of legends such as Henry Ford, Alexander Graham Bell, Thomas Edison and Albert Einstein could be forgiven for thinking everything that can be invented already has been invented. Of course, if we’d stopped there, we wouldn’t have the computer or the internet. The past century of our history stands as a testament to human ingenuity and our persistence to make things better."
-        @input="checkFormError('description')"
+        @input="checkFormError()"
       />
     </div>
 
@@ -56,13 +56,16 @@
           v-model="_content"
           :options="editorOption"
           @change="onEditorChange($event)"
-          @input="checkFormError('content')"
+          @input="checkFormError()"
         ></quill-editor>
       </no-ssr>
     </div>
 
-    <div class="px-4 md:px-5 lg:px-6 mt-4">
-      <resource-chip
+    <div class="mt-5">
+      <label :for="`assignment-list-${id}`"
+        >{{ 'Lesson ' + (id + 1) + ' assignments' }}
+      </label>
+      <!-- <resource-chip
         v-for="(item, key) in fileResources"
         :key="key"
         :file="{ filename: item.name }"
@@ -75,8 +78,17 @@
         :link="item"
         :id="key"
         :deleteItem="deleteResItem"
+      /> -->
+      <assignment-list
+        v-for="(item, key) in lesson.assignments"
+        :key="item"
+        :id="key"
+        :title="item.title"
+        :desc="item.description"
+        :edit="true"
+        :deleteAssignment="deleteAssignment"
       />
-      <div class="flex flex-row justify-center gap-5">
+      <div class="flex flex-row justify-center gap-5 mt-4">
         <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
           @click.prevent="showFileChooser"
@@ -125,7 +137,11 @@
           </p>
         </div>
         <div v-if="showModal">
-          <assignment-modal :closeModal="close" @click="addAssignment"/>
+          <assignment-modal
+            :id="id"
+            :closeModal="close"
+            :updateAssignment="updateAssignment"
+          />
         </div>
         <!-- <div
           class="flex flex-row bg-white rounded-md border border-orange-400 shadow-hover mt-2 mb-5 py-1 px-2 cursor-pointer"
@@ -174,6 +190,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Swal from 'sweetalert2'
 import {
   container,
@@ -189,13 +206,17 @@ export default {
     id: { type: Number, required: false },
     deleteItem: { type: Function, required: false },
     checkFormError: { type: Function, required: false },
-    addAssignment: { type: Function, required: false },
+    updateAssignment: { type: Function, required: false },
   },
   data: () => ({
     collapsedPartIds: [],
-    showModal: false
+    showModal: false,
   }),
   computed: {
+    ...mapState({
+      showLogin: (state) => state.app.loginModal,
+      coursesCategories: (state) => state.app.coursesCategories,
+    }),
     _lesson: {
       get: function () {
         return this.lesson.lesson
@@ -218,6 +239,14 @@ export default {
       },
       set: function (newValue) {
         this.$emit('update:content', newValue)
+      },
+    },
+    _assignments: {
+      get: function () {
+        return this.lesson.assignments
+      },
+      set: function (newValue) {
+        this.$emit('update:assignments', newValue)
       },
     },
 
@@ -336,6 +365,12 @@ export default {
   methods: {
     close() {
       this.showModal = false
+    },
+    deleteAssignment(id) {
+      this.updateAssignment(this.id, 'remove', id)
+
+      // Vue instance will force update the component.
+      this.$forceUpdate()
     },
     onEditorChange({ html, quill, text }) {
       // console.log('onEditorChange: ', text)

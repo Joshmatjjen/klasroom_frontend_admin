@@ -97,21 +97,8 @@
                   :partId="partId"
                   :lesson="lesson"
                 />
+
                 <div class="px-4 md:px-5 lg:px-6 pb-4">
-                  <div class="mb-12">
-                    <div class="flex flex-row gap-4 text-gray-700 mt-5 mb-2">
-                      <span class="text-base font-semibold my-auto"
-                        >Assignment</span
-                      >
-                    </div>
-                    <div class="space-y-3">
-                      <assignment-list
-                        title="Business Research"
-                        desc="Conduct a business research for a conceptual business in any industry of your ch..."
-                        link="#"
-                      />
-                    </div>
-                  </div>
                   <hr class="-mx-4 md:-mx-5 lg:-mx-6" />
                   <div class="flex flex-row space-x-5 mt-5 mb-2">
                     <div
@@ -497,6 +484,9 @@ export default {
     ],
     rowsReviews: _.take(webreviews, 10),
     rowsStudents: _.take(students, 4),
+
+    hasPlayedIntroDashVideo: false,
+    playDashVideosJob: null,
   }),
   computed: {
     ...mapState({
@@ -509,9 +499,23 @@ export default {
     if (this.$device.isMobile) {
       this.tabs.unshift('Home')
     }
-    setTimeout(() => {
-      this.playDashVideos()
-    }, 10000)
+    this.playDashVideosJob = setInterval(() => {
+      if (document.querySelectorAll('.video-js').length) {
+        this.playDashVideos()
+        this.hasPlayedIntroDashVideo = true
+      }
+    }, 1000)
+  },
+  watch: {
+    hasPlayedIntroDashVideo(value) {
+      console.log('hasPlayedIntroDashVideo: ', value)
+      if (value)
+        if (this.playDashVideosJob) {
+          clearInterval(this.playDashVideosJob)
+          this.playDashVideosJob = null
+        }
+      // await this.$nextTick()
+    },
   },
   methods: {
     playDashVideos() {
@@ -563,6 +567,8 @@ export default {
       }
     },
     selectLesson(id, type) {
+      if (!this.hasPlayedIntroDashVideo) this.hasPlayedIntroDashVideo = true
+
       if (type === 'part') {
         this.lesson = this.lessons[id]
         this.partId = id
@@ -580,7 +586,7 @@ export default {
       }
       setTimeout(() => {
         this.playDashVideos()
-      }, 2000)
+      }, 1000)
     },
     purchaseCourse() {
       this.$store.commit('app/SET_MODAL', 'purchase-modal')

@@ -3,7 +3,16 @@
     <!-- Activity Log -->
     <section>
       <div class="container mx-auto mb-10 px-2 lg:px-0">
-        <p class="text-base font-extrabold mb-3">Sales</p>
+        <div class="flex flex-row justify-between items-center">
+          <p class="text-base font-extrabold mb-3">Financials</p>
+          <t-datepicker
+            class="w-64 mb-3"
+            v-model="date"
+            range
+            :clearable="false"
+            userFormat="M. j, Y"
+          />
+        </div>
         <div
           class="grid grid-cols-12 gap-4 bg-white rounded-xl border border-gray-300 shadow-hover relative"
         >
@@ -11,120 +20,82 @@
             <div class="flex flex-row justify-between px-5">
               <section-switcher
                 v-model="tab"
-                :tabs="[`All`, `Courses`, `Webinars`, `Plans`]"
+                :tabs="[`All`, `Courses`, `Webinars`]"
               />
-              <div
-                class="top-right self-center flex flex-row gap-5 align-middle items-center justify-center"
-              >
-                <p class="text-xs font-medium">Export CSV</p>
-                <div class="vl -py-5"></div>
-                <!-- <div class="flex flex-row items-center">
-                  <p class="text-xs font-medium pr-3">Filter</p>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M18.4356 1.66675H1.56278C1.00127 1.66675 0.650609 2.27868 0.932509 2.76685L6.26341 11.8289V17.3432C6.26341 17.7488 6.58886 18.0766 6.99223 18.0766L13.0061 17.2433C13.4095 17.2433 13.7349 16.9155 13.7349 16.5099V11.8289L19.0681 2.76685C19.3477 2.27868 18.9971 1.66675 18.4356 1.66675ZM12.094 15.8334L7.9044 16.4264V12.8511H12.0962V15.5931L12.094 15.8334ZM12.314 11.0039L12.0962 11.3843H7.90211L7.68438 11.0039L3.13959 3.3169H16.8588L12.314 11.0039Z"
-                      fill="#545454"
-                    />
-                  </svg>
-                </div> -->
-              </div>
             </div>
-            <!-- <section v-if="dataAll && tab === 0">
-              <list-table-2
-                :columns="allSalesColumns"
-                :rows="dataAll ? dataAll.data : []"
-                type="Students"
-                :total="124322"
-                route="/people/students/"
-              />
-            </section> -->
-            <!-- <section v-if="dataCourses && tab === 1">
-              <list-table-2
-                :columns="allSalesColumns"
-                :rows="dataCourses ? dataCourses.data : []"
-                type="Students"
-                :total="124322"
-                route="/people/students/"
-              />
-            </section>
-            <section v-else-if="dataWebinars && tab === 2">
-              <list-table-2
-                :columns="allSalesColumns"
-                :rows="dataWebinars ? dataWebinars.data : []"
-                type="Students"
-                :total="124322"
-                route="/people/students/"
-              />
-            </section> -->
-            <!-- <list-table-2
-              v-if="tab === 1"
-              :columns="allSalesColumns"
-              :rows="dataCourses && tab === 1 ? dataCourses.data : []"
-              type="Students"
-              :total="124322"
-              route="/people/students/"
-            /> -->
+            <hr class="border-gray-300 mx-4 md:mx-0" />
 
-            <list-table-2
-              v-if="
-                (dataAll && tab === 0) ||
-                (dataCourses && tab === 1) ||
-                (dataWebinars && tab === 2)
-              "
-              :columns="allSalesColumns"
-              :rows="
-                dataAll && tab === 0
-                  ? dataAll.data
-                  : dataCourses && tab === 1
-                  ? dataCourses.data
-                  : dataWebinars && tab === 2
-                  ? dataWebinars.data
-                  : []
-              "
-              type="Students"
-              :total="124322"
-              route="/people/students/"
-            />
+            <!-- All -->
+            <section v-if="tab === 0" class="flex flex-row">
+              <div class="chart w-4/6">
+                <apexchart
+                  width="100%"
+                  height="250"
+                  type="line"
+                  :options="options"
+                  :series="series"
+                ></apexchart>
+              </div>
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
+            </section>
+
+            <!-- Courses -->
+            <section v-if="tab === 1" class="flex flex-row">
+              <div class="chart w-4/6">
+                <apexchart
+                  width="100%"
+                  height="250"
+                  type="bar"
+                  :options="courseOptions"
+                  :series="courseSeries"
+                ></apexchart>
+              </div>
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
+            </section>
+
+            <!-- Webinars -->
+            <section v-if="tab === 2" class="flex flex-row">
+              <div class="chart w-4/6">
+                <apexchart
+                  width="100%"
+                  height="250"
+                  type="bar"
+                  :options="webinarOptions"
+                  :series="webinarSeries"
+                ></apexchart>
+              </div>
+              <div class="metrics w-2/6 flex flex-col pt-10 px-4">
+                <p class="text-xs pb-5">
+                  The data being shown is for Sep. 2020 - Oct. 2020.
+                </p>
+                <span class="text-xl font-bold">+ N34,000</span>
+                <span class="text-xl font-bold">38 course sales</span>
+                <span class="text-xl font-bold">41 webinar sales</span>
+              </div>
+            </section>
           </div>
         </div>
       </div>
-    </section>
-
-    <section v-if="dataAll && dataCourses && dataWebinars">
-      <!-- <t-pagination
-        :total-items="
-          (tab === 0 && dataAll.pagination.count) ||
-          (tab === 1 && dataCourses.pagination.count) ||
-          (tab === 2 && dataWebinars.pagination.count)
-        "
-        :per-page="
-          (tab === 0 && dataAll.pagination.limit) ||
-          (tab === 1 && dataCourses.pagination.limit) ||
-          (tab === 2 && dataWebinars.pagination.limit)
-        "
-        :limit="4"
-        :variant="'roundedSmall'"
-        :value="
-          (tab === 0 && dataAll.pagination.currentPage) ||
-          (tab === 1 && dataCourses.pagination.currentPage) ||
-          (tab === 2 && dataWebinars.pagination.currentPage)
-        "
-        @change="changePage"
-      /> -->
     </section>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-
-const allSales = require('@/static/json/all-sales.json')
 
 export default {
   // components: { tester },
@@ -149,36 +120,141 @@ export default {
       students: false,
       draft: false,
     },
-    allSalesColumns: [
+    options: {
+      chart: {
+        id: 'financials',
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ['#F99E42', '#0797CE'],
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: [2, 2, 2],
+        curve: 'straight',
+        // dashArray: [0, 8, 5]
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      legend: {
+        show: false,
+      },
+    },
+    series: [
       {
-        label: 'Title',
-        field: 'title',
+        name: 'Course sales',
+        data: [3, 30, 24, 56, 49, 70, 30, 71],
       },
       {
-        label: 'Student',
-        field: 'student',
-      },
-      {
-        label: 'Type',
-        field: 'type',
-      },
-      {
-        label: 'Date',
-        field: 'date',
-        type: 'date',
-        dateInputFormat: 'yyyy-MM-dd',
-        dateOutputFormat: 'MMM do yy',
-      },
-      {
-        label: 'Time',
-        field: 'time',
-      },
-      {
-        label: 'Price',
-        field: 'price',
+        name: 'Webinar sales',
+        data: [30, 40, 45, 50, 49, 60, 70, 91],
       },
     ],
-    allSalesRows: _.take(allSales, 10),
+    courseOptions: {
+      chart: {
+        id: 'courses',
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ['#F99E42'],
+      dataLabels: {
+        enabled: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '20%',
+          endingShape: 'rounded',
+          borderRadius: 5,
+        },
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+        // dashArray: [0, 8, 5]
+      },
+      fill: {
+        opacity: 1,
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      legend: {
+        show: false,
+      },
+    },
+    courseSeries: [
+      {
+        name: 'Sales',
+        data: [3, 30, 24, 56, 49, 70, 30, 71],
+      },
+    ],
+    webinarOptions: {
+      chart: {
+        id: 'webinars',
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      colors: ['#0797CE'],
+      dataLabels: {
+        enabled: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '20%',
+          endingShape: 'rounded',
+          borderRadius: 5,
+        },
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+        // dashArray: [0, 8, 5]
+      },
+      fill: {
+        opacity: 1,
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      legend: {
+        show: false,
+      },
+    },
+    webinarSeries: [
+      {
+        name: 'Sales',
+        data: [3, 30, 24, 56, 49, 70, 30, 71],
+      },
+    ],
+    date: ['2021-07-19', '2021-07-30'],
+    highlightDates: [
+      // A formatted date
+      '2021-07-19',
+      // A date object ('1987-03-25',)
+      // new Date(2021, 07, 19),
+      // Disable mondays
+      function (date) {
+        return date.getDay() === 1
+      },
+    ],
   }),
   computed: {
     ...mapState({
@@ -203,81 +279,51 @@ export default {
           'old ->',
           oldValue
         )
-        if (newValue === 0) {
-          this.$store
-            .dispatch('people/getTutorAllSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
-            .then((res) => {
-              console.log('DAta In Auditing', res)
-              this.loading = false
-              // this.settings = res
-              if (res) {
-                // this.showSuccess(res)
-              }
-            })
-            .catch((e) => console.log('e: ', e))
-        } else if (newValue === 1) {
-          // Course sales
-          this.$store
-            .dispatch('people/getTutorCourseSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
-            .then((res) => {
-              console.log('DAta In Auditing', res)
-              this.loading = false
-              // this.settings = res
-              if (res) {
-                // this.showSuccess(res)
-              }
-            })
-            .catch((e) => console.log('e: ', e))
-        } else if (newValue === 2) {
-          // Webinar sales
-          this.$store
-            .dispatch('people/getTutorWebinarsSales', {
-              id: this.$route.params.slug.split('-')[1],
-              pagination: 1,
-            })
-            .then((res) => {
-              console.log('DAta In Auditing', res)
-              this.loading = false
-              // this.settings = res
-              if (res) {
-                // this.showSuccess(res)
-              }
-            })
-            .catch((e) => console.log('e: ', e))
-        }
+        // if (newValue === 0) {
+        //   this.$store
+        //     .dispatch('financials/getFinanceAllSales', 1)
+        //     .then((res) => {
+        //       console.log('DAta In Auditing', res)
+        //       this.loading = false
+        //       // this.settings = res
+        //       if (res) {
+        //         // this.showSuccess(res)
+        //       }
+        //     })
+        //     .catch((e) => console.log('e: ', e))
+        // } else if (newValue === 1) {
+        //   // Course sales
+        //   this.$store
+        //     .dispatch('financials/getFinanceCourseSales', 1)
+        //     .then((res) => {
+        //       console.log('DAta In Auditing', res)
+        //       this.loading = false
+        //       // this.settings = res
+        //       if (res) {
+        //         // this.showSuccess(res)
+        //       }
+        //     })
+        //     .catch((e) => console.log('e: ', e))
+        // } else if (newValue === 2) {
+        //   // Webinar sales
+        //   this.$store
+        //     .dispatch('financials/getFinanceWebinarsSales', 1)
+        //     .then((res) => {
+        //       console.log('DAta In Auditing', res)
+        //       this.loading = false
+        //       // this.settings = res
+        //       if (res) {
+        //         // this.showSuccess(res)
+        //       }
+        //     })
+        //     .catch((e) => console.log('e: ', e))
+        // }
       },
     },
   },
   methods: {
     toggleActionOpt() {
       this.actionOpt = !this.actionOpt
-    },
-    changePage(pagination) {
-      this.$store
-        .dispatch(
-          (this.tab === 0 && 'people/getTutorAllSales') ||
-            (this.tab === 1 && 'people/getTutorCourseSales') ||
-            (this.tab === 2 && 'people/getTutorWebinarsSales'),
-          {
-            id: this.$route.params.slug.split('-')[1],
-            pagination,
-          }
-        )
-        .then((res) => {
-          console.log(res)
-          this.loading = false
-          // this.settings = res
-          if (res) {
-            // this.showSuccess(res)
-          }
-        })
-        .catch((e) => console.log('e: ', e))
     },
   },
 }
