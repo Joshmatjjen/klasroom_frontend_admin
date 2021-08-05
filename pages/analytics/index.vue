@@ -3,10 +3,10 @@
     <div v-if="financeSummary && allSales" class="min-h-screen mb-24">
       <section class="bg-orange-100">
         <!-- <div class="container mx-auto mb-10 px-4 lg:px-0"> -->
-        <div class="md:grid grid-cols-3 gap-5 space-y-3 md:space-y-0">
+        <div class="md:grid grid-cols-4 gap-5 space-y-3 md:space-y-0">
           <finance-card
-            :title="'₦' + financeSummary.totalEarnings"
-            label="Total earnings"
+            :title="'430,000 visits'"
+            label="This week"
             type="withdraw"
             typeText="Withdraw"
             tableType="Balance"
@@ -14,16 +14,24 @@
             :greenBalance="true"
           />
           <finance-card
-            :title="financeSummary.salesNos"
-            label="Total Sales"
+            :title="'23,410 purchases'"
+            label="This week"
             type="none"
             tableType="unPublished"
             filterType="active"
             @click="switcher('unpublished')"
           />
           <finance-card
-            :title="financeSummary.payOuts"
-            label="Total Payout"
+            :title="'+₦41,400'"
+            label="This month"
+            type="withdraw"
+            typeText="See more"
+            tableType="completions"
+            filterType="active"
+          />
+          <finance-card
+            :title="'26'"
+            label="Transactons"
             type="withdraw"
             typeText="See more"
             tableType="completions"
@@ -42,6 +50,14 @@
       </section>
 
       <section class="mt-10">
+        <financials
+          :dataAll="allSales"
+          :dataCourses="courseSales"
+          :dataWebinars="webinarSales"
+        />
+      </section>
+
+      <!-- <section class="mt-10">
         <sales
           :dataAll="allSales"
           :dataCourses="courseSales"
@@ -51,7 +67,7 @@
 
       <section class="mt-10">
         <payout :data="payouts" />
-      </section>
+      </section> -->
     </div>
     <loader-2 v-else />
   </section>
@@ -60,13 +76,14 @@
 <script>
 import { mapState } from 'vuex'
 import Loader2 from '~/components/loader/Loader2.vue'
+import financials from './components/financials.vue'
 import sales from './components/sales.vue'
 import payout from './components/payout.vue'
 export default {
-  components: { Loader2, sales, payout },
+  components: { Loader2, financials, sales, payout },
   middleware: ['check-auth', 'auth'],
   async fetch() {
-    this.$store.commit('app/SET_TITLE', 'Financials')
+    this.$store.commit('app/SET_TITLE', 'Analytics')
     try {
       await this.$store.dispatch('courses/getLiveCourses')
       await this.$store.dispatch('courses/getCoursesSummary')
